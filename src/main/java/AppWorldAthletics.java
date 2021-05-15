@@ -73,6 +73,14 @@ public class AppWorldAthletics extends JFrame{
     private JComboBox selecionarProva4;
     private JButton botaoAdicionar2;
     private JButton botaoRemover2;
+    private JButton botaoImportarProvas;
+    private JButton button2;
+    private JButton button3;
+    private JButton botaoCriarProva;
+    private JButton botaoEliminarProva;
+    private JButton botaoEditarProva;
+    private JTable table1;
+    private JComboBox comboBox1;
 
     private CardLayout cardLayoutGerir;
     private CardLayout cardLayoutNormalPages;
@@ -105,6 +113,12 @@ public class AppWorldAthletics extends JFrame{
         botaoRemoverEvento.addActionListener(this::botaoRemoverEventoActionPerformed);
         botaoVerPrograma.addActionListener(this::botaoVerProgramaActionPerformed);
         botaoImportarEventos.addActionListener(this::botaoImportarEventosActionPerformed);
+
+        //Gerir Provas
+        botaoCriarProva.addActionListener(this::botaoCriarProvaActionPerformed);
+        botaoEditarProva.addActionListener(this::botaoEditarProvaActionPerformed);
+        botaoEliminarProva.addActionListener(this::botaoEliminarProvaActionPerformed);
+        botaoImportarProvas.addActionListener(this::botaoImportarProvasActionPerformed);
 
         cardLayoutNormalPages.show(PainelPrincipal, "cardMenuPrincipal");
     }
@@ -158,6 +172,24 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private void botaoImportarEventosActionPerformed(ActionEvent actionEvent) {
+        JOptionPane.showMessageDialog(null, "Filler Text");
+    }
+
+    //------------------------------ GERIR PROVAS ------------------------------
+
+    private void botaoCriarProvaActionPerformed(ActionEvent actionEvent) {
+        cardLayoutNormalPages.show(PainelPrincipal, "cardCriarProva");
+    }
+
+    private void botaoEditarProvaActionPerformed(ActionEvent actionEvent) {
+        cardLayoutNormalPages.show(PainelPrincipal, "cardEditarProva");
+    }
+
+    private void botaoEliminarProvaActionPerformed(ActionEvent actionEvent) {
+        JOptionPane.showMessageDialog(null, "A prova foi eliminada com sucesso!");
+    }
+
+    private void botaoImportarProvasActionPerformed(ActionEvent actionEvent) {
         JOptionPane.showMessageDialog(null, "Filler Text");
     }
 
