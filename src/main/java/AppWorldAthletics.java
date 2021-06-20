@@ -2,6 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.text.ParseException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 public class AppWorldAthletics extends JFrame{
@@ -45,30 +49,29 @@ public class AppWorldAthletics extends JFrame{
     private JPanel registarResultadoProva;
     private JPanel resultadosFinaisProva;
     private JPanel recordesProva;
-    private JList list1;
-    private JTextField paísTextField;
-    private JTextField localTextField;
-    private JTextField dataFimTextField;
-    private JTextField dataInícioTextField;
-    private JTextField nomeTextField;
+    private JList gerirEventosLista;
+    private JTextField gerirEventosPais;
+    private JTextField gerirEventosLocal;
+    private JTextField gerirEventosDataFim;
+    private JTextField gerirEventosDataInicio;
+    private JTextField gerirEventosNome;
     private JButton botaoVerPrograma;
     private JButton botaoImportarEventos;
     private JButton botaoAdicionarEvento;
     private JButton botaoRemoverEvento;
     private JButton botaoEditarEvento;
-    private JTextField textField1;
-    private JTextField textField3;
-    private JTextField textField4;
-    private JTextField textField5;
-    private JTextField textField2;
+    private JTextField adicionarEventoNome;
+    private JTextField adicionarEventoDataInicio;
+    private JTextField adicionarEventoDataFim;
+    private JTextField adicionarEventoLocal;
+    private JTextField adicionarEventoPais;
     private JComboBox selecionarProva;
-    private JComboBox selecionarProva2;
     private JButton botaoAdicionarProva;
     private JButton botaoRemoverProva;
-    private JButton botaoOk;
-    private JButton botaoCancelar;
+    private JButton botaoOkAdicionarEvento;
+    private JButton botaoCancelarCriarEvento;
     private JButton botaoOk2;
-    private JButton botaoCancelar2;
+    private JButton botaoCancelarEditarEvento;
     private JComboBox selecionarProva3;
     private JComboBox selecionarProva4;
     private JButton botaoAdicionar2;
@@ -81,10 +84,35 @@ public class AppWorldAthletics extends JFrame{
     private JButton botaoEditarProva;
     private JTable table1;
     private JComboBox comboBox1;
+    private JButton botaoVoltarProgramaEvento;
+    private JButton botaoCancelarCriarProva;
+    private JButton botaoCancelarEditarProva;
+    private JButton botaoOkCriarProva;
+    private JTextField nomeCriarProva;
+    private JComboBox tipoPontuacaoComboBox;
+    private JComboBox sexoParticipantesComboBox;
+    private JList gerirProvasLista;
+    private JTextField gerirProvasNome;
+    private JTextField gerirProvasSexoParticipantes;
+    private JButton botaoOkEditarProva;
+    private JTextField editarProvaNome;
+    private JComboBox editarProvaTipoPontuacao;
+    private JComboBox editarProvaSexoParticipantes;
 
     private CardLayout cardLayoutGerir;
     private CardLayout cardLayoutNormalPages;
     private JPanel[] elementos = {elementoGerirEventos, elementoGerirAtletas, elementoGerirProvas, elementoTopMedalhados};
+
+    //Gerir Eventos
+    private ArrayList<Evento> listaEventos = new ArrayList<>();
+    private ArrayList<Prova> listaProvasEvento = new ArrayList<>();
+    private Evento eventoSelecionado = null;
+
+    //Gerir Provas
+    private ArrayList<Prova> listaProvas = new ArrayList<>();
+    private Prova provaSelecionada = null;
+
+    //Gerir Atletas
 
     public AppWorldAthletics() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -113,22 +141,40 @@ public class AppWorldAthletics extends JFrame{
         botaoRemoverEvento.addActionListener(this::botaoRemoverEventoActionPerformed);
         botaoVerPrograma.addActionListener(this::botaoVerProgramaActionPerformed);
         botaoImportarEventos.addActionListener(this::botaoImportarEventosActionPerformed);
+        botaoCancelarCriarEvento.addActionListener(this::botaoGerirEventosActionPerformed);
+        botaoCancelarEditarEvento.addActionListener(this::botaoGerirEventosActionPerformed);
+        botaoVoltarProgramaEvento.addActionListener(this::botaoGerirEventosActionPerformed);
+        botaoAdicionarProva.addActionListener(this::botaoAdicionarProvaActionPerformed);
+        botaoRemoverProva.addActionListener(this::botaoRemoverProvaActionPerformed);
+        botaoOkAdicionarEvento.addActionListener(this::botaoOkAdicionarEventoActionPerformed);
 
         //Gerir Provas
         botaoCriarProva.addActionListener(this::botaoCriarProvaActionPerformed);
         botaoEditarProva.addActionListener(this::botaoEditarProvaActionPerformed);
         botaoEliminarProva.addActionListener(this::botaoEliminarProvaActionPerformed);
         botaoImportarProvas.addActionListener(this::botaoImportarProvasActionPerformed);
+        botaoCancelarCriarProva.addActionListener(this::botaoGerirProvasActionPerformed);
+        botaoCancelarEditarProva.addActionListener(this::botaoGerirProvasActionPerformed);
+        botaoOkCriarProva.addActionListener(this::botaoOkCriarProvaActionPerformed);
+        botaoOkEditarProva.addActionListener(this::botaoOkEditarProvaActionPerformed);
+        gerirProvasLista.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                provaSelecionada = (Prova) gerirProvasLista.getSelectedValue();
+                gerirProvasNome.setText(provaSelecionada.getNome());
+                gerirProvasSexoParticipantes.setText(provaSelecionada.getSexoParticipantes());
+            }
+        });
 
         cardLayoutNormalPages.show(PainelPrincipal, "cardMenuPrincipal");
+
     }
 
     //------------------------------ MENU LATERAL/INICIAL ------------------------------
 
     private void botaoGerirEventosActionPerformed(ActionEvent e) {
-        cardLayoutNormalPages.show(PainelPrincipal, "cardGerir");
-        cardLayoutGerir.show(conteudoGerir, "cardGerirEventos");
-        setElementsBackgroundColor(elementoGerirEventos);
+        buildGerirEventosList();
     }
 
     private void botaoGerirAtletasActionPerformed(ActionEvent e) {
@@ -138,9 +184,7 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private void botaoGerirProvasActionPerformed(ActionEvent e) {
-        cardLayoutNormalPages.show(PainelPrincipal, "cardGerir");
-        cardLayoutGerir.show(conteudoGerir, "cardGerirProvas");
-        setElementsBackgroundColor(elementoGerirProvas);
+        buildGerirProvasList();
     }
 
     private void botaoTopMedalhadosActionPerformed(ActionEvent e) {
@@ -156,6 +200,13 @@ public class AppWorldAthletics extends JFrame{
     //------------------------------ GERIR EVENTOS ------------------------------
 
     private void botaoAdicionarEventoActionPerformed(ActionEvent actionEvent) {
+        adicionarEventoNome.setText("");
+        adicionarEventoDataInicio.setText("");
+        adicionarEventoDataFim.setText("");
+        adicionarEventoLocal.setText("");
+        adicionarEventoPais.setText("");
+        selecionarProva.setModel(new DefaultComboBoxModel(listaProvas.toArray()));
+
         cardLayoutNormalPages.show(PainelPrincipal, "cardAdicionarEvento");
     }
 
@@ -175,22 +226,179 @@ public class AppWorldAthletics extends JFrame{
         JOptionPane.showMessageDialog(null, "Filler Text");
     }
 
+    private void botaoAdicionarProvaActionPerformed(ActionEvent actionEvent) {
+        if(listaProvasEvento.contains((Prova) selecionarProva.getSelectedItem())) {
+            JOptionPane.showMessageDialog(new JFrame(), "Prova já adicionada!");
+        }
+        else {
+            listaProvasEvento.add((Prova) selecionarProva.getSelectedItem());
+        }
+    }
+
+    private void botaoRemoverProvaActionPerformed(ActionEvent actionEvent) {
+        if(!listaProvasEvento.contains((Prova) selecionarProva.getSelectedItem())) {
+            JOptionPane.showMessageDialog(new JFrame(), "O evento não tem esta prova!");
+        }
+        else {
+            listaProvasEvento.remove((Prova) selecionarProva.getSelectedItem());
+        }
+    }
+
+    private void botaoOkAdicionarEventoActionPerformed(ActionEvent actionEvent) {
+        if (adicionarEventoNome.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher o nome!");
+        } else if(adicionarEventoDataInicio.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher a data de ínicio!");
+        } else {
+            Data dataInicio = null;
+            try {
+                dataInicio = Data.parse(adicionarEventoDataInicio.getText());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(new JFrame(), "Data tem de ser no formato dd/mm/yyyy");
+            }
+            if(adicionarEventoDataFim.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher a data de fim!");
+            } else {
+                Data dataFim = null;
+                try {
+                    dataFim = Data.parse(adicionarEventoDataFim.getText());
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Data tem de ser no formato dd/mm/yyyy");
+                }
+                if(adicionarEventoLocal.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher o local do evento!");
+                } else if(adicionarEventoPais.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher o país do evento!");
+                } else if(listaProvasEvento.isEmpty()) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Tem de adicionar provas ao evento!");
+                } else {
+                    Evento evento = new Evento(adicionarEventoNome.getText(), dataInicio, dataFim, adicionarEventoLocal.getText(), adicionarEventoPais.getText());
+                    for (Prova prova : listaProvasEvento) {
+                        evento.adicionarProva(prova);
+                    }
+                    listaEventos.add(evento);
+
+                    buildGerirEventosList();
+                }
+            }
+        }
+    }
+
+    private void buildGerirEventosList() {
+        DefaultListModel gerirEventosListModel = new DefaultListModel();
+        for (Evento evento : listaEventos) {
+            gerirEventosListModel.addElement(evento);
+        }
+        gerirEventosLista.setModel(gerirEventosListModel);
+        gerirEventosLista.setBorder(BorderFactory.createLineBorder(Color.black));
+        setCurrentGerirEventos();
+    }
+
+    private void setCurrentGerirEventos() {
+        gerirEventosNome.setText("");
+        gerirEventosDataInicio.setText("");
+        gerirEventosDataFim.setText("");
+        gerirEventosLocal.setText("");
+        gerirEventosPais.setText("");
+        gerirEventosLista.clearSelection();
+        eventoSelecionado = null;
+        cardLayoutNormalPages.show(PainelPrincipal, "cardGerir");
+        cardLayoutGerir.show(conteudoGerir, "cardGerirEventos");
+        setElementsBackgroundColor(elementoGerirEventos);
+    }
+
+
     //------------------------------ GERIR PROVAS ------------------------------
 
     private void botaoCriarProvaActionPerformed(ActionEvent actionEvent) {
+        nomeCriarProva.setText("");
+        tipoPontuacaoComboBox.setModel(new DefaultComboBoxModel(TipoPontuacao.values()));
+        sexoParticipantesComboBox.setModel(new DefaultComboBoxModel(SexoParticipantes.values()));
         cardLayoutNormalPages.show(PainelPrincipal, "cardCriarProva");
     }
 
     private void botaoEditarProvaActionPerformed(ActionEvent actionEvent) {
-        cardLayoutNormalPages.show(PainelPrincipal, "cardEditarProva");
+        if(provaSelecionada == null) {
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar uma prova!");
+        }
+        else {
+            editarProvaNome.setText("");
+            editarProvaTipoPontuacao.setModel(new DefaultComboBoxModel(TipoPontuacao.values()));
+            editarProvaSexoParticipantes.setModel(new DefaultComboBoxModel(SexoParticipantes.values()));
+            cardLayoutNormalPages.show(PainelPrincipal, "cardEditarProva");
+
+            editarProvaNome.setText(provaSelecionada.getNome());
+            for (int i = 0; i < TipoPontuacao.values().length; i++) {
+                if(provaSelecionada.getTipoPontuacao() == TipoPontuacao.values()[i].toString()){
+                    editarProvaTipoPontuacao.setSelectedIndex(i);
+                }
+            }
+            for (int i = 0; i < SexoParticipantes.values().length; i++) {
+                if(provaSelecionada.getTipoPontuacao() == SexoParticipantes.values()[i].toString()){
+                    editarProvaSexoParticipantes.setSelectedIndex(i);
+                }
+            }
+        }
     }
 
     private void botaoEliminarProvaActionPerformed(ActionEvent actionEvent) {
-        JOptionPane.showMessageDialog(null, "A prova foi eliminada com sucesso!");
+        if(provaSelecionada == null) {
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar uma prova!");
+        }
+        else {
+            listaProvas.remove(provaSelecionada);
+            JOptionPane.showMessageDialog(null, "A prova foi eliminada com sucesso!");
+            buildGerirProvasList();
+        }
     }
 
     private void botaoImportarProvasActionPerformed(ActionEvent actionEvent) {
         JOptionPane.showMessageDialog(null, "Filler Text");
+    }
+
+    private void botaoOkCriarProvaActionPerformed(ActionEvent actionEvent) {
+        if (nomeCriarProva.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher o nome!");
+        }
+        else {
+            Prova prova = new Prova(nomeCriarProva.getText(), sexoParticipantesComboBox.getSelectedItem().toString(), tipoPontuacaoComboBox.getSelectedItem().toString());
+            listaProvas.add(prova);
+
+            buildGerirProvasList();
+        }
+    }
+
+    public void botaoOkEditarProvaActionPerformed(ActionEvent actionEvent) {
+        if (editarProvaNome.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher o nome!");
+        }
+        else {
+            provaSelecionada.setNome(editarProvaNome.getText());
+            provaSelecionada.setSexoParticipantes(editarProvaSexoParticipantes.getSelectedItem().toString());
+            provaSelecionada.setTipoPontuacao(editarProvaTipoPontuacao.getSelectedItem().toString());
+
+            buildGerirProvasList();
+        }
+    }
+
+    private void buildGerirProvasList() {
+        DefaultListModel gerirProvasListModel = new DefaultListModel();
+        for (Prova prova : listaProvas) {
+            gerirProvasListModel.addElement(prova);
+        }
+        gerirProvasLista.setModel(gerirProvasListModel);
+        gerirProvasLista.setBorder(BorderFactory.createLineBorder(Color.black));
+        setCurrentGerirProvas();
+    }
+
+    private void setCurrentGerirProvas() {
+        gerirProvasNome.setText("");
+        gerirProvasSexoParticipantes.setText("");
+        gerirProvasLista.clearSelection();
+        provaSelecionada = null;
+        cardLayoutNormalPages.show(PainelPrincipal, "cardGerir");
+        cardLayoutGerir.show(conteudoGerir, "cardGerirProvas");
+        setElementsBackgroundColor(elementoGerirProvas);
     }
 
     //------------------------------ FUNÇÕES AUXILIARES ------------------------------
