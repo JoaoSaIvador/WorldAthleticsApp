@@ -245,43 +245,49 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private void botaoOkAdicionarEventoActionPerformed(ActionEvent actionEvent) {
-        if (adicionarEventoNome.getText().isEmpty()) {
+        if (verifyEvent(adicionarEventoNome.getText(), adicionarEventoDataInicio.getText(), adicionarEventoDataFim.getText(), adicionarEventoLocal.getText(), adicionarEventoPais.getText())) {
+            Evento evento = new Evento(adicionarEventoNome.getText(), Data.parse(adicionarEventoDataInicio.getText()), Data.parse(adicionarEventoDataFim.getText()), adicionarEventoLocal.getText(), adicionarEventoPais.getText());
+            for (Prova prova : listaProvasEvento) {
+                evento.adicionarProva(prova);
+            }
+            listaEventos.add(evento);
+
+            buildGerirEventosList();
+        }
+    }
+
+    private boolean verifyEvent(String nome, String dataInicio, String dataFim, String local, String pais) {
+        if (nome.isEmpty()) {
             JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher o nome!");
-        } else if(adicionarEventoDataInicio.getText().isEmpty()) {
+        } else if(dataInicio.isEmpty()) {
             JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher a data de ínicio!");
         } else {
-            Data dataInicio = null;
+            Data data = null;
             try {
-                dataInicio = Data.parse(adicionarEventoDataInicio.getText());
+                data = Data.parse(dataInicio);
+                if (dataFim.isEmpty()) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher a data de fim!");
+                } else {
+                    try {
+                        data = Data.parse(dataFim);
+                        if (local.isEmpty()) {
+                            JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher o local do evento!");
+                        } else if (pais.isEmpty()) {
+                            JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher o país do evento!");
+                        } else if (listaProvasEvento.isEmpty()) {
+                            JOptionPane.showMessageDialog(new JFrame(), "Tem de adicionar provas ao evento!");
+                        } else {
+                            return true;
+                        }
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(new JFrame(), "Data tem de ser no formato dd/mm/yyyy");
+                    }
+                }
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(new JFrame(), "Data tem de ser no formato dd/mm/yyyy");
             }
-            if(adicionarEventoDataFim.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher a data de fim!");
-            } else {
-                Data dataFim = null;
-                try {
-                    dataFim = Data.parse(adicionarEventoDataFim.getText());
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Data tem de ser no formato dd/mm/yyyy");
-                }
-                if(adicionarEventoLocal.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher o local do evento!");
-                } else if(adicionarEventoPais.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher o país do evento!");
-                } else if(listaProvasEvento.isEmpty()) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Tem de adicionar provas ao evento!");
-                } else {
-                    Evento evento = new Evento(adicionarEventoNome.getText(), dataInicio, dataFim, adicionarEventoLocal.getText(), adicionarEventoPais.getText());
-                    for (Prova prova : listaProvasEvento) {
-                        evento.adicionarProva(prova);
-                    }
-                    listaEventos.add(evento);
-
-                    buildGerirEventosList();
-                }
-            }
         }
+        return false;
     }
 
     private void buildGerirEventosList() {
