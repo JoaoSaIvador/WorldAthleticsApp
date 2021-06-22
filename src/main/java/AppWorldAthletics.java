@@ -1,10 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.ParseException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -108,6 +106,33 @@ public class AppWorldAthletics extends JFrame{
     private JButton botaoProvasPorAtleta;
     private JButton botaoImportarInscricoes;
     private JButton botaoMelhorTempo;
+    private JButton botaoCriarAtleta;
+    private JButton botaoCancelarCriarAtleta;
+    private JTextField textNomeAtleta;
+    private JTextField textDataNascimento;
+    private JTextField textContacto;
+    private JComboBox listGenero;
+    private JComboBox listPais;
+    private JList listProvasAssociadas;
+    private JButton botaoDesinscrever;
+    private JButton botaoCancelarDesisncricao;
+    private JButton botaoOKInscreverAtleta;
+    private JButton botaoCancelarIncreverAtleta;
+    private JComboBox comboInscricaoProva;
+    private JComboBox comboIncricaoPais;
+    private JTextField textMarcaAlcancada;
+    private JButton botaoOKEditarAtleta;
+    private JButton botaoCancelarEditarAtleta;
+    private JComboBox listEditarPais;
+    private JComboBox listEditarGenero;
+    private JTextField textEditarNome;
+    private JTextField textEditarDataNascimento;
+    private JTextField textEditarContacto;
+    private JTable tabelaRecordePessoal;
+    private JButton botaoVoltarMelhorTempo;
+    private JTable table2;
+    private JTable table3;
+    private JScrollPane scrollAtletas;
 
     private CardLayout cardLayoutGerir;
     private CardLayout cardLayoutNormalPages;
@@ -161,15 +186,18 @@ public class AppWorldAthletics extends JFrame{
         botaoOkAdicionarEvento.addActionListener(this::botaoOkAdicionarEventoActionPerformed);
 
         //Gerir Atletas
-        botaoAdicionarAtleta.addActionListener(this::botaoCriarAtletaActionPerformed);
+        botaoAdicionarAtleta.addActionListener(this::botaoAdicionarAtletaActionPerformed);
         botaoEditarAtleta.addActionListener(this::botaoEditarAtletaActionPerformed);
         botaoInscreverAtleta.addActionListener(this::botaoInscreverAtletaActionPerformed);
-        botaoCancelarInscricao.addActionListener(this::botaoCancelarInscricaoActionPerfomed);
-        botaoImportarDados.addActionListener(this::botaoImportarDadosActionPerfomed);
-        botaoImportarInscricoes.addActionListener(this::botaoImportarInscricoesActionPerfomed);
-        botaoProvasPorAtleta.addActionListener(this::botaoProvasPorAtletaActionPerfomed);
-        botaoConsultarHistorico.addActionListener(this::botaoConsultarHistoricoActionPerfomed);
-        botaoMelhorTempo.addActionListener(this::botaoMelhorTempoActionPerfomed);
+        botaoCancelarInscricao.addActionListener(this::botaoCancelarInscricaoActionPerformed);
+        botaoImportarDados.addActionListener(this::botaoImportarDadosActionPerformed);
+        botaoImportarInscricoes.addActionListener(this::botaoImportarInscricoesActionPerformed);
+        botaoProvasPorAtleta.addActionListener(this::botaoProvasPorAtletaActionPerformed);
+        botaoConsultarHistorico.addActionListener(this::botaoConsultarHistoricoActionPerformed);
+        botaoMelhorTempo.addActionListener(this::botaoMelhorTempoActionPerformed);
+
+        botaoCriarAtleta.addActionListener(this::botaoCriarAtletaActionPerformed);
+        botaoCancelarCriarAtleta.addActionListener(this::botaoGerirAtletasActionPerformed);
 
         //Gerir Provas
         botaoCriarProva.addActionListener(this::botaoCriarProvaActionPerformed);
@@ -342,6 +370,7 @@ public class AppWorldAthletics extends JFrame{
         }
         gerirAtletasList.setModel(gerirAtletasListModel);
         gerirAtletasList.setBorder((BorderFactory.createLineBorder(Color.black)));
+
         setCurrentGerirAtleta();
     }
 
@@ -353,8 +382,15 @@ public class AppWorldAthletics extends JFrame{
         setElementsBackgroundColor(elementoGerirAtletas);
     }
 
-    private void botaoCriarAtletaActionPerformed(ActionEvent actionEvent){
+    private void botaoAdicionarAtletaActionPerformed(ActionEvent actionEvent){
         cardLayoutNormalPages.show(PainelPrincipal, "cardAdicionarAtleta");
+        //textNomeAtleta.setText("");
+        //textDataNascimento.setText("");
+        //textContacto.setText("");
+        //listGenero.setSelectedItem(null);
+        //listPais.setSelectedItem(null);
+        listPais = new JComboBox(Pais.values());
+        listGenero = new JComboBox(SexoParticipantes.values());
     }
 
     private void botaoEditarAtletaActionPerformed(ActionEvent actionEvent){
@@ -365,27 +401,77 @@ public class AppWorldAthletics extends JFrame{
         cardLayoutNormalPages.show(PainelPrincipal, "cardInscreverAtleta");
     }
 
-    private void botaoCancelarInscricaoActionPerfomed(ActionEvent actionEvent){
+    private void botaoCancelarInscricaoActionPerformed(ActionEvent actionEvent){
         cardLayoutNormalPages.show(PainelPrincipal, "cardCancelarInscricaoAtleta");
     }
 
-    private void botaoImportarDadosActionPerfomed(ActionEvent actionEvent){
+    private void botaoImportarDadosActionPerformed(ActionEvent actionEvent){
         cardLayoutNormalPages.show(PainelPrincipal, "cardCancelarInscricaoAtleta");
     }
 
-    private void botaoImportarInscricoesActionPerfomed(ActionEvent actionEvent){
+    private void botaoImportarInscricoesActionPerformed(ActionEvent actionEvent){
         cardLayoutNormalPages.show(PainelPrincipal, "cardCancelarInscricaoAtleta");
     }
 
-    private void botaoProvasPorAtletaActionPerfomed(ActionEvent actionEvent){
+    private void botaoProvasPorAtletaActionPerformed(ActionEvent actionEvent){
         cardLayoutNormalPages.show(PainelPrincipal, "cardProvasAtleta");
     }
 
-    private void botaoConsultarHistoricoActionPerfomed(ActionEvent actionEvent){
+    private void botaoConsultarHistoricoActionPerformed(ActionEvent actionEvent){
         cardLayoutNormalPages.show(PainelPrincipal, "cardConsultarHistoricoAtleta");
     }
-    private void botaoMelhorTempoActionPerfomed(ActionEvent actionEvent){
+    private void botaoMelhorTempoActionPerformed(ActionEvent actionEvent){
         cardLayoutNormalPages.show(PainelPrincipal, "cardMelhorTempoAtleta");
+    }
+
+    private void botaoCriarAtletaActionPerformed(ActionEvent actionEvent){
+        if (verifyAtleta(textNomeAtleta.getText(), textDataNascimento.getText(), textContacto.getText(), listGenero.getSelectedItem(), listPais.getSelectedItem())){
+            Atleta atleta = new Atleta(textNomeAtleta.getText(),(SexoParticipantes) listGenero.getSelectedItem(),
+                    Data.parse(textDataNascimento.getText()), (Pais) listPais.getSelectedItem(),
+                    Long.parseLong(textContacto.getText())
+                    );
+            listaAtletas.add(atleta);
+            buildGerirAtletaList();
+        }
+    }
+
+    private void botaoCancelarCriarAtletaActionPerformed(ActionEvent actionEvent){
+
+    }
+
+    private boolean verifyAtleta(String nome, String dataNascimento, String contacto, Object genero, Object pais){
+        if (nome.isEmpty() || dataNascimento.isEmpty() || contacto.isEmpty() || genero != null || pais != null){
+            JOptionPane.showMessageDialog(new JFrame(), "Tem preencher os campos!");
+            return false;
+        }
+        else{
+            Data data = null;
+            try {
+                data = Data.parse(dataNascimento);
+                if (contacto.length() < 9 || contacto.length() > 9){
+                    JOptionPane.showMessageDialog(new JFrame(), "Deve inserir um número com 9 dígitos");
+                    return false;
+                }
+                long telefone = 0;
+                try {
+                    telefone = Long.parseLong(contacto);
+                    if (listaAtletas.contains(new Atleta(nome,(SexoParticipantes) genero, data,(Pais) pais, telefone))){
+                        JOptionPane.showMessageDialog(new JFrame(), "O atleta já existe");
+                        return false;
+                    }
+                }
+                catch (Exception e){
+                    JOptionPane.showMessageDialog(new JFrame(), "Deve inserir um número de 0-9 para o contacto");
+                    return false;
+                }
+
+            }
+            catch (Exception e){
+                JOptionPane.showMessageDialog(new JFrame(), "Data tem de ser no formato dd/mm/yyyy");
+                return false;
+            }
+        }
+        return true;
     }
 
 

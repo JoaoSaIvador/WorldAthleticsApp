@@ -1,13 +1,13 @@
 public class Atleta {
-    private String mome;
+    private String nome;
     private SexoParticipantes genero;
     private Data dataNascimento;
     private Pais pais;
     private long contacto;
     private long nInscricoes;
 
-    public Atleta(String mome, SexoParticipantes genero, Data dataNascimento, Pais pais, long contacto) {
-        this.mome = mome;
+    public Atleta(String nome, SexoParticipantes genero, Data dataNascimento, Pais pais, long contacto) {
+        this.nome = nome;
         this.genero = genero;
         this.dataNascimento = dataNascimento;
         this.pais = pais;
@@ -15,8 +15,8 @@ public class Atleta {
         nInscricoes = 0;
     }
 
-    public String getMome() {
-        return mome;
+    public String getNome() {
+        return nome;
     }
 
     public SexoParticipantes getGenero() {
