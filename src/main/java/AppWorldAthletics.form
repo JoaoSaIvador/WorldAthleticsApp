@@ -2117,7 +2117,7 @@
                             </constraints>
                             <properties/>
                           </component>
-                          <component id="85398" class="javax.swing.JComboBox" binding="listGenero">
+                          <component id="85398" class="javax.swing.JComboBox" binding="listPais">
                             <constraints>
                               <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                 <preferred-size width="200" height="-1"/>
@@ -2185,7 +2185,7 @@
                               <text value="Género"/>
                             </properties>
                           </component>
-                          <component id="ff1ab" class="javax.swing.JComboBox" binding="listPais">
+                          <component id="ff1ab" class="javax.swing.JComboBox" binding="listGenero">
                             <constraints>
                               <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                 <preferred-size width="200" height="-1"/>
@@ -2556,7 +2556,7 @@
                     </properties>
                     <border type="none"/>
                     <children>
-                      <grid id="3bc8b" layout-manager="GridLayoutManager" row-count="2" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                      <grid id="3bc8b" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                         <margin top="20" left="20" bottom="20" right="20"/>
                         <constraints>
                           <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -2594,31 +2594,7 @@
                               <text value="Marca Alcançada"/>
                             </properties>
                           </component>
-                          <hspacer id="c8c48">
-                            <constraints>
-                              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="1" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                                <preferred-size width="100" height="-1"/>
-                              </grid>
-                            </constraints>
-                          </hspacer>
-                          <component id="1b157" class="javax.swing.JLabel">
-                            <constraints>
-                              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties>
-                              <font size="18"/>
-                              <text value="País"/>
-                            </properties>
-                          </component>
-                          <component id="db1d1" class="javax.swing.JComboBox" binding="comboIncricaoPais">
-                            <constraints>
-                              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                <preferred-size width="200" height="-1"/>
-                              </grid>
-                            </constraints>
-                            <properties/>
-                          </component>
-                          <component id="81acb" class="javax.swing.JComboBox" binding="comboInscricaoProva">
+                          <component id="81acb" class="javax.swing.JComboBox" binding="listIncricaoProva">
                             <constraints>
                               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                 <preferred-size width="200" height="-1"/>
@@ -2890,7 +2866,7 @@
                     </properties>
                     <border type="none"/>
                     <children>
-                      <component id="5067e" class="javax.swing.JButton">
+                      <component id="5067e" class="javax.swing.JButton" binding="botaoVoltar">
                         <constraints>
                           <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -2911,7 +2887,7 @@
                         <properties/>
                         <border type="none"/>
                         <children>
-                          <component id="52713" class="javax.swing.JTable" binding="table3" default-binding="true">
+                          <component id="52713" class="javax.swing.JTable" binding="tabelaHistorico">
                             <constraints/>
                             <properties/>
                           </component>

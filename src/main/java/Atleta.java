@@ -38,4 +38,24 @@ public class Atleta {
     public long getnInscricoes() {
         return nInscricoes;
     }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setGenero(SexoParticipantes genero) {
+        this.genero = genero;
+    }
+
+    public void setDataNascimento(Data dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
+    public void setPais(Pais pais) {
+        this.pais = pais;
+    }
+
+    public void setContacto(long contacto) {
+        this.contacto = contacto;
+    }
 }

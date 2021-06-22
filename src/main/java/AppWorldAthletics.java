@@ -3,8 +3,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class AppWorldAthletics extends JFrame{
     private JPanel paginasGerir;
@@ -111,15 +113,14 @@ public class AppWorldAthletics extends JFrame{
     private JTextField textNomeAtleta;
     private JTextField textDataNascimento;
     private JTextField textContacto;
-    private JComboBox listGenero;
-    private JComboBox listPais;
+    private JComboBox<SexoParticipantes> listGenero;
+    private JComboBox<Pais> listPais;
     private JList listProvasAssociadas;
     private JButton botaoDesinscrever;
     private JButton botaoCancelarDesisncricao;
     private JButton botaoOKInscreverAtleta;
     private JButton botaoCancelarIncreverAtleta;
-    private JComboBox comboInscricaoProva;
-    private JComboBox comboIncricaoPais;
+    private JComboBox listIncricaoProva;
     private JTextField textMarcaAlcancada;
     private JButton botaoOKEditarAtleta;
     private JButton botaoCancelarEditarAtleta;
@@ -131,25 +132,27 @@ public class AppWorldAthletics extends JFrame{
     private JTable tabelaRecordePessoal;
     private JButton botaoVoltarMelhorTempo;
     private JTable table2;
-    private JTable table3;
+    private JTable tabelaHistorico;
     private JScrollPane scrollAtletas;
+    private JButton botaoVoltar;
 
     private CardLayout cardLayoutGerir;
     private CardLayout cardLayoutNormalPages;
-    private JPanel[] elementos = {elementoGerirEventos, elementoGerirAtletas, elementoGerirProvas, elementoTopMedalhados};
+    private final JPanel[] elementos = {elementoGerirEventos, elementoGerirAtletas, elementoGerirProvas, elementoTopMedalhados};
 
     //Gerir Eventos
-    private ArrayList<Evento> listaEventos = new ArrayList<>();
-    private ArrayList<Prova> listaProvasEvento = new ArrayList<>();
+    private final ArrayList<Evento> listaEventos = new ArrayList<>();
+    private final ArrayList<Prova> listaProvasEvento = new ArrayList<>();
     private Evento eventoSelecionado = null;
 
     //Gerir Provas
-    private ArrayList<Prova> listaProvas = new ArrayList<>();
+    private final ArrayList<Prova> listaProvas = new ArrayList<>();
     private Prova provaSelecionada = null;
 
     //Gerir Atletas
-    private ArrayList<Atleta> listaAtletas = new ArrayList<>();
-    private Atleta atletaSelecionado = null;
+    private final ArrayList<Atleta> listaAtletas = new ArrayList<>();
+    private int atletaSelecionado = -1;
+    private int posicaoProva = -1;
 
     public AppWorldAthletics() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -196,8 +199,27 @@ public class AppWorldAthletics extends JFrame{
         botaoConsultarHistorico.addActionListener(this::botaoConsultarHistoricoActionPerformed);
         botaoMelhorTempo.addActionListener(this::botaoMelhorTempoActionPerformed);
 
+        ///     Adicionar Atleta
         botaoCriarAtleta.addActionListener(this::botaoCriarAtletaActionPerformed);
         botaoCancelarCriarAtleta.addActionListener(this::botaoGerirAtletasActionPerformed);
+
+        ///     Editar Atleta
+        botaoOKEditarAtleta.addActionListener(this::botaoAlterarAtletaActionPerformed);
+        botaoCancelarEditarAtleta.addActionListener(this::botaoGerirAtletasActionPerformed);
+
+        ///     Inscrever Atleta
+        botaoOKInscreverAtleta.addActionListener(this::botaoIncricaoActionPerformed);
+        botaoCancelarIncreverAtleta.addActionListener(this::botaoGerirAtletasActionPerformed);
+
+        ///     Cancelar Atleta
+        botaoDesinscrever.addActionListener(this::botaoDesinscreverAtletaActionPerformed);
+        botaoCancelarDesisncricao.addActionListener(this::botaoGerirAtletasActionPerformed);
+
+        ///     Consultar Histórico
+        botaoVoltar.addActionListener(this::botaoGerirAtletasActionPerformed);
+
+        ///     Melhor Tempo
+        botaoVoltarMelhorTempo.addActionListener(this::botaoGerirAtletasActionPerformed);
 
         //Gerir Provas
         botaoCriarProva.addActionListener(this::botaoCriarProvaActionPerformed);
@@ -366,7 +388,10 @@ public class AppWorldAthletics extends JFrame{
     private void buildGerirAtletaList(){
         DefaultListModel gerirAtletasListModel = new DefaultListModel();
         for (Atleta atleta : listaAtletas){
-            gerirAtletasListModel.addElement(atleta);
+            gerirAtletasListModel.addElement((atleta.getNome() + " "
+                    + atleta.getGenero() + " " + atleta.getDataNascimento() + " "
+                    + atleta.getPais() + " " + atleta.getContacto() + " "
+                    + atleta.getnInscricoes() + " Prova(s) inscrita(s)"));
         }
         gerirAtletasList.setModel(gerirAtletasListModel);
         gerirAtletasList.setBorder((BorderFactory.createLineBorder(Color.black)));
@@ -376,7 +401,7 @@ public class AppWorldAthletics extends JFrame{
 
     private void setCurrentGerirAtleta() {
         gerirAtletasList.clearSelection();
-        atletaSelecionado = null;
+        atletaSelecionado = -1;
         cardLayoutNormalPages.show(PainelPrincipal, "cardGerir");
         cardLayoutGerir.show(conteudoGerir, "cardGerirAtletas");
         setElementsBackgroundColor(elementoGerirAtletas);
@@ -384,43 +409,105 @@ public class AppWorldAthletics extends JFrame{
 
     private void botaoAdicionarAtletaActionPerformed(ActionEvent actionEvent){
         cardLayoutNormalPages.show(PainelPrincipal, "cardAdicionarAtleta");
-        //textNomeAtleta.setText("");
-        //textDataNascimento.setText("");
-        //textContacto.setText("");
-        //listGenero.setSelectedItem(null);
-        //listPais.setSelectedItem(null);
-        listPais = new JComboBox(Pais.values());
-        listGenero = new JComboBox(SexoParticipantes.values());
+        textNomeAtleta.setText("");
+        textDataNascimento.setText("");
+        textContacto.setText("");
+        listPais.setModel(new DefaultComboBoxModel(Pais.values()));
+        listGenero.setModel(new DefaultComboBoxModel(SexoParticipantes.values()));
     }
 
     private void botaoEditarAtletaActionPerformed(ActionEvent actionEvent){
+        atletaSelecionado = gerirAtletasList.getSelectedIndex();
+        if (atletaSelecionado < 0){
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!");
+            return;
+        }
+        Atleta atleta = listaAtletas.get(atletaSelecionado);
+        //System.out.println(atleta);
+
         cardLayoutNormalPages.show(PainelPrincipal, "cardEditarAtleta");
+        textEditarNome.setText(atleta.getNome());
+        textEditarDataNascimento.setText(atleta.getDataNascimento().toString());
+        textEditarContacto.setText((Long.toString(atleta.getContacto())));
+
+        listEditarPais.setModel(new DefaultComboBoxModel(Pais.values()));
+        listEditarGenero.setModel(new DefaultComboBoxModel(SexoParticipantes.values()));
+        listEditarPais.setSelectedItem(atleta.getPais());
+        listEditarGenero.setSelectedItem(atleta.getGenero());
     }
 
     private void botaoInscreverAtletaActionPerformed(ActionEvent actionEvent){
+        atletaSelecionado = gerirAtletasList.getSelectedIndex();
+        if (atletaSelecionado < 0){
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!");
+            return;
+        }
+        Atleta atleta = listaAtletas.get(atletaSelecionado);
         cardLayoutNormalPages.show(PainelPrincipal, "cardInscreverAtleta");
+        textMarcaAlcancada.setText("");
+        listIncricaoProva.setModel(new DefaultComboBoxModel(listaProvas.toArray()));
     }
 
     private void botaoCancelarInscricaoActionPerformed(ActionEvent actionEvent){
+        atletaSelecionado = gerirAtletasList.getSelectedIndex();
+        if (atletaSelecionado < 0){
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!");
+            return;
+        }
+        Atleta atleta = listaAtletas.get(atletaSelecionado);
+
+        DefaultListModel provasAssociadas = new DefaultListModel();
+        for (Prova prova: listaProvas){
+            provasAssociadas.addElement(prova);
+        }
+        listProvasAssociadas.setModel(provasAssociadas);
+        listProvasAssociadas.setBorder((BorderFactory.createLineBorder(Color.black)));
         cardLayoutNormalPages.show(PainelPrincipal, "cardCancelarInscricaoAtleta");
     }
 
     private void botaoImportarDadosActionPerformed(ActionEvent actionEvent){
-        cardLayoutNormalPages.show(PainelPrincipal, "cardCancelarInscricaoAtleta");
+        importarFicheiro();
+        //TODO
     }
 
     private void botaoImportarInscricoesActionPerformed(ActionEvent actionEvent){
-        cardLayoutNormalPages.show(PainelPrincipal, "cardCancelarInscricaoAtleta");
+        importarFicheiro();
+        //TODO
     }
 
     private void botaoProvasPorAtletaActionPerformed(ActionEvent actionEvent){
+        atletaSelecionado = gerirAtletasList.getSelectedIndex();
+        if (atletaSelecionado < 0){
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!");
+            return;
+        }
+        Atleta atleta = listaAtletas.get(atletaSelecionado);
+
         cardLayoutNormalPages.show(PainelPrincipal, "cardProvasAtleta");
     }
 
     private void botaoConsultarHistoricoActionPerformed(ActionEvent actionEvent){
+        atletaSelecionado = gerirAtletasList.getSelectedIndex();
+        if (atletaSelecionado < 0){
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!");
+            return;
+        }
+        Atleta atleta = listaAtletas.get(atletaSelecionado);
+
+        //TODO
+        tabelaHistorico = criarTabelaHistorico();
         cardLayoutNormalPages.show(PainelPrincipal, "cardConsultarHistoricoAtleta");
     }
     private void botaoMelhorTempoActionPerformed(ActionEvent actionEvent){
+        atletaSelecionado = gerirAtletasList.getSelectedIndex();
+        if (atletaSelecionado < 0){
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!");
+            return;
+        }
+        Atleta atleta = listaAtletas.get(atletaSelecionado);
+
+        //TODO
+        tabelaRecordePessoal = criarTabelRecordePessoal();
         cardLayoutNormalPages.show(PainelPrincipal, "cardMelhorTempoAtleta");
     }
 
@@ -435,12 +522,45 @@ public class AppWorldAthletics extends JFrame{
         }
     }
 
-    private void botaoCancelarCriarAtletaActionPerformed(ActionEvent actionEvent){
+    private void botaoAlterarAtletaActionPerformed(ActionEvent actionEvent){
+        if (verifyAtleta(textEditarNome.getText(), textEditarDataNascimento.getText(), textEditarContacto.getText(), listEditarGenero.getSelectedItem(), listEditarPais.getSelectedItem())){
+            Atleta atleta = listaAtletas.get(atletaSelecionado);
+            atleta.setNome(textEditarNome.getText());
+            atleta.setGenero((SexoParticipantes) listEditarGenero.getSelectedItem());
+            atleta.setDataNascimento(Data.parse(textEditarDataNascimento.getText()));
+            atleta.setPais((Pais) listEditarPais.getSelectedItem());
+            atleta.setContacto(Long.parseLong(textEditarContacto.getText()));
 
+            JOptionPane.showMessageDialog(new JFrame(), "Atleta alterado com sucesso!");
+            buildGerirAtletaList();
+        }
     }
 
+    private void botaoIncricaoActionPerformed(ActionEvent actionEvent){
+        if (verifyIncricao((Prova) listIncricaoProva.getSelectedItem(), textMarcaAlcancada.getText())){
+            //TODO
+
+            JOptionPane.showMessageDialog(new JFrame(), "Atleta inscrito com sucesso!");
+            buildGerirAtletaList();
+        }
+    }
+
+    private void botaoDesinscreverAtletaActionPerformed(ActionEvent actionEvent){
+        posicaoProva = listProvasAssociadas.getSelectedIndex();
+        if (posicaoProva < 0){
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar uma Prova para anular a inscrição!");
+            return;
+        }
+        //TODO
+
+        JOptionPane.showMessageDialog(new JFrame(), "Inscrição do alteta na prova " + " (Placeholder) " + "anulada com sucesso!");
+        buildGerirAtletaList();
+    }
+
+
+
     private boolean verifyAtleta(String nome, String dataNascimento, String contacto, Object genero, Object pais){
-        if (nome.isEmpty() || dataNascimento.isEmpty() || contacto.isEmpty() || genero != null || pais != null){
+        if (nome.isEmpty() || dataNascimento.isEmpty() || contacto.isEmpty() || genero == null || pais == null){
             JOptionPane.showMessageDialog(new JFrame(), "Tem preencher os campos!");
             return false;
         }
@@ -448,7 +568,7 @@ public class AppWorldAthletics extends JFrame{
             Data data = null;
             try {
                 data = Data.parse(dataNascimento);
-                if (contacto.length() < 9 || contacto.length() > 9){
+                if (contacto.length() != 9){
                     JOptionPane.showMessageDialog(new JFrame(), "Deve inserir um número com 9 dígitos");
                     return false;
                 }
@@ -471,6 +591,11 @@ public class AppWorldAthletics extends JFrame{
                 return false;
             }
         }
+        return true;
+    }
+
+    private boolean verifyIncricao(Prova prova, String marcaAlcancada){
+        //TODO
         return true;
     }
 
@@ -575,6 +700,47 @@ public class AppWorldAthletics extends JFrame{
             elemento.setBackground(new Color(0x222222));
         }
         elementoHighlight.setBackground(new Color(0x363636));
+    }
+
+    public void importarFicheiro() {
+        JFileChooser fc = new JFileChooser(new java.io.File("."));
+        int returnVal = fc.showOpenDialog(this);
+
+        //TODO
+        /*
+        try {
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+
+            }
+        } catch (IOException e1) {
+            e1.printStackTrace(System.err);
+        } catch (java.util.NoSuchElementException e2) {
+            JOptionPane.showMessageDialog(this, "File format not valid", "Error!", JOptionPane.ERROR_MESSAGE);
+        }
+         */
+    }
+
+    private JTable criarTabelaHistorico(){
+        String[] colunas = {"Evento", "Local do Evento", "Prova", "Resultado"};
+        Object[][] dados;
+        //TODO
+
+        //JTable tabela = new JTable(dados, colunas);
+        //tabela.setFillsViewportHeight(true);
+        //return tabela;
+
+        return null;
+    }
+
+    private JTable criarTabelRecordePessoal(){
+        String[] colunas = {"Nome da Prova", "Evento", "Dia da Competição", "Melhor Tempo Obtido"};
+        Object[][] dados;
+        //TODO
+
+        //JTable tabela = new JTable(dados, colunas);
+        //tabela.setFillsViewportHeight(true);
+        //return tabela;
+        return null;
     }
 
     public static void main(String[] args) {
