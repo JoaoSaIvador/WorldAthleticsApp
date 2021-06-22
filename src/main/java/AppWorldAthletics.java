@@ -98,6 +98,16 @@ public class AppWorldAthletics extends JFrame{
     private JTextField editarProvaNome;
     private JComboBox editarProvaTipoPontuacao;
     private JComboBox editarProvaSexoParticipantes;
+    private JList gerirAtletasList;
+    private JButton botaoAdicionarAtleta;
+    private JButton botaoInscreverAtleta;
+    private JButton botaoImportarDados;
+    private JButton botaoEditarAtleta;
+    private JButton botaoCancelarInscricao;
+    private JButton botaoConsultarHistorico;
+    private JButton botaoProvasPorAtleta;
+    private JButton botaoImportarInscricoes;
+    private JButton botaoMelhorTempo;
 
     private CardLayout cardLayoutGerir;
     private CardLayout cardLayoutNormalPages;
@@ -113,6 +123,8 @@ public class AppWorldAthletics extends JFrame{
     private Prova provaSelecionada = null;
 
     //Gerir Atletas
+    private ArrayList<Atleta> listaAtletas = new ArrayList<>();
+    private Atleta atletaSelecionado = null;
 
     public AppWorldAthletics() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -148,6 +160,17 @@ public class AppWorldAthletics extends JFrame{
         botaoRemoverProva.addActionListener(this::botaoRemoverProvaActionPerformed);
         botaoOkAdicionarEvento.addActionListener(this::botaoOkAdicionarEventoActionPerformed);
 
+        //Gerir Atletas
+        botaoAdicionarAtleta.addActionListener(this::botaoCriarAtletaActionPerformed);
+        botaoEditarAtleta.addActionListener(this::botaoEditarAtletaActionPerformed);
+        botaoInscreverAtleta.addActionListener(this::botaoInscreverAtletaActionPerformed);
+        botaoCancelarInscricao.addActionListener(this::botaoCancelarInscricaoActionPerfomed);
+        botaoImportarDados.addActionListener(this::botaoImportarDadosActionPerfomed);
+        botaoImportarInscricoes.addActionListener(this::botaoImportarInscricoesActionPerfomed);
+        botaoProvasPorAtleta.addActionListener(this::botaoProvasPorAtletaActionPerfomed);
+        botaoConsultarHistorico.addActionListener(this::botaoConsultarHistoricoActionPerfomed);
+        botaoMelhorTempo.addActionListener(this::botaoMelhorTempoActionPerfomed);
+
         //Gerir Provas
         botaoCriarProva.addActionListener(this::botaoCriarProvaActionPerformed);
         botaoEditarProva.addActionListener(this::botaoEditarProvaActionPerformed);
@@ -169,6 +192,7 @@ public class AppWorldAthletics extends JFrame{
 
         cardLayoutNormalPages.show(PainelPrincipal, "cardMenuPrincipal");
 
+
     }
 
     //------------------------------ MENU LATERAL/INICIAL ------------------------------
@@ -177,11 +201,7 @@ public class AppWorldAthletics extends JFrame{
         buildGerirEventosList();
     }
 
-    private void botaoGerirAtletasActionPerformed(ActionEvent e) {
-        cardLayoutNormalPages.show(PainelPrincipal, "cardGerir");
-        cardLayoutGerir.show(conteudoGerir, "cardGerirAtletas");
-        setElementsBackgroundColor(elementoGerirAtletas);
-    }
+    private void botaoGerirAtletasActionPerformed(ActionEvent e) { buildGerirAtletaList(); }
 
     private void botaoGerirProvasActionPerformed(ActionEvent e) {
         buildGerirProvasList();
@@ -311,6 +331,61 @@ public class AppWorldAthletics extends JFrame{
         cardLayoutNormalPages.show(PainelPrincipal, "cardGerir");
         cardLayoutGerir.show(conteudoGerir, "cardGerirEventos");
         setElementsBackgroundColor(elementoGerirEventos);
+    }
+
+    //------------------------------ GERIR ATLETAS -----------------------------------
+
+    private void buildGerirAtletaList(){
+        DefaultListModel gerirAtletasListModel = new DefaultListModel();
+        for (Atleta atleta : listaAtletas){
+            gerirAtletasListModel.addElement(atleta);
+        }
+        gerirAtletasList.setModel(gerirAtletasListModel);
+        gerirAtletasList.setBorder((BorderFactory.createLineBorder(Color.black)));
+        setCurrentGerirAtleta();
+    }
+
+    private void setCurrentGerirAtleta() {
+        gerirAtletasList.clearSelection();
+        atletaSelecionado = null;
+        cardLayoutNormalPages.show(PainelPrincipal, "cardGerir");
+        cardLayoutGerir.show(conteudoGerir, "cardGerirAtletas");
+        setElementsBackgroundColor(elementoGerirAtletas);
+    }
+
+    private void botaoCriarAtletaActionPerformed(ActionEvent actionEvent){
+        cardLayoutNormalPages.show(PainelPrincipal, "cardAdicionarAtleta");
+    }
+
+    private void botaoEditarAtletaActionPerformed(ActionEvent actionEvent){
+        cardLayoutNormalPages.show(PainelPrincipal, "cardEditarAtleta");
+    }
+
+    private void botaoInscreverAtletaActionPerformed(ActionEvent actionEvent){
+        cardLayoutNormalPages.show(PainelPrincipal, "cardInscreverAtleta");
+    }
+
+    private void botaoCancelarInscricaoActionPerfomed(ActionEvent actionEvent){
+        cardLayoutNormalPages.show(PainelPrincipal, "cardCancelarInscricaoAtleta");
+    }
+
+    private void botaoImportarDadosActionPerfomed(ActionEvent actionEvent){
+        cardLayoutNormalPages.show(PainelPrincipal, "cardCancelarInscricaoAtleta");
+    }
+
+    private void botaoImportarInscricoesActionPerfomed(ActionEvent actionEvent){
+        cardLayoutNormalPages.show(PainelPrincipal, "cardCancelarInscricaoAtleta");
+    }
+
+    private void botaoProvasPorAtletaActionPerfomed(ActionEvent actionEvent){
+        cardLayoutNormalPages.show(PainelPrincipal, "cardProvasAtleta");
+    }
+
+    private void botaoConsultarHistoricoActionPerfomed(ActionEvent actionEvent){
+        cardLayoutNormalPages.show(PainelPrincipal, "cardConsultarHistoricoAtleta");
+    }
+    private void botaoMelhorTempoActionPerfomed(ActionEvent actionEvent){
+        cardLayoutNormalPages.show(PainelPrincipal, "cardMelhorTempoAtleta");
     }
 
 
