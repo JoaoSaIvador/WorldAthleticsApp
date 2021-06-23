@@ -435,7 +435,7 @@ public class AppWorldAthletics extends JFrame{
     private void botaoEditarAtletaActionPerformed(ActionEvent actionEvent){
         atletaSelecionado = gerirAtletasList.getSelectedIndex();
         if (atletaSelecionado < 0){
-            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!");
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
         Atleta atleta = listaAtletas.get(atletaSelecionado);
@@ -455,7 +455,7 @@ public class AppWorldAthletics extends JFrame{
     private void botaoInscreverAtletaActionPerformed(ActionEvent actionEvent){
         atletaSelecionado = gerirAtletasList.getSelectedIndex();
         if (atletaSelecionado < 0){
-            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!");
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
         Atleta atleta = listaAtletas.get(atletaSelecionado);
@@ -467,7 +467,7 @@ public class AppWorldAthletics extends JFrame{
     private void botaoCancelarInscricaoActionPerformed(ActionEvent actionEvent){
         atletaSelecionado = gerirAtletasList.getSelectedIndex();
         if (atletaSelecionado < 0){
-            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!");
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
         Atleta atleta = listaAtletas.get(atletaSelecionado);
@@ -494,7 +494,7 @@ public class AppWorldAthletics extends JFrame{
     private void botaoProvasPorAtletaActionPerformed(ActionEvent actionEvent){
         atletaSelecionado = gerirAtletasList.getSelectedIndex();
         if (atletaSelecionado < 0){
-            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!");
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
         Atleta atleta = listaAtletas.get(atletaSelecionado);
@@ -505,7 +505,7 @@ public class AppWorldAthletics extends JFrame{
     private void botaoConsultarHistoricoActionPerformed(ActionEvent actionEvent){
         atletaSelecionado = gerirAtletasList.getSelectedIndex();
         if (atletaSelecionado < 0){
-            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!");
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
         Atleta atleta = listaAtletas.get(atletaSelecionado);
@@ -517,7 +517,7 @@ public class AppWorldAthletics extends JFrame{
     private void botaoMelhorTempoActionPerformed(ActionEvent actionEvent){
         atletaSelecionado = gerirAtletasList.getSelectedIndex();
         if (atletaSelecionado < 0){
-            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!");
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
         Atleta atleta = listaAtletas.get(atletaSelecionado);
@@ -576,8 +576,8 @@ public class AppWorldAthletics extends JFrame{
 
 
     private boolean verifyAtleta(String nome, String dataNascimento, String contacto, Object genero, Object pais){
-        if (nome.isEmpty() || dataNascimento.isEmpty() || contacto.isEmpty() || genero == null || pais == null){
-            JOptionPane.showMessageDialog(new JFrame(), "Tem preencher os campos!");
+        if (nome.isBlank() || dataNascimento.isBlank() || contacto.isBlank() || genero == null || pais == null){
+            JOptionPane.showMessageDialog(new JFrame(), "Tem preencher os campos!", "Erro", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -585,25 +585,25 @@ public class AppWorldAthletics extends JFrame{
             try {
                 data = Data.parse(dataNascimento);
                 if (contacto.length() != 9){
-                    JOptionPane.showMessageDialog(new JFrame(), "Deve inserir um número com 9 dígitos");
+                    JOptionPane.showMessageDialog(new JFrame(), "Deve inserir um número com 9 dígitos", "Erro", JOptionPane.ERROR_MESSAGE);
                     return false;
                 }
                 long telefone = 0;
                 try {
                     telefone = Long.parseLong(contacto);
                     if (listaAtletas.contains(new Atleta(nome,(SexoParticipantes) genero, data,(Pais) pais, telefone))){
-                        JOptionPane.showMessageDialog(new JFrame(), "O atleta já existe");
+                        JOptionPane.showMessageDialog(new JFrame(), "O atleta já existe", "Erro", JOptionPane.ERROR_MESSAGE);
                         return false;
                     }
                 }
                 catch (Exception e){
-                    JOptionPane.showMessageDialog(new JFrame(), "Deve inserir um número de 0-9 para o contacto");
+                    JOptionPane.showMessageDialog(new JFrame(), "Deve inserir um número de 0-9 para o contacto", "Erro", JOptionPane.ERROR_MESSAGE);
                     return false;
                 }
 
             }
             catch (Exception e){
-                JOptionPane.showMessageDialog(new JFrame(), "Data tem de ser no formato dd/mm/yyyy");
+                JOptionPane.showMessageDialog(new JFrame(), "Data tem de ser no formato dd/mm/yyyy", "Erro", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
         }
@@ -665,7 +665,7 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private void botaoOkCriarProvaActionPerformed(ActionEvent actionEvent) {
-        if (nomeCriarProva.getText().isEmpty()) {
+        if (nomeCriarProva.getText().isBlank()) {
             JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher o nome!");
         }
         else {
@@ -677,7 +677,7 @@ public class AppWorldAthletics extends JFrame{
     }
 
     public void botaoOkEditarProvaActionPerformed(ActionEvent actionEvent) {
-        if (editarProvaNome.getText().isEmpty()) {
+        if (editarProvaNome.getText().isBlank()) {
             JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher o nome!");
         }
         else {
