@@ -3,12 +3,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 
 public class AppWorldAthletics extends JFrame{
     private JPanel paginasGerir;
@@ -116,7 +114,7 @@ public class AppWorldAthletics extends JFrame{
     private JTextField textContacto;
     private JComboBox<SexoParticipantes> listGenero;
     private JComboBox<Pais> listPais;
-    private JList listProvasAssociadas;
+    private JList listIncricoesAssociadas;
     private JButton botaoDesinscrever;
     private JButton botaoCancelarDesisncricao;
     private JButton botaoOKInscreverAtleta;
@@ -141,7 +139,7 @@ public class AppWorldAthletics extends JFrame{
     private JTextField editarEventoDataInicio;
     private JTextField editarEventoDataFim;
     private JTextField editarEventoLocal;
-    private JTextField editarEventoPais;
+    private JComboBox editarEventoPais;
     private JButton botaoVoltarProvasAtleta;
 
 
@@ -162,7 +160,6 @@ public class AppWorldAthletics extends JFrame{
     //Gerir Atletas
     private final ArrayList<Atleta> listaAtletas = new ArrayList<>();
     private int atletaSelecionado = -1;
-    private int posicaoProva = -1;
 
     public AppWorldAthletics() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -301,8 +298,8 @@ public class AppWorldAthletics extends JFrame{
         adicionarEventoDataInicio.setText("");
         adicionarEventoDataFim.setText("");
         adicionarEventoLocal.setText("");
-        adicionarEventoPais.setModel(new DefaultComboBoxModel(Pais.values()));
-        selecionarProvaAdicionarEvento.setModel(new DefaultComboBoxModel(listaProvas.toArray()));
+        adicionarEventoPais.setModel(new DefaultComboBoxModel<>(Pais.values()));
+        selecionarProvaAdicionarEvento.setModel(new DefaultComboBoxModel<>(listaProvas.toArray()));
 
         cardLayoutNormalPages.show(PainelPrincipal, "cardAdicionarEvento");
     }
@@ -315,9 +312,9 @@ public class AppWorldAthletics extends JFrame{
             editarEventoDataInicio.setText(eventoSelecionado.getDataInicio().toString());
             editarEventoDataFim.setText(eventoSelecionado.getDataFim().toString());
             editarEventoLocal.setText(eventoSelecionado.getLocal());
-            editarEventoPais.setModel(new DefaultComboBoxModel(Pais.values()));
+            editarEventoPais.setModel(new DefaultComboBoxModel<>(Pais.values()));
             editarEventoPais.setSelectedItem(eventoSelecionado.getPais());
-            selecionarProvaEditarEvento.setModel(new DefaultComboBoxModel(listaProvas.toArray()));
+            selecionarProvaEditarEvento.setModel(new DefaultComboBoxModel<>(listaProvas.toArray()));
 
             cardLayoutNormalPages.show(PainelPrincipal, "cardEditarEvento");
         }
@@ -442,7 +439,7 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private void buildGerirEventosList() {
-        DefaultListModel gerirEventosListModel = new DefaultListModel();
+        DefaultListModel<Evento> gerirEventosListModel = new DefaultListModel<>();
         for (Evento evento : listaEventos) {
             gerirEventosListModel.addElement(evento);
         }
@@ -468,7 +465,7 @@ public class AppWorldAthletics extends JFrame{
     //------------------------------ GERIR ATLETAS -----------------------------------
 
     private void buildGerirAtletaList(){
-        DefaultListModel gerirAtletasListModel = new DefaultListModel();
+        DefaultListModel<String> gerirAtletasListModel = new DefaultListModel<>();
         for (Atleta atleta : listaAtletas){
             gerirAtletasListModel.addElement((atleta.getNome() + " "
                     + atleta.getGenero() + " " + atleta.getDataNascimento() + " "
@@ -494,8 +491,8 @@ public class AppWorldAthletics extends JFrame{
         textNomeAtleta.setText("");
         textDataNascimento.setText("");
         textContacto.setText("");
-        listPais.setModel(new DefaultComboBoxModel(Pais.values()));
-        listGenero.setModel(new DefaultComboBoxModel(SexoParticipantes.values()));
+        listPais.setModel(new DefaultComboBoxModel<>(Pais.values()));
+        listGenero.setModel(new DefaultComboBoxModel<>(SexoParticipantes.values()));
     }
 
     private void botaoEditarAtletaActionPerformed(ActionEvent actionEvent){
@@ -511,8 +508,8 @@ public class AppWorldAthletics extends JFrame{
         textEditarDataNascimento.setText(atleta.getDataNascimento().toString());
         textEditarContacto.setText((Long.toString(atleta.getContacto())));
 
-        listEditarPais.setModel(new DefaultComboBoxModel(Pais.values()));
-        listEditarGenero.setModel(new DefaultComboBoxModel(SexoParticipantes.values()));
+        listEditarPais.setModel(new DefaultComboBoxModel<>(Pais.values()));
+        listEditarGenero.setModel(new DefaultComboBoxModel<>(SexoParticipantes.values()));
         listEditarPais.setSelectedItem(atleta.getPais());
         listEditarGenero.setSelectedItem(atleta.getGenero());
     }
@@ -526,8 +523,8 @@ public class AppWorldAthletics extends JFrame{
         Atleta atleta = listaAtletas.get(atletaSelecionado);
         cardLayoutNormalPages.show(PainelPrincipal, "cardInscreverAtleta");
         textMarcaAlcancada.setText("");
-        listInscricaoProva.setModel(new DefaultComboBoxModel(listaProvas.toArray()));
-        listInscricaoEvento.setModel(new DefaultComboBoxModel(listaEventos.toArray()));
+        listInscricaoProva.setModel(new DefaultComboBoxModel<>(listaProvas.toArray()));
+        listInscricaoEvento.setModel(new DefaultComboBoxModel<>(listaEventos.toArray()));
     }
 
     private void botaoCancelarInscricaoActionPerformed(ActionEvent actionEvent){
@@ -537,13 +534,14 @@ public class AppWorldAthletics extends JFrame{
             return;
         }
         Atleta atleta = listaAtletas.get(atletaSelecionado);
+        ArrayList<Inscricao> listaInscricao = atleta.getListaInscricoes();
 
-        DefaultListModel provasAssociadas = new DefaultListModel();
-        for (Prova prova: listaProvas){
-            provasAssociadas.addElement(prova);
+        DefaultListModel<String> inscricoesAssociadas = new DefaultListModel<>();
+        for (Inscricao inscricao: listaInscricao){
+            inscricoesAssociadas.addElement((inscricao.getProva().getNome() + " " + inscricao.getEvento().getNome() + " " + inscricao.getEvento().getPais()));
         }
-        listProvasAssociadas.setModel(provasAssociadas);
-        listProvasAssociadas.setBorder((BorderFactory.createLineBorder(Color.black)));
+        listIncricoesAssociadas.setModel(inscricoesAssociadas);
+        listIncricoesAssociadas.setBorder((BorderFactory.createLineBorder(Color.black)));
         cardLayoutNormalPages.show(PainelPrincipal, "cardCancelarInscricaoAtleta");
     }
 
@@ -623,23 +621,27 @@ public class AppWorldAthletics extends JFrame{
 
         if (verifyIncricao(atleta, (Evento) listInscricaoEvento.getSelectedItem(), (Prova) listInscricaoProva.getSelectedItem(), textMarcaAlcancada.getText())){
             Inscricao inscricao = new Inscricao((Prova) listInscricaoProva.getSelectedItem(), (Evento) listInscricaoEvento.getSelectedItem(), atleta);
-            JOptionPane.showMessageDialog(new JFrame(), "Atleta inscrito com sucesso!");
-
             listaAtletas.get(atletaSelecionado).inscrever(inscricao);
+
+            JOptionPane.showMessageDialog(new JFrame(), "Atleta inscrito com sucesso!");
             buildGerirAtletaList();
+
         }
     }
 
     private void botaoDesinscreverAtletaActionPerformed(ActionEvent actionEvent){
-        posicaoProva = listProvasAssociadas.getSelectedIndex();
-        if (posicaoProva < 0){
+        int posicaoInscricao = -1;
+        posicaoInscricao = listIncricoesAssociadas.getSelectedIndex();
+        if (posicaoInscricao < 0){
             JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar uma Prova para anular a inscrição!");
             return;
         }
-        //TODO
+        Atleta atleta = listaAtletas.get(atletaSelecionado);
+        Inscricao inscricao = atleta.getListaInscricoes().get(posicaoInscricao);
+        String oldInscricaoProvaNome = inscricao.getProva().getNome();
+        atleta.desinscrever(inscricao);
 
-
-        JOptionPane.showMessageDialog(new JFrame(), "Inscrição do alteta na prova " + " (Placeholder) " + "anulada com sucesso!");
+        JOptionPane.showMessageDialog(new JFrame(), "Inscrição do alteta na prova " + oldInscricaoProvaNome + " anulada com sucesso!");
         buildGerirAtletaList();
     }
 
@@ -722,8 +724,8 @@ public class AppWorldAthletics extends JFrame{
 
     private void botaoCriarProvaActionPerformed(ActionEvent actionEvent) {
         nomeCriarProva.setText("");
-        tipoPontuacaoComboBox.setModel(new DefaultComboBoxModel(TipoPontuacao.values()));
-        sexoParticipantesComboBox.setModel(new DefaultComboBoxModel(SexoParticipantes.values()));
+        tipoPontuacaoComboBox.setModel(new DefaultComboBoxModel<>(TipoPontuacao.values()));
+        sexoParticipantesComboBox.setModel(new DefaultComboBoxModel<>(SexoParticipantes.values()));
         cardLayoutNormalPages.show(PainelPrincipal, "cardCriarProva");
     }
 
@@ -733,8 +735,8 @@ public class AppWorldAthletics extends JFrame{
         }
         else {
             editarProvaNome.setText("");
-            editarProvaTipoPontuacao.setModel(new DefaultComboBoxModel(TipoPontuacao.values()));
-            editarProvaSexoParticipantes.setModel(new DefaultComboBoxModel(SexoParticipantes.values()));
+            editarProvaTipoPontuacao.setModel(new DefaultComboBoxModel<>(TipoPontuacao.values()));
+            editarProvaSexoParticipantes.setModel(new DefaultComboBoxModel<>(SexoParticipantes.values()));
             cardLayoutNormalPages.show(PainelPrincipal, "cardEditarProva");
 
             editarProvaNome.setText(provaSelecionada.getNome());

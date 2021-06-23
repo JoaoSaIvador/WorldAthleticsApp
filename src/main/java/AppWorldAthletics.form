@@ -2789,7 +2789,7 @@
                         <properties/>
                         <border type="none"/>
                         <children>
-                          <component id="86ba8" class="javax.swing.JList" binding="listProvasAssociadas">
+                          <component id="86ba8" class="javax.swing.JList" binding="listIncricoesAssociadas">
                             <constraints/>
                             <properties/>
                           </component>
