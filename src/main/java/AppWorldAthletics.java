@@ -121,7 +121,8 @@ public class AppWorldAthletics extends JFrame{
     private JButton botaoCancelarDesisncricao;
     private JButton botaoOKInscreverAtleta;
     private JButton botaoCancelarIncreverAtleta;
-    private JComboBox listIncricaoProva;
+    private JComboBox listInscricaoEvento;
+    private JComboBox listInscricaoProva;
     private JTextField textMarcaAlcancada;
     private JButton botaoOKEditarAtleta;
     private JButton botaoCancelarEditarAtleta;
@@ -141,6 +142,8 @@ public class AppWorldAthletics extends JFrame{
     private JTextField editarEventoDataFim;
     private JTextField editarEventoLocal;
     private JTextField editarEventoPais;
+    private JButton botaoVoltarProvasAtleta;
+
 
     private CardLayout cardLayoutGerir;
     private CardLayout cardLayoutNormalPages;
@@ -240,6 +243,9 @@ public class AppWorldAthletics extends JFrame{
         ///     Melhor Tempo
         botaoVoltarMelhorTempo.addActionListener(this::botaoGerirAtletasActionPerformed);
 
+        ///     Provas por Atleta
+        botaoVoltarProvasAtleta.addActionListener(this::botaoGerirAtletasActionPerformed);
+
         //Gerir Provas
         botaoCriarProva.addActionListener(this::botaoCriarProvaActionPerformed);
         botaoEditarProva.addActionListener(this::botaoEditarProvaActionPerformed);
@@ -316,7 +322,7 @@ public class AppWorldAthletics extends JFrame{
 
     private void botaoAdicionarProvaActionPerformed(ActionEvent actionEvent) {
         String input = JOptionPane.showInputDialog(new JFrame(), "Insira os minimos:");
-        if(input != null && !input.isEmpty()) {
+        if(input != null && !input.isBlank()) {
             if(listaProvasEvento.contains((Prova) selecionarProvaAdicionarEvento.getSelectedItem())) {
                 JOptionPane.showMessageDialog(new JFrame(), "Prova já adicionada!");
             }
@@ -439,7 +445,6 @@ public class AppWorldAthletics extends JFrame{
             return;
         }
         Atleta atleta = listaAtletas.get(atletaSelecionado);
-        //System.out.println(atleta);
 
         cardLayoutNormalPages.show(PainelPrincipal, "cardEditarAtleta");
         textEditarNome.setText(atleta.getNome());
@@ -461,7 +466,8 @@ public class AppWorldAthletics extends JFrame{
         Atleta atleta = listaAtletas.get(atletaSelecionado);
         cardLayoutNormalPages.show(PainelPrincipal, "cardInscreverAtleta");
         textMarcaAlcancada.setText("");
-        listIncricaoProva.setModel(new DefaultComboBoxModel(listaProvas.toArray()));
+        listInscricaoProva.setModel(new DefaultComboBoxModel(listaProvas.toArray()));
+        listInscricaoEvento.setModel(new DefaultComboBoxModel(listaEventos.toArray()));
     }
 
     private void botaoCancelarInscricaoActionPerformed(ActionEvent actionEvent){
@@ -553,10 +559,13 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private void botaoIncricaoActionPerformed(ActionEvent actionEvent){
-        if (verifyIncricao((Prova) listIncricaoProva.getSelectedItem(), textMarcaAlcancada.getText())){
-            //TODO
+        Atleta atleta = listaAtletas.get(atletaSelecionado);
 
+        if (verifyIncricao(atleta, (Evento) listInscricaoEvento.getSelectedItem(), (Prova) listInscricaoProva.getSelectedItem(), textMarcaAlcancada.getText())){
+            Inscricao inscricao = new Inscricao((Prova) listInscricaoProva.getSelectedItem(), (Evento) listInscricaoEvento.getSelectedItem(), atleta);
             JOptionPane.showMessageDialog(new JFrame(), "Atleta inscrito com sucesso!");
+
+            listaAtletas.get(atletaSelecionado).inscrever(inscricao);
             buildGerirAtletaList();
         }
     }
@@ -568,6 +577,7 @@ public class AppWorldAthletics extends JFrame{
             return;
         }
         //TODO
+
 
         JOptionPane.showMessageDialog(new JFrame(), "Inscrição do alteta na prova " + " (Placeholder) " + "anulada com sucesso!");
         buildGerirAtletaList();
@@ -591,9 +601,11 @@ public class AppWorldAthletics extends JFrame{
                 long telefone = 0;
                 try {
                     telefone = Long.parseLong(contacto);
-                    if (listaAtletas.contains(new Atleta(nome,(SexoParticipantes) genero, data,(Pais) pais, telefone))){
-                        JOptionPane.showMessageDialog(new JFrame(), "O atleta já existe", "Erro", JOptionPane.ERROR_MESSAGE);
-                        return false;
+                    for (Atleta atleta: listaAtletas){
+                        if (atleta.equals(new Atleta(nome,(SexoParticipantes) genero, data,(Pais) pais, telefone))){
+                            JOptionPane.showMessageDialog(new JFrame(), "O atleta já existe", "Erro", JOptionPane.ERROR_MESSAGE);
+                            return false;
+                        }
                     }
                 }
                 catch (Exception e){
@@ -610,8 +622,38 @@ public class AppWorldAthletics extends JFrame{
         return true;
     }
 
-    private boolean verifyIncricao(Prova prova, String marcaAlcancada){
-        //TODO
+    private boolean verifyIncricao(Atleta atleta, Evento evento, Prova prova, String marcaAlcancada){
+        if (evento == null){
+            JOptionPane.showMessageDialog(new JFrame(), "Não selecionou um evento", "Erro", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (prova == null){
+            JOptionPane.showMessageDialog(new JFrame(), "Não selecionou uma prova", "Erro", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (!evento.isProvaAdicionada(prova)){
+            JOptionPane.showMessageDialog(new JFrame(), "A prova não pertence a esse evento", "Erro", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        float marca = 0;
+        try {
+            marca = Float.parseFloat(marcaAlcancada);
+            if (marca < 0 || marca < evento.getMinimosProva(prova.getNome())){
+                JOptionPane.showMessageDialog(new JFrame(), "A marca não atinge os mínimos", "Erro", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        }catch(Exception e) {
+            JOptionPane.showMessageDialog(new JFrame(), "Deve inserir um número para a marca", "Erro", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (atleta.getGenero().toString() != prova.getSexoParticipantes()){
+            JOptionPane.showMessageDialog(new JFrame(), "O atleta não pode inscrever numa prova do sexo oposto", "Erro", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (atleta.isIncrito(new Inscricao(prova, evento, atleta))){
+            JOptionPane.showMessageDialog(new JFrame(), "O atleta já tá inscrito nessa prova", "Erro", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
         return true;
     }
 
