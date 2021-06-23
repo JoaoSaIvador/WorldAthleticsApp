@@ -121,7 +121,8 @@ public class AppWorldAthletics extends JFrame{
     private JButton botaoCancelarDesisncricao;
     private JButton botaoOKInscreverAtleta;
     private JButton botaoCancelarIncreverAtleta;
-    private JComboBox listIncricaoProva;
+    private JComboBox listInscricaoEvento;
+    private JComboBox listInscricaoProva;
     private JTextField textMarcaAlcancada;
     private JButton botaoOKEditarAtleta;
     private JButton botaoCancelarEditarAtleta;
@@ -141,7 +142,13 @@ public class AppWorldAthletics extends JFrame{
     private JTextField editarEventoDataInicio;
     private JTextField editarEventoDataFim;
     private JTextField editarEventoLocal;
-    private JTextField editarEventoPais;
+    private JComboBox editarEventoPais;
+    private JButton botaoVoltarProvasAtleta;
+    private JTextField duracaoCriarProva;
+    private JTextField maxParticipantesCriarProva;
+    private JTextField maxParticipantesEditarProva;
+    private JTextField duracaoEditarProva;
+
 
     private JButton buttonVoltarRecordesProva;
     private JTable RecordesMundiaisTable;
@@ -153,13 +160,13 @@ public class AppWorldAthletics extends JFrame{
     private final JPanel[] elementos = {elementoGerirEventos, elementoGerirAtletas, elementoGerirProvas, elementoTopMedalhados};
 
     //Gerir Eventos
-    private final ArrayList<Evento> listaEventos = new ArrayList<>();
-    private final ArrayList<Prova> listaProvasEvento = new ArrayList<>();
+    private ArrayList<Evento> listaEventos = new ArrayList<>();
+    private ArrayList<Prova> listaProvasEvento = new ArrayList<>();
     private Evento eventoSelecionado = null;
     private Map<String, Float> listaMinimosProvas = new HashMap<>();
 
     //Gerir Provas
-    private final ArrayList<Prova> listaProvas = new ArrayList<>();
+    private ArrayList<Prova> listaProvas = new ArrayList<>();
     private Prova provaSelecionada = null;
 
     //Gerir Atletas
@@ -200,6 +207,9 @@ public class AppWorldAthletics extends JFrame{
         botaoAdicionarProvaAdicionarEvento.addActionListener(this::botaoAdicionarProvaActionPerformed);
         botaoRemoverProvaAdicionarEvento.addActionListener(this::botaoRemoverProvaActionPerformed);
         botaoOkAdicionarEvento.addActionListener(this::botaoOkAdicionarEventoActionPerformed);
+        botaoOkEditarEvento.addActionListener(this::botaoOkEditarEventoActionPerformed);
+        botaoAdicionarProvaEditarEvento.addActionListener(this::botaoAdicionarProvaActionPerformed);
+        botaoRemoverProvaEditarEvento.addActionListener(this::botaoRemoverProvaActionPerformed);
         gerirEventosLista.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -209,7 +219,7 @@ public class AppWorldAthletics extends JFrame{
                 gerirEventosDataInicio.setText(eventoSelecionado.getDataInicio().toString());
                 gerirEventosDataFim.setText(eventoSelecionado.getDataFim().toString());
                 gerirEventosLocal.setText(eventoSelecionado.getLocal());
-                gerirEventosPais.setText(eventoSelecionado.getPais());
+                gerirEventosPais.setText(eventoSelecionado.getPais().toString());
             }
         });
 
@@ -245,6 +255,9 @@ public class AppWorldAthletics extends JFrame{
 
         ///     Melhor Tempo
         botaoVoltarMelhorTempo.addActionListener(this::botaoGerirAtletasActionPerformed);
+
+        ///     Provas por Atleta
+        botaoVoltarProvasAtleta.addActionListener(this::botaoGerirAtletasActionPerformed);
 
         //Gerir Provas
         botaoCriarProva.addActionListener(this::botaoCriarProvaActionPerformed);
@@ -345,11 +358,29 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private void botaoEditarEventoActionPerformed(ActionEvent actionEvent) {
-        cardLayoutNormalPages.show(PainelPrincipal, "cardEditarEvento");
+        if(eventoSelecionado == null) {
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um evento!");
+        } else {
+            editarEventoNome.setText(eventoSelecionado.getNome());
+            editarEventoDataInicio.setText(eventoSelecionado.getDataInicio().toString());
+            editarEventoDataFim.setText(eventoSelecionado.getDataFim().toString());
+            editarEventoLocal.setText(eventoSelecionado.getLocal());
+            editarEventoPais.setModel(new DefaultComboBoxModel(Pais.values()));
+            editarEventoPais.setSelectedItem(eventoSelecionado.getPais());
+            selecionarProvaEditarEvento.setModel(new DefaultComboBoxModel(listaProvas.toArray()));
+
+            cardLayoutNormalPages.show(PainelPrincipal, "cardEditarEvento");
+        }
     }
 
     private void botaoRemoverEventoActionPerformed(ActionEvent actionEvent) {
-        JOptionPane.showMessageDialog(null, "O evento foi removido com sucesso!");
+        if(eventoSelecionado == null) {
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um evento!");
+        } else {
+            listaEventos.remove(eventoSelecionado);
+            JOptionPane.showMessageDialog(null, "O evento foi removido com sucesso!");
+            buildGerirEventosList();
+        }
     }
 
     private void botaoVerProgramaActionPerformed(ActionEvent actionEvent) {
@@ -361,28 +392,51 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private void botaoAdicionarProvaActionPerformed(ActionEvent actionEvent) {
-        String input = JOptionPane.showInputDialog(new JFrame(), "Insira os minimos:");
-        if(input != null && !input.isEmpty()) {
-            if(listaProvasEvento.contains((Prova) selecionarProvaAdicionarEvento.getSelectedItem())) {
-                JOptionPane.showMessageDialog(new JFrame(), "Prova já adicionada!");
-            }
-            else {
-                Prova provaToAdd = (Prova) selecionarProvaAdicionarEvento.getSelectedItem();
-                listaProvasEvento.add(provaToAdd);
+        if(listaProvas.isEmpty()) {
+            JOptionPane.showMessageDialog(new JFrame(), "Não existem provas!");
+        } else {
+            String input = JOptionPane.showInputDialog(new JFrame(), "Insira os minimos:");
+            if(input != null && !input.isBlank()) {
                 float minimo = Float.parseFloat(input);
-                listaMinimosProvas.put(provaToAdd.getNome(), minimo);
+                if (eventoSelecionado == null) {
+                    Prova provaToAdd = (Prova) selecionarProvaAdicionarEvento.getSelectedItem();
+                    if(listaProvasEvento.contains(provaToAdd)) {
+                        JOptionPane.showMessageDialog(new JFrame(), "Prova já adicionada!");
+                    } else {
+                        listaProvasEvento.add(provaToAdd);
+                        listaMinimosProvas.put(provaToAdd.getNome(), minimo);
+                    }
+                } else {
+                    Prova provaToAdd = (Prova) selecionarProvaEditarEvento.getSelectedItem();
+                    if(eventoSelecionado.isProvaAdicionada(provaToAdd)) {
+                        JOptionPane.showMessageDialog(new JFrame(), "Prova já adicionada!");
+                    } else {
+                        eventoSelecionado.adicionarProva(provaToAdd);
+                        eventoSelecionado.inserirMinimo(minimo, provaToAdd.getNome());
+                    }
+                }
             }
         }
-
     }
 
     private void botaoRemoverProvaActionPerformed(ActionEvent actionEvent) {
-        if(!listaProvasEvento.contains((Prova) selecionarProvaAdicionarEvento.getSelectedItem())) {
-            JOptionPane.showMessageDialog(new JFrame(), "O evento não tem esta prova!");
+        Prova provaARemover = (Prova) selecionarProvaAdicionarEvento.getSelectedItem();
+        if (eventoSelecionado == null) {
+            if(!listaProvasEvento.contains(provaARemover)) {
+                JOptionPane.showMessageDialog(new JFrame(), "O evento não tem esta prova!");
+            }
+            else {
+                listaProvasEvento.remove(provaARemover);
+                listaMinimosProvas.remove(provaARemover.getNome());
+            }
+        } else {
+            if(!eventoSelecionado.isProvaAdicionada(provaARemover)) {
+                JOptionPane.showMessageDialog(new JFrame(), "O evento não tem esta prova!");
+            } else {
+                eventoSelecionado.removerProva(provaARemover);
+            }
         }
-        else {
-            listaProvasEvento.remove((Prova) selecionarProvaAdicionarEvento.getSelectedItem());
-        }
+
     }
 
     private void botaoOkAdicionarEventoActionPerformed(ActionEvent actionEvent) {
@@ -398,19 +452,39 @@ public class AppWorldAthletics extends JFrame{
         }
     }
 
+    private void botaoOkEditarEventoActionPerformed(ActionEvent actionEvent) {
+        if (verifyEvent(editarEventoNome.getText(), editarEventoDataInicio.getText(), editarEventoDataFim.getText(), editarEventoLocal.getText(), editarEventoPais.getSelectedItem())) {
+
+            eventoSelecionado.setNome(editarEventoNome.getText());
+            eventoSelecionado.setDataInicio(Data.parse(editarEventoDataInicio.getText()));
+            eventoSelecionado.setDataFim(Data.parse(editarEventoDataFim.getText()));
+            eventoSelecionado.setLocal(editarEventoLocal.getText());
+            eventoSelecionado.setPais((Pais) editarEventoPais.getSelectedItem());
+
+            buildGerirEventosList();
+        }
+    }
+
     private boolean verifyEvent(String nome, String dataInicio, String dataFim, String local, Object pais) {
-        if (nome.isEmpty() || dataInicio.isEmpty() || dataFim.isEmpty() || local.isEmpty() || pais == null) {
+        if (nome.isBlank() || dataInicio.isBlank() || dataFim.isBlank() || local.isBlank() || pais == null) {
             JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher todos os campos!");
         } else {
-            Data data = null;
             try {
-                data = Data.parse(dataInicio);
+                Data.parse(dataInicio);
                 try {
-                    data = Data.parse(dataFim);
-                    if (listaProvasEvento.isEmpty()) {
-                        JOptionPane.showMessageDialog(new JFrame(), "Tem de adicionar provas ao evento!");
+                    Data.parse(dataFim);
+                    if(eventoSelecionado == null) {
+                        if (listaProvasEvento.isEmpty()) {
+                            JOptionPane.showMessageDialog(new JFrame(), "Tem de adicionar provas ao evento!");
+                        } else {
+                            return true;
+                        }
                     } else {
-                        return true;
+                        if(eventoSelecionado.getListaProvas().isEmpty()) {
+                            JOptionPane.showMessageDialog(new JFrame(), "Tem de adicionar provas ao evento!");
+                        } else {
+                            return true;
+                        }
                     }
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(new JFrame(), "Data tem de ser no formato dd/mm/yyyy");
@@ -440,6 +514,7 @@ public class AppWorldAthletics extends JFrame{
         gerirEventosPais.setText("");
         gerirEventosLista.clearSelection();
         eventoSelecionado = null;
+        listaProvasEvento.clear();
         cardLayoutNormalPages.show(PainelPrincipal, "cardGerir");
         cardLayoutGerir.show(conteudoGerir, "cardGerirEventos");
         setElementsBackgroundColor(elementoGerirEventos);
@@ -481,11 +556,10 @@ public class AppWorldAthletics extends JFrame{
     private void botaoEditarAtletaActionPerformed(ActionEvent actionEvent){
         atletaSelecionado = gerirAtletasList.getSelectedIndex();
         if (atletaSelecionado < 0){
-            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!");
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
         Atleta atleta = listaAtletas.get(atletaSelecionado);
-        //System.out.println(atleta);
 
         cardLayoutNormalPages.show(PainelPrincipal, "cardEditarAtleta");
         textEditarNome.setText(atleta.getNome());
@@ -501,19 +575,20 @@ public class AppWorldAthletics extends JFrame{
     private void botaoInscreverAtletaActionPerformed(ActionEvent actionEvent){
         atletaSelecionado = gerirAtletasList.getSelectedIndex();
         if (atletaSelecionado < 0){
-            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!");
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
         Atleta atleta = listaAtletas.get(atletaSelecionado);
         cardLayoutNormalPages.show(PainelPrincipal, "cardInscreverAtleta");
         textMarcaAlcancada.setText("");
-        listIncricaoProva.setModel(new DefaultComboBoxModel(listaProvas.toArray()));
+        listInscricaoProva.setModel(new DefaultComboBoxModel(listaProvas.toArray()));
+        listInscricaoEvento.setModel(new DefaultComboBoxModel(listaEventos.toArray()));
     }
 
     private void botaoCancelarInscricaoActionPerformed(ActionEvent actionEvent){
         atletaSelecionado = gerirAtletasList.getSelectedIndex();
         if (atletaSelecionado < 0){
-            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!");
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
         Atleta atleta = listaAtletas.get(atletaSelecionado);
@@ -540,7 +615,7 @@ public class AppWorldAthletics extends JFrame{
     private void botaoProvasPorAtletaActionPerformed(ActionEvent actionEvent){
         atletaSelecionado = gerirAtletasList.getSelectedIndex();
         if (atletaSelecionado < 0){
-            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!");
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
         Atleta atleta = listaAtletas.get(atletaSelecionado);
@@ -551,7 +626,7 @@ public class AppWorldAthletics extends JFrame{
     private void botaoConsultarHistoricoActionPerformed(ActionEvent actionEvent){
         atletaSelecionado = gerirAtletasList.getSelectedIndex();
         if (atletaSelecionado < 0){
-            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!");
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
         Atleta atleta = listaAtletas.get(atletaSelecionado);
@@ -563,7 +638,7 @@ public class AppWorldAthletics extends JFrame{
     private void botaoMelhorTempoActionPerformed(ActionEvent actionEvent){
         atletaSelecionado = gerirAtletasList.getSelectedIndex();
         if (atletaSelecionado < 0){
-            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!");
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um Atleta!", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
         Atleta atleta = listaAtletas.get(atletaSelecionado);
@@ -599,10 +674,13 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private void botaoIncricaoActionPerformed(ActionEvent actionEvent){
-        if (verifyIncricao((Prova) listIncricaoProva.getSelectedItem(), textMarcaAlcancada.getText())){
-            //TODO
+        Atleta atleta = listaAtletas.get(atletaSelecionado);
 
+        if (verifyIncricao(atleta, (Evento) listInscricaoEvento.getSelectedItem(), (Prova) listInscricaoProva.getSelectedItem(), textMarcaAlcancada.getText())){
+            Inscricao inscricao = new Inscricao((Prova) listInscricaoProva.getSelectedItem(), (Evento) listInscricaoEvento.getSelectedItem(), atleta);
             JOptionPane.showMessageDialog(new JFrame(), "Atleta inscrito com sucesso!");
+
+            listaAtletas.get(atletaSelecionado).inscrever(inscricao);
             buildGerirAtletaList();
         }
     }
@@ -615,6 +693,7 @@ public class AppWorldAthletics extends JFrame{
         }
         //TODO
 
+
         JOptionPane.showMessageDialog(new JFrame(), "Inscrição do alteta na prova " + " (Placeholder) " + "anulada com sucesso!");
         buildGerirAtletaList();
     }
@@ -622,8 +701,8 @@ public class AppWorldAthletics extends JFrame{
 
 
     private boolean verifyAtleta(String nome, String dataNascimento, String contacto, Object genero, Object pais){
-        if (nome.isEmpty() || dataNascimento.isEmpty() || contacto.isEmpty() || genero == null || pais == null){
-            JOptionPane.showMessageDialog(new JFrame(), "Tem preencher os campos!");
+        if (nome.isBlank() || dataNascimento.isBlank() || contacto.isBlank() || genero == null || pais == null){
+            JOptionPane.showMessageDialog(new JFrame(), "Tem preencher os campos!", "Erro", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -631,33 +710,65 @@ public class AppWorldAthletics extends JFrame{
             try {
                 data = Data.parse(dataNascimento);
                 if (contacto.length() != 9){
-                    JOptionPane.showMessageDialog(new JFrame(), "Deve inserir um número com 9 dígitos");
+                    JOptionPane.showMessageDialog(new JFrame(), "Deve inserir um número com 9 dígitos", "Erro", JOptionPane.ERROR_MESSAGE);
                     return false;
                 }
                 long telefone = 0;
                 try {
                     telefone = Long.parseLong(contacto);
-                    if (listaAtletas.contains(new Atleta(nome,(SexoParticipantes) genero, data,(Pais) pais, telefone))){
-                        JOptionPane.showMessageDialog(new JFrame(), "O atleta já existe");
-                        return false;
+                    for (Atleta atleta: listaAtletas){
+                        if (atleta.equals(new Atleta(nome,(SexoParticipantes) genero, data,(Pais) pais, telefone))){
+                            JOptionPane.showMessageDialog(new JFrame(), "O atleta já existe", "Erro", JOptionPane.ERROR_MESSAGE);
+                            return false;
+                        }
                     }
                 }
                 catch (Exception e){
-                    JOptionPane.showMessageDialog(new JFrame(), "Deve inserir um número de 0-9 para o contacto");
+                    JOptionPane.showMessageDialog(new JFrame(), "Deve inserir um número de 0-9 para o contacto", "Erro", JOptionPane.ERROR_MESSAGE);
                     return false;
                 }
 
             }
             catch (Exception e){
-                JOptionPane.showMessageDialog(new JFrame(), "Data tem de ser no formato dd/mm/yyyy");
+                JOptionPane.showMessageDialog(new JFrame(), "Data tem de ser no formato dd/mm/yyyy", "Erro", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
         }
         return true;
     }
 
-    private boolean verifyIncricao(Prova prova, String marcaAlcancada){
-        //TODO
+    private boolean verifyIncricao(Atleta atleta, Evento evento, Prova prova, String marcaAlcancada){
+        if (evento == null){
+            JOptionPane.showMessageDialog(new JFrame(), "Não selecionou um evento", "Erro", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (prova == null){
+            JOptionPane.showMessageDialog(new JFrame(), "Não selecionou uma prova", "Erro", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (!evento.isProvaAdicionada(prova)){
+            JOptionPane.showMessageDialog(new JFrame(), "A prova não pertence a esse evento", "Erro", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        float marca = 0;
+        try {
+            marca = Float.parseFloat(marcaAlcancada);
+            if (marca < 0 || marca < evento.getMinimosProva(prova.getNome())){
+                JOptionPane.showMessageDialog(new JFrame(), "A marca não atinge os mínimos", "Erro", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        }catch(Exception e) {
+            JOptionPane.showMessageDialog(new JFrame(), "Deve inserir um número para a marca", "Erro", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (atleta.getGenero().toString() != prova.getSexoParticipantes()){
+            JOptionPane.showMessageDialog(new JFrame(), "O atleta não pode inscrever numa prova do sexo oposto", "Erro", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (atleta.isIncrito(new Inscricao(prova, evento, atleta))){
+            JOptionPane.showMessageDialog(new JFrame(), "O atleta já tá inscrito nessa prova", "Erro", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
         return true;
     }
 
@@ -682,16 +793,10 @@ public class AppWorldAthletics extends JFrame{
             cardLayoutNormalPages.show(PainelPrincipal, "cardEditarProva");
 
             editarProvaNome.setText(provaSelecionada.getNome());
-            for (int i = 0; i < TipoPontuacao.values().length; i++) {
-                if(provaSelecionada.getTipoPontuacao() == TipoPontuacao.values()[i].toString()){
-                    editarProvaTipoPontuacao.setSelectedIndex(i);
-                }
-            }
-            for (int i = 0; i < SexoParticipantes.values().length; i++) {
-                if(provaSelecionada.getTipoPontuacao() == SexoParticipantes.values()[i].toString()){
-                    editarProvaSexoParticipantes.setSelectedIndex(i);
-                }
-            }
+            editarProvaTipoPontuacao.setSelectedItem(TipoPontuacao.valueOf(provaSelecionada.getTipoPontuacao()));
+            editarProvaSexoParticipantes.setSelectedItem(SexoParticipantes.valueOf(provaSelecionada.getSexoParticipantes()));
+            maxParticipantesEditarProva.setText(String.valueOf(provaSelecionada.getMaxParticipantes()));
+            duracaoEditarProva.setText(String.valueOf(provaSelecionada.getDuracao()));
         }
     }
 
@@ -711,11 +816,11 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private void botaoOkCriarProvaActionPerformed(ActionEvent actionEvent) {
-        if (nomeCriarProva.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher o nome!");
+        if (nomeCriarProva.getText().isBlank() || maxParticipantesCriarProva.getText().isBlank() || duracaoCriarProva.getText().isBlank()) {
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher todos os campos!");
         }
         else {
-            Prova prova = new Prova(nomeCriarProva.getText(), sexoParticipantesComboBox.getSelectedItem().toString(), tipoPontuacaoComboBox.getSelectedItem().toString());
+            Prova prova = new Prova(nomeCriarProva.getText(), sexoParticipantesComboBox.getSelectedItem().toString(), tipoPontuacaoComboBox.getSelectedItem().toString(), Integer.parseInt(duracaoCriarProva.getText()), Integer.parseInt(maxParticipantesCriarProva.getText()));
             listaProvas.add(prova);
 
             buildGerirProvasList();
@@ -723,13 +828,15 @@ public class AppWorldAthletics extends JFrame{
     }
 
     public void botaoOkEditarProvaActionPerformed(ActionEvent actionEvent) {
-        if (editarProvaNome.getText().isEmpty()) {
+        if (editarProvaNome.getText().isBlank()) {
             JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher o nome!");
         }
         else {
             provaSelecionada.setNome(editarProvaNome.getText());
             provaSelecionada.setSexoParticipantes(editarProvaSexoParticipantes.getSelectedItem().toString());
             provaSelecionada.setTipoPontuacao(editarProvaTipoPontuacao.getSelectedItem().toString());
+            provaSelecionada.setDuracao(Integer.parseInt(duracaoEditarProva.getText()));
+            provaSelecionada.setMaxParticipantes(Integer.parseInt(maxParticipantesEditarProva.getText()));
 
             buildGerirProvasList();
         }

@@ -2,6 +2,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Objects;
 
 /**
  *
@@ -24,6 +25,23 @@ public class Data {
         int ano = Integer.valueOf(dataComponentes[2]);
 
         return new Data(dia, mes, ano);
+    }
+
+    public static boolean datasIguais(Data dataNascimento, Data dataNascimento1) {
+        return dataNascimento.equals(dataNascimento1);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Data data = (Data) o;
+        return Objects.equals(calendar, data.calendar);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(calendar);
     }
 
     @Override

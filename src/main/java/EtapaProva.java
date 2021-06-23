@@ -1,4 +1,6 @@
-public class EtapaProva extends Prova {
+public class EtapaProva {
+    private String nomeProva;
+    private String sexoParticipantes;
     private int diaAno;
     private int diaComp;
     private String hora;
@@ -6,7 +8,8 @@ public class EtapaProva extends Prova {
     private float minimos;
 
     public EtapaProva(String nome, String sexoParticipantes, String pontuacao, int diaAno, int diaComp, String hora, String ronda, float minimos) {
-        super(nome, sexoParticipantes, pontuacao);
+        this.nomeProva = nome;
+        this.sexoParticipantes = sexoParticipantes;
         this.diaAno = diaAno;
         this.diaComp = diaComp;
         this.hora = hora;
