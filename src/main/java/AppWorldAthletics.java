@@ -299,6 +299,13 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private void botaoEditarEventoActionPerformed(ActionEvent actionEvent) {
+        editarEventoNome.setText("");
+        editarEventoDataInicio.setText("");
+        editarEventoDataFim.setText("");
+        editarEventoLocal.setText("");
+        editarEventoPais.setModel(new DefaultComboBoxModel(Pais.values()));
+        selecionarProvaEditarEvento.setModel(new DefaultComboBoxModel(listaProvas.toArray()));
+
         cardLayoutNormalPages.show(PainelPrincipal, "cardEditarEvento");
     }
 
@@ -315,16 +322,20 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private void botaoAdicionarProvaActionPerformed(ActionEvent actionEvent) {
-        String input = JOptionPane.showInputDialog(new JFrame(), "Insira os minimos:");
-        if(input != null && !input.isBlank()) {
-            if(listaProvasEvento.contains((Prova) selecionarProvaAdicionarEvento.getSelectedItem())) {
-                JOptionPane.showMessageDialog(new JFrame(), "Prova já adicionada!");
-            }
-            else {
-                Prova provaToAdd = (Prova) selecionarProvaAdicionarEvento.getSelectedItem();
-                listaProvasEvento.add(provaToAdd);
-                float minimo = Float.parseFloat(input);
-                listaMinimosProvas.put(provaToAdd.getNome(), minimo);
+        if(listaProvas.isEmpty()) {
+            JOptionPane.showMessageDialog(new JFrame(), "Não existem provas!");
+        } else {
+            String input = JOptionPane.showInputDialog(new JFrame(), "Insira os minimos:");
+            if(input != null && !input.isBlank()) {
+                if(listaProvasEvento.contains((Prova) selecionarProvaAdicionarEvento.getSelectedItem())) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Prova já adicionada!");
+                }
+                else {
+                    Prova provaToAdd = (Prova) selecionarProvaAdicionarEvento.getSelectedItem();
+                    listaProvasEvento.add(provaToAdd);
+                    float minimo = Float.parseFloat(input);
+                    listaMinimosProvas.put(provaToAdd.getNome(), minimo);
+                }
             }
         }
     }
@@ -342,12 +353,19 @@ public class AppWorldAthletics extends JFrame{
 
     private void botaoOkAdicionarEventoActionPerformed(ActionEvent actionEvent) {
         if (verifyEvent(adicionarEventoNome.getText(), adicionarEventoDataInicio.getText(), adicionarEventoDataFim.getText(), adicionarEventoLocal.getText(), adicionarEventoPais.getSelectedItem())) {
-            Evento evento = new Evento(adicionarEventoNome.getText(), Data.parse(adicionarEventoDataInicio.getText()), Data.parse(adicionarEventoDataFim.getText()), adicionarEventoLocal.getText(), (Pais) adicionarEventoPais.getSelectedItem());
-            for (Prova prova : listaProvasEvento) {
-                evento.adicionarProva(prova);
+            if (eventoSelecionado != null) {
+                
+            } else {
+                Evento evento = new Evento(adicionarEventoNome.getText(), Data.parse(adicionarEventoDataInicio.getText()), Data.parse(adicionarEventoDataFim.getText()), adicionarEventoLocal.getText(), (Pais) adicionarEventoPais.getSelectedItem());
+
+                for (Prova prova : listaProvasEvento) {
+                    evento.adicionarProva(prova);
+                }
+                listaEventos.add(evento);
+                evento.inserirMinimos(listaMinimosProvas);
             }
-            listaEventos.add(evento);
-            evento.inserirMinimos(listaMinimosProvas);
+
+
 
             buildGerirEventosList();
         }
