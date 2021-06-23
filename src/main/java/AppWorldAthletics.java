@@ -143,6 +143,10 @@ public class AppWorldAthletics extends JFrame{
     private JTextField editarEventoLocal;
     private JComboBox editarEventoPais;
     private JButton botaoVoltarProvasAtleta;
+    private JTextField duracaoCriarProva;
+    private JTextField maxParticipantesCriarProva;
+    private JTextField maxParticipantesEditarProva;
+    private JTextField duracaoEditarProva;
 
 
     private CardLayout cardLayoutGerir;
@@ -745,6 +749,8 @@ public class AppWorldAthletics extends JFrame{
             editarProvaNome.setText(provaSelecionada.getNome());
             editarProvaTipoPontuacao.setSelectedItem(TipoPontuacao.valueOf(provaSelecionada.getTipoPontuacao()));
             editarProvaSexoParticipantes.setSelectedItem(SexoParticipantes.valueOf(provaSelecionada.getSexoParticipantes()));
+            maxParticipantesEditarProva.setText(String.valueOf(provaSelecionada.getMaxParticipantes()));
+            duracaoEditarProva.setText(String.valueOf(provaSelecionada.getDuracao()));
         }
     }
 
@@ -764,11 +770,11 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private void botaoOkCriarProvaActionPerformed(ActionEvent actionEvent) {
-        if (nomeCriarProva.getText().isBlank()) {
-            JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher o nome!");
+        if (nomeCriarProva.getText().isBlank() || maxParticipantesCriarProva.getText().isBlank() || duracaoCriarProva.getText().isBlank()) {
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher todos os campos!");
         }
         else {
-            Prova prova = new Prova(nomeCriarProva.getText(), sexoParticipantesComboBox.getSelectedItem().toString(), tipoPontuacaoComboBox.getSelectedItem().toString());
+            Prova prova = new Prova(nomeCriarProva.getText(), sexoParticipantesComboBox.getSelectedItem().toString(), tipoPontuacaoComboBox.getSelectedItem().toString(), Integer.parseInt(duracaoCriarProva.getText()), Integer.parseInt(maxParticipantesCriarProva.getText()));
             listaProvas.add(prova);
 
             buildGerirProvasList();
@@ -783,6 +789,8 @@ public class AppWorldAthletics extends JFrame{
             provaSelecionada.setNome(editarProvaNome.getText());
             provaSelecionada.setSexoParticipantes(editarProvaSexoParticipantes.getSelectedItem().toString());
             provaSelecionada.setTipoPontuacao(editarProvaTipoPontuacao.getSelectedItem().toString());
+            provaSelecionada.setDuracao(Integer.parseInt(duracaoEditarProva.getText()));
+            provaSelecionada.setMaxParticipantes(Integer.parseInt(maxParticipantesEditarProva.getText()));
 
             buildGerirProvasList();
         }
