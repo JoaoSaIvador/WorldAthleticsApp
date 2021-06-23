@@ -140,7 +140,7 @@ public class AppWorldAthletics extends JFrame{
     private JTextField editarEventoDataInicio;
     private JTextField editarEventoDataFim;
     private JTextField editarEventoLocal;
-    private JTextField editarEventoPais;
+    private JComboBox editarEventoPais;
 
     private CardLayout cardLayoutGerir;
     private CardLayout cardLayoutNormalPages;
@@ -316,7 +316,7 @@ public class AppWorldAthletics extends JFrame{
 
     private void botaoAdicionarProvaActionPerformed(ActionEvent actionEvent) {
         String input = JOptionPane.showInputDialog(new JFrame(), "Insira os minimos:");
-        if(input != null && !input.isEmpty()) {
+        if(input != null && !input.isBlank()) {
             if(listaProvasEvento.contains((Prova) selecionarProvaAdicionarEvento.getSelectedItem())) {
                 JOptionPane.showMessageDialog(new JFrame(), "Prova já adicionada!");
             }
@@ -327,15 +327,16 @@ public class AppWorldAthletics extends JFrame{
                 listaMinimosProvas.put(provaToAdd.getNome(), minimo);
             }
         }
-
     }
 
     private void botaoRemoverProvaActionPerformed(ActionEvent actionEvent) {
-        if(!listaProvasEvento.contains((Prova) selecionarProvaAdicionarEvento.getSelectedItem())) {
+        Prova provaARemover = (Prova) selecionarProvaAdicionarEvento.getSelectedItem();
+        if(!listaProvasEvento.contains(provaARemover)) {
             JOptionPane.showMessageDialog(new JFrame(), "O evento não tem esta prova!");
         }
         else {
-            listaProvasEvento.remove((Prova) selecionarProvaAdicionarEvento.getSelectedItem());
+            listaProvasEvento.remove(provaARemover);
+            listaMinimosProvas.remove(provaARemover.getNome());
         }
     }
 
@@ -353,7 +354,7 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private boolean verifyEvent(String nome, String dataInicio, String dataFim, String local, Object pais) {
-        if (nome.isEmpty() || dataInicio.isEmpty() || dataFim.isEmpty() || local.isEmpty() || pais == null) {
+        if (nome.isBlank() || dataInicio.isBlank() || dataFim.isBlank() || local.isBlank() || pais == null) {
             JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher todos os campos!");
         } else {
             Data data = null;
@@ -665,7 +666,7 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private void botaoOkCriarProvaActionPerformed(ActionEvent actionEvent) {
-        if (nomeCriarProva.getText().isEmpty()) {
+        if (nomeCriarProva.getText().isBlank()) {
             JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher o nome!");
         }
         else {
@@ -677,7 +678,7 @@ public class AppWorldAthletics extends JFrame{
     }
 
     public void botaoOkEditarProvaActionPerformed(ActionEvent actionEvent) {
-        if (editarProvaNome.getText().isEmpty()) {
+        if (editarProvaNome.getText().isBlank()) {
             JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher o nome!");
         }
         else {
