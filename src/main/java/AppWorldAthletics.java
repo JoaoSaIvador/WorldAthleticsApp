@@ -141,7 +141,7 @@ public class AppWorldAthletics extends JFrame{
     private JTextField editarEventoDataInicio;
     private JTextField editarEventoDataFim;
     private JTextField editarEventoLocal;
-    private JTextField editarEventoPais;
+    private JComboBox editarEventoPais;
     private JButton botaoVoltarProvasAtleta;
 
 
