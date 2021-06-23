@@ -5,10 +5,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.time.LocalDate;
+import java.util.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -279,7 +277,7 @@ public class AppWorldAthletics extends JFrame{
         });
 
         //Resultados
-        buttonVoltarRecordesProva.addActionListener(this::botaoGerirEventosActionPerformed);
+            buttonVoltarRecordesProva.addActionListener(this::botaoGerirEventosActionPerformed);
         buttonRecordesMundiais.addActionListener(this::buttonRecordesMundiaisActionPerformed);
         buttonRegistarResultado.addActionListener(this::buttonRegistarResultadoActionPerformed);
 
@@ -374,7 +372,7 @@ public class AppWorldAthletics extends JFrame{
                         Pais.valueOf(parameters.get(4));
                         listaEventos.add(new Evento(parameters.get(0), Data.parse(parameters.get(1)), Data.parse(parameters.get(2)), parameters.get(3), Pais.valueOf(parameters.get(4))));
                     } catch(IllegalArgumentException e) {
-                        JOptionPane.showMessageDialog(null, "País inválido!");
+                        JOptionPane.showMessageDialog(null, "Dados inválidos!");
                     }
                     buildGerirEventosList();
                 }
@@ -462,10 +460,19 @@ public class AppWorldAthletics extends JFrame{
         if (nome.isBlank() || dataInicio.isBlank() || dataFim.isBlank() || local.isBlank() || pais == null) {
             JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher todos os campos!");
         } else {
+            Data data1 = null;
+            Data data2 = null;
+            LocalDate dt = LocalDate.now();
             try {
-                Data.parse(dataInicio);
+                data1 = Data.parse(dataInicio);
+                if (data1.ano < dt.getYear() || data1.mes < dt.getMonthValue() || data1.dia < dt.getDayOfMonth()) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Data de início inválida");
+                }
                 try {
                     Data.parse(dataFim);
+                    if (Data.compararDatas(data1, data2) == -1) {
+                        JOptionPane.showMessageDialog(new JFrame(), "Data de fim inválida!");
+                    }
                     if(eventoSelecionado == null) {
                         if (listaProvasEvento.isEmpty()) {
                             JOptionPane.showMessageDialog(new JFrame(), "Tem de adicionar provas ao evento!");
@@ -480,10 +487,10 @@ public class AppWorldAthletics extends JFrame{
                         }
                     }
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Data tem de ser no formato dd/mm/yyyy");
+                    JOptionPane.showMessageDialog(new JFrame(), "A data tem de ser no formato dd/mm/yyyy");
                 }
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(new JFrame(), "Data tem de ser no formato dd/mm/yyyy");
+                JOptionPane.showMessageDialog(new JFrame(), "A data tem de ser no formato dd/mm/yyyy");
             }
         }
         return false;
