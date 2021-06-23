@@ -324,7 +324,13 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private void botaoRemoverEventoActionPerformed(ActionEvent actionEvent) {
-        JOptionPane.showMessageDialog(null, "O evento foi removido com sucesso!");
+        if(eventoSelecionado == null) {
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um evento!");
+        } else {
+            listaEventos.remove(eventoSelecionado);
+            JOptionPane.showMessageDialog(null, "O evento foi removido com sucesso!");
+            buildGerirEventosList();
+        }
     }
 
     private void botaoVerProgramaActionPerformed(ActionEvent actionEvent) {
@@ -413,11 +419,10 @@ public class AppWorldAthletics extends JFrame{
         if (nome.isBlank() || dataInicio.isBlank() || dataFim.isBlank() || local.isBlank() || pais == null) {
             JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher todos os campos!");
         } else {
-            Data data = null;
             try {
-                data = Data.parse(dataInicio);
+                Data.parse(dataInicio);
                 try {
-                    data = Data.parse(dataFim);
+                    Data.parse(dataFim);
                     if(eventoSelecionado == null) {
                         if (listaProvasEvento.isEmpty()) {
                             JOptionPane.showMessageDialog(new JFrame(), "Tem de adicionar provas ao evento!");
@@ -738,16 +743,8 @@ public class AppWorldAthletics extends JFrame{
             cardLayoutNormalPages.show(PainelPrincipal, "cardEditarProva");
 
             editarProvaNome.setText(provaSelecionada.getNome());
-            for (int i = 0; i < TipoPontuacao.values().length; i++) {
-                if(provaSelecionada.getTipoPontuacao() == TipoPontuacao.values()[i].toString()){
-                    editarProvaTipoPontuacao.setSelectedIndex(i);
-                }
-            }
-            for (int i = 0; i < SexoParticipantes.values().length; i++) {
-                if(provaSelecionada.getTipoPontuacao() == SexoParticipantes.values()[i].toString()){
-                    editarProvaSexoParticipantes.setSelectedIndex(i);
-                }
-            }
+            editarProvaTipoPontuacao.setSelectedItem(TipoPontuacao.valueOf(provaSelecionada.getTipoPontuacao()));
+            editarProvaSexoParticipantes.setSelectedItem(SexoParticipantes.valueOf(provaSelecionada.getSexoParticipantes()));
         }
     }
 
