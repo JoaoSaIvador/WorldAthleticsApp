@@ -838,7 +838,7 @@
                               <text value="Importar Provas"/>
                             </properties>
                           </component>
-                          <component id="c5085" class="javax.swing.JButton" binding="button2" default-binding="true">
+                          <component id="c5085" class="javax.swing.JButton" binding="buttonRegistarResultado">
                             <constraints>
                               <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                             </constraints>
@@ -852,7 +852,7 @@
                               <text value="Registas Resultado"/>
                             </properties>
                           </component>
-                          <component id="30610" class="javax.swing.JButton" binding="button3" default-binding="true">
+                          <component id="30610" class="javax.swing.JButton" binding="buttonRecordesMundiais">
                             <constraints>
                               <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                             </constraints>
@@ -3805,7 +3805,7 @@
           </grid>
         </children>
       </grid>
-      <grid id="908cf" binding="recordesProva" layout-manager="CardLayout" hgap="0" vgap="0">
+      <grid id="908cf" binding="RecordesProva" layout-manager="CardLayout" hgap="0" vgap="0">
         <constraints>
           <card name="cardRecordesProva"/>
         </constraints>
@@ -3845,7 +3845,7 @@
                   </component>
                 </children>
               </grid>
-              <grid id="163f5" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="163f5" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -3854,7 +3854,57 @@
                   <background color="-1"/>
                 </properties>
                 <border type="none"/>
-                <children/>
+                <children>
+                  <grid id="9f52f" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <scrollpane id="7c761">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="d702b" class="javax.swing.JTable" binding="RecordesMundiaisTable">
+                            <constraints/>
+                            <properties/>
+                          </component>
+                        </children>
+                      </scrollpane>
+                    </children>
+                  </grid>
+                  <grid id="5cd8" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <background color="-1"/>
+                    </properties>
+                    <border type="none"/>
+                    <children>
+                      <component id="65274" class="javax.swing.JButton" binding="buttonVoltarRecordesProva">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <background color="-14540254"/>
+                          <borderPainted value="false"/>
+                          <focusPainted value="false"/>
+                          <font size="18"/>
+                          <foreground color="-1"/>
+                          <label value="Voltar"/>
+                          <text value="Voltar"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                </children>
               </grid>
             </children>
           </grid>

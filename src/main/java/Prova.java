@@ -5,7 +5,12 @@ public class Prova {
     private int duracao;
     private int maxParticipantes;
 
-    public Prova(String nome, String sexoParticipantes, String pontuacao, int duracao, int maxParticipantes) {
+    public Prova(String nome, String sexoParticipantes, String pontuacao) {
+        this.nome = nome;
+        this.sexoParticipantes = sexoParticipantes;
+        this.Tipopontuacao = pontuacao;
+    }
+    public Prova(String nome, String sexoParticipantes, String pontuacao, int duracao,int maxParticipantes) {
         this.nome = nome;
         this.sexoParticipantes = sexoParticipantes;
         this.Tipopontuacao = pontuacao;
@@ -45,12 +50,8 @@ public class Prova {
         return maxParticipantes;
     }
 
-    public void setDuracao(int duracao) {
-        this.duracao = duracao;
-    }
-
-    public void setMaxParticipantes(int maxParticipantes) {
-        this.maxParticipantes = maxParticipantes;
+    public String getTipopontuacao() {
+        return Tipopontuacao;
     }
 
     public String toString(){
