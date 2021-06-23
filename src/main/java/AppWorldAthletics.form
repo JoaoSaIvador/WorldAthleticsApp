@@ -260,12 +260,14 @@
                       <text value="Gerir Atletas"/>
                     </properties>
                   </component>
-                  <grid id="534e" layout-manager="GridLayoutManager" row-count="3" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <grid id="534e" layout-manager="GridLayoutManager" row-count="4" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <background color="-1"/>
+                    </properties>
                     <border type="none"/>
                     <children>
                       <component id="e6b8b" class="javax.swing.JButton" binding="botaoAdicionarAtleta">
@@ -340,31 +342,15 @@
                           <text value="Consultar Histórico"/>
                         </properties>
                       </component>
-                      <component id="e1b39" class="javax.swing.JButton" binding="botaoProvasPorAtleta">
+                      <vspacer id="fd3ef">
                         <constraints>
-                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
+                            <minimum-size width="-1" height="100"/>
+                            <preferred-size width="-1" height="100"/>
+                          </grid>
                         </constraints>
-                        <properties>
-                          <background color="-14540254"/>
-                          <font size="18"/>
-                          <foreground color="-1"/>
-                          <label value="Provas por Atleta"/>
-                          <text value="Provas por Atleta"/>
-                        </properties>
-                      </component>
-                      <component id="d790d" class="javax.swing.JButton" binding="botaoImportarInscricoes">
-                        <constraints>
-                          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <background color="-14540254"/>
-                          <font size="18"/>
-                          <foreground color="-1"/>
-                          <label value="Importar Inscrições"/>
-                          <text value="Importar Inscrições"/>
-                        </properties>
-                      </component>
-                      <component id="3e7c1" class="javax.swing.JButton" binding="botaoMelhorTempo">
+                      </vspacer>
+                      <component id="16c96" class="javax.swing.JButton" binding="botaoMelhorTempo">
                         <constraints>
                           <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -376,94 +362,123 @@
                           <text value="Melhor Tempo"/>
                         </properties>
                       </component>
-                    </children>
-                  </grid>
-                  <scrollpane id="e194b" binding="scrollAtletas">
-                    <constraints>
-                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                        <minimum-size width="-1" height="5"/>
-                      </grid>
-                    </constraints>
-                    <properties>
-                      <enabled value="true"/>
-                      <focusable value="true"/>
-                    </properties>
-                    <border type="none"/>
-                    <children>
-                      <component id="f24b5" class="javax.swing.JList" binding="gerirAtletasList">
-                        <constraints/>
+                      <component id="3d512" class="javax.swing.JButton" binding="botaoImportarInscricoes">
+                        <constraints>
+                          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
                         <properties>
-                          <background color="-1"/>
-                          <maximumSize width="-1" height="-1"/>
-                          <minimumSize width="-1" height="-1"/>
-                          <model>
-                            <item value="MmmmmmMMMMM          G          12-12-1212          AAAAAAAAAAAAA          111111111          4"/>
-                            <item value="1"/>
-                            <item value="2"/>
-                            <item value="3"/>
-                            <item value="4"/>
-                            <item value="5"/>
-                            <item value="6"/>
-                            <item value="7"/>
-                            <item value="8"/>
-                            <item value="9"/>
-                            <item value="10"/>
-                            <item value="11"/>
-                            <item value="12"/>
-                            <item value="13"/>
-                            <item value="14"/>
-                            <item value="15"/>
-                            <item value="16"/>
-                            <item value="17"/>
-                            <item value="18"/>
-                            <item value="19"/>
-                            <item value="20"/>
-                            <item value="21"/>
-                            <item value="22"/>
-                            <item value="23"/>
-                            <item value="24"/>
-                            <item value="25"/>
-                            <item value="26"/>
-                            <item value="27"/>
-                            <item value="28"/>
-                            <item value="29"/>
-                            <item value="30"/>
-                            <item value="31"/>
-                            <item value="32"/>
-                            <item value="33"/>
-                            <item value="34"/>
-                            <item value="35"/>
-                            <item value="36"/>
-                            <item value="37"/>
-                            <item value="38"/>
-                            <item value="39"/>
-                            <item value="40"/>
-                            <item value="41"/>
-                            <item value="42"/>
-                            <item value="43"/>
-                            <item value="44"/>
-                            <item value="45"/>
-                            <item value="46"/>
-                            <item value="47"/>
-                            <item value="48"/>
-                            <item value="49"/>
-                            <item value="50"/>
-                            <item value="51"/>
-                            <item value="52"/>
-                            <item value="53"/>
-                            <item value="54"/>
-                            <item value="55"/>
-                            <item value="56"/>
-                            <item value="57"/>
-                            <item value="58"/>
-                            <item value="59"/>
-                            <item value="60"/>
-                          </model>
-                          <preferredSize width="300" height="22"/>
+                          <background color="-14540254"/>
+                          <font size="18"/>
+                          <foreground color="-1"/>
+                          <label value="Importar Inscrições"/>
+                          <text value="Importar Inscrições"/>
+                        </properties>
+                      </component>
+                      <component id="e7696" class="javax.swing.JButton" binding="botaoProvasPorAtleta">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <background color="-14540254"/>
+                          <font size="18"/>
+                          <foreground color="-1"/>
+                          <label value="Provas por Atleta"/>
+                          <text value="Provas por Atleta"/>
                         </properties>
                       </component>
                     </children>
-                  </scrollpane>
+                  </grid>
+                  <grid id="df701" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <scrollpane id="2501b" binding="scrollAtletas">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="8929c" class="javax.swing.JList" binding="gerirAtletasList">
+                            <constraints/>
+                            <properties>
+                              <background color="-1"/>
+                              <maximumSize width="-1" height="-1"/>
+                              <minimumSize width="-1" height="-1"/>
+                              <model>
+                                <item value="MmmmmmMMMMM          G          12-12-1212          AAAAAAAAAAAAA          111111111          4"/>
+                                <item value="1"/>
+                                <item value="2"/>
+                                <item value="3"/>
+                                <item value="4"/>
+                                <item value="5"/>
+                                <item value="6"/>
+                                <item value="7"/>
+                                <item value="8"/>
+                                <item value="9"/>
+                                <item value="10"/>
+                                <item value="11"/>
+                                <item value="12"/>
+                                <item value="13"/>
+                                <item value="14"/>
+                                <item value="15"/>
+                                <item value="16"/>
+                                <item value="17"/>
+                                <item value="18"/>
+                                <item value="19"/>
+                                <item value="20"/>
+                                <item value="21"/>
+                                <item value="22"/>
+                                <item value="23"/>
+                                <item value="24"/>
+                                <item value="25"/>
+                                <item value="26"/>
+                                <item value="27"/>
+                                <item value="28"/>
+                                <item value="29"/>
+                                <item value="30"/>
+                                <item value="31"/>
+                                <item value="32"/>
+                                <item value="33"/>
+                                <item value="34"/>
+                                <item value="35"/>
+                                <item value="36"/>
+                                <item value="37"/>
+                                <item value="38"/>
+                                <item value="39"/>
+                                <item value="40"/>
+                                <item value="41"/>
+                                <item value="42"/>
+                                <item value="43"/>
+                                <item value="44"/>
+                                <item value="45"/>
+                                <item value="46"/>
+                                <item value="47"/>
+                                <item value="48"/>
+                                <item value="49"/>
+                                <item value="50"/>
+                                <item value="51"/>
+                                <item value="52"/>
+                                <item value="53"/>
+                                <item value="54"/>
+                                <item value="55"/>
+                                <item value="56"/>
+                                <item value="57"/>
+                                <item value="58"/>
+                                <item value="59"/>
+                                <item value="60"/>
+                              </model>
+                              <preferredSize width="300" height="22"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </scrollpane>
+                    </children>
+                  </grid>
                 </children>
               </grid>
               <grid id="77826" binding="conteudoGerirEventos" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -500,16 +515,6 @@
                     </properties>
                     <border type="none"/>
                     <children>
-                      <component id="863f3" class="javax.swing.JList" binding="gerirEventosLista">
-                        <constraints>
-                          <grid row="0" column="0" row-span="1" col-span="6" vsize-policy="2" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                            <preferred-size width="150" height="50"/>
-                          </grid>
-                        </constraints>
-                        <properties>
-                          <background color="-1"/>
-                        </properties>
-                      </component>
                       <grid id="16e17" layout-manager="GridLayoutManager" row-count="6" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                         <margin top="0" left="0" bottom="0" right="0"/>
                         <constraints>
@@ -730,6 +735,21 @@
                           </grid>
                         </constraints>
                       </vspacer>
+                      <scrollpane id="f925" binding="scrollEventos">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="6" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="863f3" class="javax.swing.JList" binding="gerirEventosLista">
+                            <constraints/>
+                            <properties>
+                              <background color="-1"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </scrollpane>
                     </children>
                   </grid>
                 </children>
@@ -768,16 +788,6 @@
                     </properties>
                     <border type="none"/>
                     <children>
-                      <component id="6f39d" class="javax.swing.JList" binding="gerirProvasLista">
-                        <constraints>
-                          <grid row="0" column="0" row-span="1" col-span="6" vsize-policy="2" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                            <preferred-size width="150" height="50"/>
-                          </grid>
-                        </constraints>
-                        <properties>
-                          <background color="-1"/>
-                        </properties>
-                      </component>
                       <grid id="658ae" layout-manager="GridLayoutManager" row-count="9" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                         <margin top="0" left="0" bottom="0" right="0"/>
                         <constraints>
@@ -954,6 +964,21 @@
                           </grid>
                         </constraints>
                       </vspacer>
+                      <scrollpane id="f8aac" binding="scrollProvas">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="6" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="6f39d" class="javax.swing.JList" binding="gerirProvasLista">
+                            <constraints/>
+                            <properties>
+                              <background color="-1"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </scrollpane>
                     </children>
                   </grid>
                 </children>
@@ -2905,7 +2930,7 @@
                           <text value="Voltar"/>
                         </properties>
                       </component>
-                      <scrollpane id="58e91">
+                      <scrollpane id="58e91" binding="scrollHistoricoAtleta">
                         <constraints>
                           <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -3019,7 +3044,7 @@
                           <text value="Recorde pessoal do Atleta"/>
                         </properties>
                       </component>
-                      <scrollpane id="6ce2b">
+                      <scrollpane id="6ce2b" binding="scrollMelhorTempoAtleta">
                         <constraints>
                           <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                         </constraints>

@@ -137,7 +137,6 @@ public class AppWorldAthletics extends JFrame{
     private JButton botaoVoltarMelhorTempo;
     private JTable table2;
     private JTable tabelaHistorico;
-    private JScrollPane scrollAtletas;
     private JButton buttonVoltarRecordesProva;
     private JTable RecordesMundiaisTable;
     private JButton botaoVoltar;
@@ -151,6 +150,11 @@ public class AppWorldAthletics extends JFrame{
     private JTextField maxParticipantesCriarProva;
     private JTextField maxParticipantesEditarProva;
     private JTextField duracaoEditarProva;
+    private JScrollPane scrollAtletas;
+    private JScrollPane scrollProvas;
+    private JScrollPane scrollEventos;
+    private JScrollPane scrollHistoricoAtleta;
+    private JScrollPane scrollMelhorTempoAtleta;
 
     private CardLayout cardLayoutGerir;
     private CardLayout cardLayoutNormalPages;
@@ -492,6 +496,8 @@ public class AppWorldAthletics extends JFrame{
         }
         gerirEventosLista.setModel(gerirEventosListModel);
         gerirEventosLista.setBorder(BorderFactory.createLineBorder(Color.black));
+
+        scrollEventos.setViewportView(gerirEventosLista);
         setCurrentGerirEventos();
     }
 
@@ -513,6 +519,7 @@ public class AppWorldAthletics extends JFrame{
 
     private void buildGerirAtletaList(){
         DefaultListModel<String> gerirAtletasListModel = new DefaultListModel<>();
+
         for (Atleta atleta : listaAtletas){
             gerirAtletasListModel.addElement((atleta.getNome() + " "
                     + atleta.getGenero() + " " + atleta.getDataNascimento() + " "
@@ -521,6 +528,8 @@ public class AppWorldAthletics extends JFrame{
         }
         gerirAtletasList.setModel(gerirAtletasListModel);
         gerirAtletasList.setBorder((BorderFactory.createLineBorder(Color.black)));
+
+        scrollAtletas.setViewportView(gerirAtletasList);
 
         setCurrentGerirAtleta();
     }
@@ -623,6 +632,7 @@ public class AppWorldAthletics extends JFrame{
 
         //TODO
         tabelaHistorico = criarTabelaHistorico();
+        scrollHistoricoAtleta.setViewportView(tabelaHistorico);
         cardLayoutNormalPages.show(PainelPrincipal, "cardConsultarHistoricoAtleta");
     }
     private void botaoMelhorTempoActionPerformed(ActionEvent actionEvent){
@@ -635,6 +645,7 @@ public class AppWorldAthletics extends JFrame{
 
         //TODO
         tabelaRecordePessoal = criarTabelRecordePessoal();
+        scrollMelhorTempoAtleta.setViewportView(tabelaRecordePessoal);
         cardLayoutNormalPages.show(PainelPrincipal, "cardMelhorTempoAtleta");
     }
 
@@ -776,6 +787,8 @@ public class AppWorldAthletics extends JFrame{
 
     private void botaoCriarProvaActionPerformed(ActionEvent actionEvent) {
         nomeCriarProva.setText("");
+        duracaoCriarProva.setText("");
+        maxParticipantesEditarProva.setText("");
         tipoPontuacaoComboBox.setModel(new DefaultComboBoxModel<>(TipoPontuacao.values()));
         sexoParticipantesComboBox.setModel(new DefaultComboBoxModel<>(SexoParticipantes.values()));
         cardLayoutNormalPages.show(PainelPrincipal, "cardCriarProva");
@@ -786,7 +799,6 @@ public class AppWorldAthletics extends JFrame{
             JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar uma prova!");
         }
         else {
-            editarProvaNome.setText("");
             editarProvaTipoPontuacao.setModel(new DefaultComboBoxModel<>(TipoPontuacao.values()));
             editarProvaSexoParticipantes.setModel(new DefaultComboBoxModel<>(SexoParticipantes.values()));
             cardLayoutNormalPages.show(PainelPrincipal, "cardEditarProva");
@@ -873,6 +885,7 @@ public class AppWorldAthletics extends JFrame{
         }
         gerirProvasLista.setModel(gerirProvasListModel);
         gerirProvasLista.setBorder(BorderFactory.createLineBorder(Color.black));
+        scrollProvas.setViewportView(gerirProvasLista);
         setCurrentGerirProvas();
     }
 
