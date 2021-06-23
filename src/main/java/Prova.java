@@ -54,6 +54,14 @@ public class Prova {
         return Tipopontuacao;
     }
 
+    public void setDuracao(int duracao) {
+        this.duracao = duracao;
+    }
+
+    public void setMaxParticipantes(int maxParticipantes) {
+        this.maxParticipantes = maxParticipantes;
+    }
+
     public String toString(){
         return  this.nome;
     }
