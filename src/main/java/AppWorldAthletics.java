@@ -136,6 +136,9 @@ public class AppWorldAthletics extends JFrame{
     private JTable table2;
     private JTable tabelaHistorico;
     private JScrollPane scrollAtletas;
+    private JButton buttonVoltarRecordesProva;
+    private JTable RecordesMundiaisTable;
+
 
     private JButton botaoVoltar;
     private JTextField editarEventoNome;
@@ -280,6 +283,9 @@ public class AppWorldAthletics extends JFrame{
 
         cardLayoutNormalPages.show(PainelPrincipal, "cardMenuPrincipal");
 
+        buttonVoltarRecordesProva.addActionListener(this::botaoGerirEventosActionPerformed);
+        buttonRecordesMundiais.addActionListener(this::buttonRecordesMundiaisActionPerformed);
+        buttonRegistarResultado.addActionListener(this::buttonRegistarResultadoActionPerformed);
 
         buttonVoltarRecordesProva.addActionListener(this::botaoGerirEventosActionPerformed);
         buttonRecordesMundiais.addActionListener(this::buttonRecordesMundiaisActionPerformed);
@@ -290,6 +296,7 @@ public class AppWorldAthletics extends JFrame{
 
     //------------------------------ MENU LATERAL/INICIAL ------------------------------
 
+<<<<<<< Updated upstream
     private void buttonRegistarResultadoActionPerformed(ActionEvent actionEvent)
     {
         if(selecionarProvaAdicionarEvento.getSelectedItem() != null && listaProvasEvento.contains((Prova)selecionarProvaAdicionarEvento.getSelectedItem()))
@@ -301,12 +308,17 @@ public class AppWorldAthletics extends JFrame{
             JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar uma Prova!");
             return;
         }
+=======
+    private void buttonRegistarResultadoActionPerformed()
+    {
+>>>>>>> Stashed changes
 
     }
 
 
     private void buttonRecordesMundiaisActionPerformed(ActionEvent actionEvent)
     {
+<<<<<<< Updated upstream
         for (Prova p : listaProvas) {
             if(prova.Resultado)
             {
@@ -316,6 +328,8 @@ public class AppWorldAthletics extends JFrame{
 
         }
 
+=======
+>>>>>>> Stashed changes
         RecordesMundiaisTable.setModel(new DefaultTableModel(null,new String[]{"Prova","Marca" ,"Atleta", "País"}));
 
 
