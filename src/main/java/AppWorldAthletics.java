@@ -366,7 +366,13 @@ public class AppWorldAthletics extends JFrame{
                     for (String parameter : s.split(" # ")) {
                         parameters.add(parameter);
                     }
-                    listaEventos.add(new Evento(parameters.get(0), Data.parse(parameters.get(1)), Data.parse(parameters.get(2)), parameters.get(3), Pais.valueOf(parameters.get(4))));
+                    try {
+                        Pais.valueOf(parameters.get(4));
+                        listaEventos.add(new Evento(parameters.get(0), Data.parse(parameters.get(1)), Data.parse(parameters.get(2)), parameters.get(3), Pais.valueOf(parameters.get(4))));
+                    } catch(IllegalArgumentException e) {
+                        JOptionPane.showMessageDialog(null, "País inválido!");
+                    }
+                    buildGerirEventosList();
                 }
             }
         } catch (FileNotFoundException e) {
@@ -805,7 +811,32 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private void botaoImportarProvasActionPerformed(ActionEvent actionEvent) {
-        JOptionPane.showMessageDialog(null, "Filler Text");
+        File file = importarFicheiro();
+        try {
+            Scanner scanner = new Scanner(file);
+
+            while (scanner.hasNextLine()) {
+                String s = scanner.nextLine();
+                if (!s.equals("")) {
+                    //TODO
+                    ArrayList<String> parameters = new ArrayList<String>();
+                    for (String parameter : s.split(" # ")) {
+                        parameters.add(parameter);
+                    }
+                    try {
+                        SexoParticipantes.valueOf(parameters.get(1));
+                        TipoPontuacao.valueOf(parameters.get((2)));
+
+                        listaProvas.add(new Prova(parameters.get(0), parameters.get(1), parameters.get(2), Integer.parseInt(parameters.get(3)), Integer.parseInt(parameters.get(4))));
+                        buildGerirProvasList();
+                    } catch (IllegalArgumentException e) {
+                        JOptionPane.showMessageDialog(null, "Argumento(s) inválido(s)");
+                    }
+                }
+            }
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Ficheiro não encontrado");
+        }
     }
 
     private void botaoOkCriarProvaActionPerformed(ActionEvent actionEvent) {
