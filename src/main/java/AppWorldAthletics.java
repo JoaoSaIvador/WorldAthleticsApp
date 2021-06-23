@@ -3,9 +3,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -350,7 +355,24 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private void botaoImportarEventosActionPerformed(ActionEvent actionEvent) {
-        JOptionPane.showMessageDialog(null, "Filler Text");
+        File file = importarFicheiro();
+        try {
+            Scanner scanner = new Scanner(file);
+
+            while (scanner.hasNextLine()) {
+                String s = scanner.nextLine();
+                if (!s.equals("")) {
+                    //TODO
+                    ArrayList<String> parameters = new ArrayList<String>();
+                    for (String parameter : s.split(" # ")) {
+                        parameters.add(parameter);
+                    }
+                    listaEventos.add(new Evento(parameters.get(0), Data.parse(parameters.get(1)), Data.parse(parameters.get(2)), parameters.get(3), Pais.valueOf(parameters.get(4))));
+                }
+            }
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Ficheiro não encontrado");
+        }
     }
 
     private void botaoAdicionarProvaActionPerformed(ActionEvent actionEvent) {
@@ -864,22 +886,18 @@ public class AppWorldAthletics extends JFrame{
         elementoHighlight.setBackground(new Color(0x363636));
     }
 
-    public void importarFicheiro() {
+    public File importarFicheiro() {
         JFileChooser fc = new JFileChooser(new java.io.File("."));
         int returnVal = fc.showOpenDialog(this);
 
-        //TODO
-        /*
         try {
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-
+                return fc.getSelectedFile();
             }
-        } catch (IOException e1) {
-            e1.printStackTrace(System.err);
         } catch (java.util.NoSuchElementException e2) {
             JOptionPane.showMessageDialog(this, "File format not valid", "Error!", JOptionPane.ERROR_MESSAGE);
         }
-         */
+        return null;
     }
 
     private JTable criarTabelaHistorico(){
