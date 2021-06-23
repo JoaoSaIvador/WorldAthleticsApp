@@ -37,8 +37,8 @@ public class Evento {
         return local;
     }
 
-    public String getPais() {
-        return pais.toString();
+    public Pais getPais() {
+        return pais;
     }
 
     public ArrayList<Prova> getListaProvas() {
@@ -71,6 +71,7 @@ public class Evento {
 
     public void removerProva(Prova prova) {
         this.listaProvas.remove(prova);
+        listaMinimosProvas.remove(prova.getNome());
     }
 
     public boolean isProvaAdicionada(Prova prova) {
@@ -79,6 +80,10 @@ public class Evento {
 
     public void inserirMinimos(Map<String, Float> minimos) {
         this.listaMinimosProvas.putAll(minimos);
+    }
+
+    public void inserirMinimo(Float minimo, String prova) {
+        this.listaMinimosProvas.put(prova, minimo);
     }
 
     public Float getMinimosProva(String prova) {
