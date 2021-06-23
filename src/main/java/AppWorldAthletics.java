@@ -5,6 +5,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -64,7 +66,7 @@ public class AppWorldAthletics extends JFrame{
     private JTextField adicionarEventoDataInicio;
     private JTextField adicionarEventoDataFim;
     private JTextField adicionarEventoLocal;
-    private JTextField adicionarEventoPais;
+    private JComboBox<Pais> adicionarEventoPais;
     private JComboBox selecionarProvaAdicionarEvento;
     private JButton botaoAdicionarProvaAdicionarEvento;
     private JButton botaoRemoverProvaAdicionarEvento;
@@ -148,6 +150,7 @@ public class AppWorldAthletics extends JFrame{
     private final ArrayList<Evento> listaEventos = new ArrayList<>();
     private final ArrayList<Prova> listaProvasEvento = new ArrayList<>();
     private Evento eventoSelecionado = null;
+    private Map<String, Float> listaMinimosProvas = new HashMap<>();
 
     //Gerir Provas
     private final ArrayList<Prova> listaProvas = new ArrayList<>();
@@ -191,6 +194,18 @@ public class AppWorldAthletics extends JFrame{
         botaoAdicionarProvaAdicionarEvento.addActionListener(this::botaoAdicionarProvaActionPerformed);
         botaoRemoverProvaAdicionarEvento.addActionListener(this::botaoRemoverProvaActionPerformed);
         botaoOkAdicionarEvento.addActionListener(this::botaoOkAdicionarEventoActionPerformed);
+        gerirEventosLista.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                eventoSelecionado = (Evento) gerirEventosLista.getSelectedValue();
+                gerirEventosNome.setText(eventoSelecionado.getNome());
+                gerirEventosDataInicio.setText(eventoSelecionado.getDataInicio().toString());
+                gerirEventosDataFim.setText(eventoSelecionado.getDataFim().toString());
+                gerirEventosLocal.setText(eventoSelecionado.getLocal());
+                gerirEventosPais.setText(eventoSelecionado.getPais());
+            }
+        });
 
         //Gerir Atletas
         botaoAdicionarAtleta.addActionListener(this::botaoAdicionarAtletaActionPerformed);
@@ -246,7 +261,6 @@ public class AppWorldAthletics extends JFrame{
 
         cardLayoutNormalPages.show(PainelPrincipal, "cardMenuPrincipal");
 
-
     }
 
     //------------------------------ MENU LATERAL/INICIAL ------------------------------
@@ -278,7 +292,7 @@ public class AppWorldAthletics extends JFrame{
         adicionarEventoDataInicio.setText("");
         adicionarEventoDataFim.setText("");
         adicionarEventoLocal.setText("");
-        adicionarEventoPais.setText("");
+        adicionarEventoPais.setModel(new DefaultComboBoxModel(Pais.values()));
         selecionarProvaAdicionarEvento.setModel(new DefaultComboBoxModel(listaProvas.toArray()));
 
         cardLayoutNormalPages.show(PainelPrincipal, "cardAdicionarEvento");
@@ -301,12 +315,19 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private void botaoAdicionarProvaActionPerformed(ActionEvent actionEvent) {
-        if(listaProvasEvento.contains((Prova) selecionarProvaAdicionarEvento.getSelectedItem())) {
-            JOptionPane.showMessageDialog(new JFrame(), "Prova já adicionada!");
+        String input = JOptionPane.showInputDialog(new JFrame(), "Insira os minimos:");
+        if(input != null && !input.isEmpty()) {
+            if(listaProvasEvento.contains((Prova) selecionarProvaAdicionarEvento.getSelectedItem())) {
+                JOptionPane.showMessageDialog(new JFrame(), "Prova já adicionada!");
+            }
+            else {
+                Prova provaToAdd = (Prova) selecionarProvaAdicionarEvento.getSelectedItem();
+                listaProvasEvento.add(provaToAdd);
+                float minimo = Float.parseFloat(input);
+                listaMinimosProvas.put(provaToAdd.getNome(), minimo);
+            }
         }
-        else {
-            listaProvasEvento.add((Prova) selecionarProvaAdicionarEvento.getSelectedItem());
-        }
+
     }
 
     private void botaoRemoverProvaActionPerformed(ActionEvent actionEvent) {
@@ -319,43 +340,34 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private void botaoOkAdicionarEventoActionPerformed(ActionEvent actionEvent) {
-        if (verifyEvent(adicionarEventoNome.getText(), adicionarEventoDataInicio.getText(), adicionarEventoDataFim.getText(), adicionarEventoLocal.getText(), adicionarEventoPais.getText())) {
-            Evento evento = new Evento(adicionarEventoNome.getText(), Data.parse(adicionarEventoDataInicio.getText()), Data.parse(adicionarEventoDataFim.getText()), adicionarEventoLocal.getText(), adicionarEventoPais.getText());
+        if (verifyEvent(adicionarEventoNome.getText(), adicionarEventoDataInicio.getText(), adicionarEventoDataFim.getText(), adicionarEventoLocal.getText(), adicionarEventoPais.getSelectedItem())) {
+            Evento evento = new Evento(adicionarEventoNome.getText(), Data.parse(adicionarEventoDataInicio.getText()), Data.parse(adicionarEventoDataFim.getText()), adicionarEventoLocal.getText(), (Pais) adicionarEventoPais.getSelectedItem());
             for (Prova prova : listaProvasEvento) {
                 evento.adicionarProva(prova);
             }
             listaEventos.add(evento);
+            evento.inserirMinimos(listaMinimosProvas);
 
             buildGerirEventosList();
         }
     }
 
-    private boolean verifyEvent(String nome, String dataInicio, String dataFim, String local, String pais) {
-        if (nome.isEmpty()) {
-            JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher o nome!");
-        } else if(dataInicio.isEmpty()) {
-            JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher a data de ínicio!");
+    private boolean verifyEvent(String nome, String dataInicio, String dataFim, String local, Object pais) {
+        if (nome.isEmpty() || dataInicio.isEmpty() || dataFim.isEmpty() || local.isEmpty() || pais == null) {
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher todos os campos!");
         } else {
             Data data = null;
             try {
                 data = Data.parse(dataInicio);
-                if (dataFim.isEmpty()) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher a data de fim!");
-                } else {
-                    try {
-                        data = Data.parse(dataFim);
-                        if (local.isEmpty()) {
-                            JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher o local do evento!");
-                        } else if (pais.isEmpty()) {
-                            JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher o país do evento!");
-                        } else if (listaProvasEvento.isEmpty()) {
-                            JOptionPane.showMessageDialog(new JFrame(), "Tem de adicionar provas ao evento!");
-                        } else {
-                            return true;
-                        }
-                    } catch (Exception e) {
-                        JOptionPane.showMessageDialog(new JFrame(), "Data tem de ser no formato dd/mm/yyyy");
+                try {
+                    data = Data.parse(dataFim);
+                    if (listaProvasEvento.isEmpty()) {
+                        JOptionPane.showMessageDialog(new JFrame(), "Tem de adicionar provas ao evento!");
+                    } else {
+                        return true;
                     }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Data tem de ser no formato dd/mm/yyyy");
                 }
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(new JFrame(), "Data tem de ser no formato dd/mm/yyyy");

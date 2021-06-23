@@ -1,23 +1,24 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Evento {
     private String nome;
     private Data dataInicio;
     private Data dataFim;
     private String local;
-    private String país;
+    private Pais pais;
     private ArrayList<Prova> listaProvas;
+    private Map<String, Float> listaMinimosProvas;
 
-    public Evento() {
-        this.listaProvas = new ArrayList<>();
-    }
-
-    public Evento(String nome, Data dataInicio, Data dataFim, String local, String país) {
+    public Evento(String nome, Data dataInicio, Data dataFim, String local, Pais pais) {
         this.nome = nome;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
         this.local = local;
-        this.país = país;
+        this.pais = pais;
+        this.listaProvas = new ArrayList<>();
+        this.listaMinimosProvas = new HashMap<>();
     }
 
     public String getNome() {
@@ -36,8 +37,8 @@ public class Evento {
         return local;
     }
 
-    public String getPaís() {
-        return país;
+    public String getPais() {
+        return pais.toString();
     }
 
     public ArrayList<Prova> getListaProvas() {
@@ -60,8 +61,8 @@ public class Evento {
         this.local = local;
     }
 
-    public void setPaís(String país) {
-        this.país = país;
+    public void setPais(Pais pais) {
+        this.pais = pais;
     }
 
     public void adicionarProva(Prova prova) {
@@ -74,5 +75,20 @@ public class Evento {
 
     public boolean isProvaAdicionada(Prova prova) {
         return  listaProvas.contains(prova);
+    }
+
+    public void inserirMinimos(Map<String, Float> minimos) {
+        this.listaMinimosProvas.putAll(minimos);
+    }
+
+    public Float getMinimosProva(String prova) {
+        if(this.listaMinimosProvas.containsKey(prova)) {
+            return this.listaMinimosProvas.get(prova);
+        }
+        return null;
+    }
+
+    public String toString(){
+        return  this.nome;
     }
 }
