@@ -50,7 +50,7 @@ public class AppWorldAthletics extends JFrame{
     private JPanel atletasPorProva;
     private JPanel registarResultadoProva;
     private JPanel resultadosFinaisProva;
-    private JPanel recordesProva;
+    private JPanel RecordesProva;
     private JList gerirEventosLista;
     private JTextField gerirEventosPais;
     private JTextField gerirEventosLocal;
@@ -78,8 +78,8 @@ public class AppWorldAthletics extends JFrame{
     private JButton botaoAdicionarProvaEditarEvento;
     private JButton botaoRemoverProvaEditarEvento;
     private JButton botaoImportarProvas;
-    private JButton button2;
-    private JButton button3;
+    private JButton buttonRegistarResultado;
+    private JButton buttonRecordesMundiais;
     private JButton botaoCriarProva;
     private JButton botaoEliminarProva;
     private JButton botaoEditarProva;
@@ -135,12 +135,18 @@ public class AppWorldAthletics extends JFrame{
     private JTable table2;
     private JTable tabelaHistorico;
     private JScrollPane scrollAtletas;
+
     private JButton botaoVoltar;
     private JTextField editarEventoNome;
     private JTextField editarEventoDataInicio;
     private JTextField editarEventoDataFim;
     private JTextField editarEventoLocal;
     private JTextField editarEventoPais;
+
+    private JButton buttonVoltarRecordesProva;
+    private JTable RecordesMundiaisTable;
+
+
 
     private CardLayout cardLayoutGerir;
     private CardLayout cardLayoutNormalPages;
@@ -261,9 +267,47 @@ public class AppWorldAthletics extends JFrame{
 
         cardLayoutNormalPages.show(PainelPrincipal, "cardMenuPrincipal");
 
+
+        buttonVoltarRecordesProva.addActionListener(this::botaoGerirEventosActionPerformed);
+        buttonRecordesMundiais.addActionListener(this::buttonRecordesMundiaisActionPerformed);
+        buttonRegistarResultado.addActionListener(this::buttonRegistarResultadoActionPerformed);
+
+
     }
 
     //------------------------------ MENU LATERAL/INICIAL ------------------------------
+
+    private void buttonRegistarResultadoActionPerformed(ActionEvent actionEvent)
+    {
+        if(selecionarProvaAdicionarEvento.getSelectedItem() != null && listaProvasEvento.contains((Prova)selecionarProvaAdicionarEvento.getSelectedItem()))
+        {
+
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar uma Prova!");
+            return;
+        }
+
+    }
+
+
+    private void buttonRecordesMundiaisActionPerformed(ActionEvent actionEvent)
+    {
+        for (Prova p : listaProvas) {
+            if(prova.Resultado)
+            {
+
+            }
+
+
+        }
+
+        RecordesMundiaisTable.setModel(new DefaultTableModel(null,new String[]{"Prova","Marca" ,"Atleta", "País"}));
+
+
+        cardLayoutNormalPages.show(PainelPrincipal, "cardRecordesProva");
+    }
 
     private void botaoGerirEventosActionPerformed(ActionEvent e) {
         buildGerirEventosList();
@@ -286,6 +330,8 @@ public class AppWorldAthletics extends JFrame{
     }
 
     //------------------------------ GERIR EVENTOS ------------------------------
+
+
 
     private void botaoAdicionarEventoActionPerformed(ActionEvent actionEvent) {
         adicionarEventoNome.setText("");

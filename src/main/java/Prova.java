@@ -2,11 +2,20 @@ public class Prova {
     private String nome;
     private String sexoParticipantes;
     private String Tipopontuacao;
+    private int duracao;
+    private int maxParticipantes;
 
     public Prova(String nome, String sexoParticipantes, String pontuacao) {
         this.nome = nome;
         this.sexoParticipantes = sexoParticipantes;
         this.Tipopontuacao = pontuacao;
+    }
+    public Prova(String nome, String sexoParticipantes, String pontuacao, int duracao,int maxParticipantes) {
+        this.nome = nome;
+        this.sexoParticipantes = sexoParticipantes;
+        this.Tipopontuacao = pontuacao;
+        this.duracao = duracao;
+        this.maxParticipantes = maxParticipantes;
     }
 
     public String getNome() {
@@ -31,6 +40,18 @@ public class Prova {
 
     public void setTipoPontuacao(String pontuacao) {
         this.Tipopontuacao = pontuacao;
+    }
+
+    public int getDuracao() {
+        return duracao;
+    }
+
+    public int getMaxParticipantes() {
+        return maxParticipantes;
+    }
+
+    public String getTipopontuacao() {
+        return Tipopontuacao;
     }
 
     public String toString(){
