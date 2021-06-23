@@ -74,12 +74,16 @@ public class Evento {
     }
 
     public void adicionarProva(Prova prova) {
-        this.listaProvas.add(prova);
+        listaProvas.add(prova);
+        listaAtletasPorProva.put(prova, new ArrayList<Atleta>());
+        listaEtapasPorProva.put(prova, new ArrayList<EtapaProva>());
     }
 
     public void removerProva(Prova prova) {
-        this.listaProvas.remove(prova);
+        listaProvas.remove(prova);
         listaMinimosProvas.remove(prova.getNome());
+        listaAtletasPorProva.remove(prova);
+        listaEtapasPorProva.remove(prova);
     }
 
     public boolean isProvaAdicionada(Prova prova) {
