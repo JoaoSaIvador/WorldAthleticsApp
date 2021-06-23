@@ -629,12 +629,14 @@ public class AppWorldAthletics extends JFrame{
         Atleta atleta = listaAtletas.get(atletaSelecionado);
 
         if (verifyIncricao(atleta, (Evento) listInscricaoEvento.getSelectedItem(), (Prova) listInscricaoProva.getSelectedItem(), textMarcaAlcancada.getText())){
-            Inscricao inscricao = new Inscricao((Prova) listInscricaoProva.getSelectedItem(), (Evento) listInscricaoEvento.getSelectedItem(), atleta);
+            Evento evento = (Evento) listInscricaoEvento.getSelectedItem();
+            Prova prova = (Prova) listInscricaoProva.getSelectedItem();
+            Inscricao inscricao = new Inscricao(prova, evento, atleta);
             listaAtletas.get(atletaSelecionado).inscrever(inscricao);
+            evento.getAtletasProva(prova).add(atleta);
 
             JOptionPane.showMessageDialog(new JFrame(), "Atleta inscrito com sucesso!");
             buildGerirAtletaList();
-
         }
     }
 
@@ -647,8 +649,12 @@ public class AppWorldAthletics extends JFrame{
         }
         Atleta atleta = listaAtletas.get(atletaSelecionado);
         Inscricao inscricao = atleta.getListaInscricoes().get(posicaoInscricao);
+        Evento evento = inscricao.getEvento();
+        Prova prova = inscricao.getProva();
+        
         String oldInscricaoProvaNome = inscricao.getProva().getNome();
         atleta.desinscrever(inscricao);
+        evento.getAtletasProva(prova).remove(atleta);
 
         JOptionPane.showMessageDialog(new JFrame(), "Inscrição do alteta na prova " + oldInscricaoProvaNome + " anulada com sucesso!");
         buildGerirAtletaList();
