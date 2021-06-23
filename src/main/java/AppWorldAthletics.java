@@ -65,17 +65,16 @@ public class AppWorldAthletics extends JFrame{
     private JTextField adicionarEventoDataFim;
     private JTextField adicionarEventoLocal;
     private JTextField adicionarEventoPais;
-    private JComboBox selecionarProva;
-    private JButton botaoAdicionarProva;
-    private JButton botaoRemoverProva;
+    private JComboBox selecionarProvaAdicionarEvento;
+    private JButton botaoAdicionarProvaAdicionarEvento;
+    private JButton botaoRemoverProvaAdicionarEvento;
     private JButton botaoOkAdicionarEvento;
     private JButton botaoCancelarCriarEvento;
-    private JButton botaoOk2;
+    private JButton botaoOkEditarEvento;
     private JButton botaoCancelarEditarEvento;
-    private JComboBox selecionarProva3;
-    private JComboBox selecionarProva4;
-    private JButton botaoAdicionar2;
-    private JButton botaoRemover2;
+    private JComboBox selecionarProvaEditarEvento;
+    private JButton botaoAdicionarProvaEditarEvento;
+    private JButton botaoRemoverProvaEditarEvento;
     private JButton botaoImportarProvas;
     private JButton button2;
     private JButton button3;
@@ -135,6 +134,11 @@ public class AppWorldAthletics extends JFrame{
     private JTable tabelaHistorico;
     private JScrollPane scrollAtletas;
     private JButton botaoVoltar;
+    private JTextField editarEventoNome;
+    private JTextField editarEventoDataInicio;
+    private JTextField editarEventoDataFim;
+    private JTextField editarEventoLocal;
+    private JTextField editarEventoPais;
 
     private CardLayout cardLayoutGerir;
     private CardLayout cardLayoutNormalPages;
@@ -184,8 +188,8 @@ public class AppWorldAthletics extends JFrame{
         botaoCancelarCriarEvento.addActionListener(this::botaoGerirEventosActionPerformed);
         botaoCancelarEditarEvento.addActionListener(this::botaoGerirEventosActionPerformed);
         botaoVoltarProgramaEvento.addActionListener(this::botaoGerirEventosActionPerformed);
-        botaoAdicionarProva.addActionListener(this::botaoAdicionarProvaActionPerformed);
-        botaoRemoverProva.addActionListener(this::botaoRemoverProvaActionPerformed);
+        botaoAdicionarProvaAdicionarEvento.addActionListener(this::botaoAdicionarProvaActionPerformed);
+        botaoRemoverProvaAdicionarEvento.addActionListener(this::botaoRemoverProvaActionPerformed);
         botaoOkAdicionarEvento.addActionListener(this::botaoOkAdicionarEventoActionPerformed);
 
         //Gerir Atletas
@@ -275,7 +279,7 @@ public class AppWorldAthletics extends JFrame{
         adicionarEventoDataFim.setText("");
         adicionarEventoLocal.setText("");
         adicionarEventoPais.setText("");
-        selecionarProva.setModel(new DefaultComboBoxModel(listaProvas.toArray()));
+        selecionarProvaAdicionarEvento.setModel(new DefaultComboBoxModel(listaProvas.toArray()));
 
         cardLayoutNormalPages.show(PainelPrincipal, "cardAdicionarEvento");
     }
@@ -297,20 +301,20 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private void botaoAdicionarProvaActionPerformed(ActionEvent actionEvent) {
-        if(listaProvasEvento.contains((Prova) selecionarProva.getSelectedItem())) {
+        if(listaProvasEvento.contains((Prova) selecionarProvaAdicionarEvento.getSelectedItem())) {
             JOptionPane.showMessageDialog(new JFrame(), "Prova já adicionada!");
         }
         else {
-            listaProvasEvento.add((Prova) selecionarProva.getSelectedItem());
+            listaProvasEvento.add((Prova) selecionarProvaAdicionarEvento.getSelectedItem());
         }
     }
 
     private void botaoRemoverProvaActionPerformed(ActionEvent actionEvent) {
-        if(!listaProvasEvento.contains((Prova) selecionarProva.getSelectedItem())) {
+        if(!listaProvasEvento.contains((Prova) selecionarProvaAdicionarEvento.getSelectedItem())) {
             JOptionPane.showMessageDialog(new JFrame(), "O evento não tem esta prova!");
         }
         else {
-            listaProvasEvento.remove((Prova) selecionarProva.getSelectedItem());
+            listaProvasEvento.remove((Prova) selecionarProvaAdicionarEvento.getSelectedItem());
         }
     }
 
