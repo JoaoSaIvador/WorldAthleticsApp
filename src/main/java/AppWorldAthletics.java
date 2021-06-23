@@ -5,10 +5,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
@@ -153,6 +151,7 @@ public class AppWorldAthletics extends JFrame{
     private JTextField maxParticipantesCriarProva;
     private JTextField maxParticipantesEditarProva;
     private JTextField duracaoEditarProva;
+
     private CardLayout cardLayoutGerir;
     private CardLayout cardLayoutNormalPages;
     private final JPanel[] elementos = {elementoGerirEventos, elementoGerirAtletas, elementoGerirProvas, elementoTopMedalhados};
