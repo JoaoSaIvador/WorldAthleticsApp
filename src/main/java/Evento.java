@@ -10,6 +10,8 @@ public class Evento {
     private Pais pais;
     private ArrayList<Prova> listaProvas;
     private Map<String, Float> listaMinimosProvas;
+    private Map<Prova, ArrayList<Atleta>> listaAtletasPorProva;
+    private Map<Prova, ArrayList<EtapaProva>> listaEtapasPorProva;
 
     public Evento(String nome, Data dataInicio, Data dataFim, String local, Pais pais) {
         this.nome = nome;
@@ -17,8 +19,10 @@ public class Evento {
         this.dataFim = dataFim;
         this.local = local;
         this.pais = pais;
-        this.listaProvas = new ArrayList<>();
-        this.listaMinimosProvas = new HashMap<>();
+        this.listaProvas = new ArrayList<Prova>();
+        this.listaMinimosProvas = new HashMap<String, Float>();
+        this.listaAtletasPorProva = new HashMap<Prova, ArrayList<Atleta>>();
+        this.listaEtapasPorProva = new HashMap<Prova, ArrayList<EtapaProva>>();
     }
 
     public String getNome() {
@@ -43,6 +47,10 @@ public class Evento {
 
     public ArrayList<Prova> getListaProvas() {
         return listaProvas;
+    }
+
+    public Map<Prova, ArrayList<Atleta>> getListaAtletasPorProva() {
+        return listaAtletasPorProva;
     }
 
     public void setNome(String nome) {
@@ -91,6 +99,10 @@ public class Evento {
             return this.listaMinimosProvas.get(prova);
         }
         return null;
+    }
+
+    public ArrayList<Atleta> getAtletasProva(Prova prova) {
+        return listaAtletasPorProva.get(prova);
     }
 
     public String toString(){
