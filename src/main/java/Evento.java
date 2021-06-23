@@ -109,6 +109,10 @@ public class Evento {
         return listaAtletasPorProva.get(prova);
     }
 
+    public ArrayList<EtapaProva> getEtapasProvas(Prova prova) {
+        return listaEtapasPorProva.get(prova);
+    }
+
     public String toString(){
         return  this.nome;
     }
