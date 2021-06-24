@@ -733,13 +733,18 @@ public class AppWorldAthletics extends JFrame{
                         for (String parameter: s.split("#")){
                             parameters.add(parameter);
                         }
+                        System.out.println(parameters);
                         if (parameters.size() != 5){
-                            JOptionPane.showMessageDialog(new JFrame(), "Linha não possui todos os dados necessários para importar", "Erro", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(new JFrame(), "O ficheiro não possui todos os dados necessários para importar", "Erro", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
                         if (verifyAtleta(parameters.get(0), parameters.get(1), parameters.get(2), parameters.get(3), parameters.get(4))){
-                            Atleta atleta = new Atleta(parameters.get(0), SexoParticipantes.valueOf(parameters.get(1)), Data.parse(parameters.get(2)),Pais.valueOf(parameters.get(3)) ,Long.parseLong(parameters.get(4)));
+                            Atleta atleta = new Atleta(parameters.get(0), SexoParticipantes.valueOf(parameters.get(3).toUpperCase()), Data.parse(parameters.get(1)),Pais.valueOf(parameters.get(4).toUpperCase()) ,Long.parseLong(parameters.get(2)));
                             listaAtletas.add(atleta);
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(new JFrame(), "Importação falhada", "Erro", JOptionPane.ERROR_MESSAGE);
+                            return;
                         }
                         JOptionPane.showMessageDialog(new JFrame(), "Importação concluida");
                         buildGerirAtletaList();
@@ -763,14 +768,25 @@ public class AppWorldAthletics extends JFrame{
                         for (String parameter: s.split("#")){
                             parameters.add(parameter);
                         }
-//                        if (parameters.size() != 5){
-//                            JOptionPane.showMessageDialog(new JFrame(), "Linha não possui todos os dados necessários para importar", "Erro", JOptionPane.ERROR_MESSAGE);
-//                            return;
-//                        }
-//                        if (verifyAtleta(parameters.get(0), parameters.get(1), parameters.get(2), parameters.get(3), parameters.get(4))){
-//                            Atleta atleta = new Atleta(parameters.get(0), SexoParticipantes.valueOf(parameters.get(1)), Data.parse(parameters.get(2)),Pais.valueOf(parameters.get(3)) ,Long.parseLong(parameters.get(4));
-//                            listaAtletas.add(atleta);
-//                        }
+                        if (parameters.size() != 3){
+                            JOptionPane.showMessageDialog(new JFrame(), "O ficheiro não possui todos os dados necessários para importar", "Erro", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        for (Evento evento : listaEventos) {
+                            if (evento.getNome().equals(parameters.get(0))){
+                                ArrayList<Prova> provas = evento.getListaProvas();
+                                for (Prova prova : provas) {
+                                    if (prova.getNome().equals(parameters.get(1))){
+                                        for (Atleta atleta : listaAtletas) {
+                                            if (atleta.getNome().equals(parameters.get(2))){
+                                                atleta.inscrever(new Inscricao(prova, evento ,atleta));
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
                         JOptionPane.showMessageDialog(new JFrame(), "Importação concluida");
                         buildGerirAtletaList();
                     }
