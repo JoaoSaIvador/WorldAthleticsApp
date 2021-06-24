@@ -729,7 +729,6 @@ public class AppWorldAthletics extends JFrame{
                         for (String parameter: s.split("#")){
                             parameters.add(parameter);
                         }
-                        System.out.println(parameters);
                         if (parameters.size() != 5){
                             JOptionPane.showMessageDialog(new JFrame(), "O ficheiro não possui todos os dados necessários para importar", "Erro", JOptionPane.ERROR_MESSAGE);
                             return;
