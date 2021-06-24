@@ -133,7 +133,6 @@ public class AppWorldAthletics extends JFrame{
     private JTextField textEditarContacto;
     private JTable tabelaRecordePessoal;
     private JButton botaoVoltarMelhorTempo;
-    private JTable table2;
     private JTable tabelaHistorico;
     private JButton buttonVoltarRecordesProva;
     private JTable RecordesMundiaisTable;
@@ -156,6 +155,14 @@ public class AppWorldAthletics extends JFrame{
     private JTable tabelaProgramaEvento;
     private JScrollPane scrollPrograma;
     private JScrollPane scrollTopMedalhados;
+    private JScrollPane provaPorAtletaTable;
+
+    private JTable tableProvasAlteta;
+    private JTextField resultadoNomeAtleta;
+    private JTextField Resultado;
+    private JButton buttonGuardarResultado;
+    private JTextField resultadoValor;
+    private JButton voltarButtonRegistarResultado;
 
     private CardLayout cardLayoutGerir;
     private CardLayout cardLayoutNormalPages;
@@ -170,6 +177,8 @@ public class AppWorldAthletics extends JFrame{
     //Gerir Provas
     private ArrayList<Prova> listaProvas = new ArrayList<>();
     private Prova provaSelecionada = null;
+
+    private Prova ultimaProvaSelcionada;
 
     //Gerir Atletas
     private final ArrayList<Atleta> listaAtletas = new ArrayList<>();
@@ -195,6 +204,8 @@ public class AppWorldAthletics extends JFrame{
         botaoGerirAtletasMI.addActionListener(this::botaoGerirAtletasActionPerformed);
         botaoGerirProvasMI.addActionListener(this::botaoGerirProvasActionPerformed);
         botaoTopMedalhadosMI.addActionListener(this::botaoTopMedalhadosActionPerformed);
+
+        voltarButtonRegistarResultado.addActionListener(this::botaoGerirProvasActionPerformed);
 
         //Gerir Eventos
         botaoAdicionarEvento.addActionListener(this::botaoAdicionarEventoActionPerformed);
@@ -234,6 +245,7 @@ public class AppWorldAthletics extends JFrame{
         botaoProvasPorAtleta.addActionListener(this::botaoProvasPorAtletaActionPerformed);
         botaoConsultarHistorico.addActionListener(this::botaoConsultarHistoricoActionPerformed);
         botaoMelhorTempo.addActionListener(this::botaoMelhorTempoActionPerformed);
+        buttonGuardarResultado.addActionListener(this::buttonGuardarResultadoActionPerformed);
 
         ///     Adicionar Atleta
         botaoCriarAtleta.addActionListener(this::botaoCriarAtletaActionPerformed);
@@ -291,6 +303,11 @@ public class AppWorldAthletics extends JFrame{
 
     private void botaoGerirEventosActionPerformed(ActionEvent e) {
         buildGerirEventosList();
+    }
+
+    private void voltarButtonRegistarResultadoActionPerformed(ActionEvent e)
+    {
+
     }
 
     private void botaoGerirAtletasActionPerformed(ActionEvent e) { buildGerirAtletaList(); }
@@ -766,6 +783,20 @@ public class AppWorldAthletics extends JFrame{
         }
         Atleta atleta = listaAtletas.get(atletaSelecionado);
 
+        ArrayList<Inscricao> i = atleta.getListaInscricoes();
+        long ninsc = atleta.getnInscricoes();
+        if(ninsc > 50)
+        {
+            ninsc=50;
+        }
+        Object row[][] = new Object[50][2];
+        for(int o=0;o<ninsc;o++)
+        {
+            row[o][0] = i.get(o).getProva();
+            row[o][1]= i.get(o).getEvento();
+        }
+
+        tableProvasAlteta.setModel(new DefaultTableModel(row, new String[]{"Prova", "Evento"}));
         cardLayoutNormalPages.show(PainelPrincipal, "cardProvasAtleta");
     }
 
@@ -1065,20 +1096,65 @@ public class AppWorldAthletics extends JFrame{
 
     //------------------------------ RESULTADOS --------------------------------------
 
-    private void buttonRegistarResultadoActionPerformed(ActionEvent actionEvent) {
-        if (selecionarProvaAdicionarEvento.getSelectedItem() != null && listaProvasEvento.contains((Prova) selecionarProvaAdicionarEvento.getSelectedItem())) {
-
-        } else {
-            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar uma Prova!");
+    private void buttonRegistarResultadoActionPerformed(ActionEvent actionEvent)
+    {
+        if(provaSelecionada != null)
+        {
+            cardLayoutNormalPages.show(PainelPrincipal, "cardRegistarResultadoProva");
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar uma  d!");
             return;
         }
     }
 
+    private void buttonGuardarResultadoActionPerformed(ActionEvent actionEvent)
+    {
+        if(provaSelecionada == null) {
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar uma prova!");
+        }
+        else
+        {
+            for (Atleta a: listaAtletas)
+            {
+                if(resultadoNomeAtleta.getText().toString().equals(a.getNome()))
+                {
+                    for(Inscricao i : a.getListaInscricoes())
+                    {
+                        if(provaSelecionada.getNome().equals(i.getProva().getNome()))
+                        {
+                            i.setResultado(Float.parseFloat( resultadoValor.getText()));
+                            JOptionPane.showMessageDialog(new JFrame(), "Atleta  Encontrado!");
+                            cardLayoutGerir.show(conteudoGerir, "cardGerirProvas");
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+        JOptionPane.showMessageDialog(new JFrame(), "Atleta Nao Encontrado!");
+    }
+
+    private void buttonAtletaPorProva(ActionEvent actionEvent)
+    {
+        if(ultimaProvaSelcionada == null) {
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar uma prova!");
+        }
+        else
+        {
+
+        }
+    }
+
+
     private void buttonRecordesMundiaisActionPerformed(ActionEvent actionEvent) {
-        for (Prova p : listaProvas) {
-//                if (p.Resultado) {
-//
-//                }
+
+        for (Atleta a : listaAtletas) {
+            for(Inscricao i : a.getListaInscricoes())
+            {
+
+            }
         }
         RecordesMundiaisTable.setModel(new DefaultTableModel(null, new String[]{"Prova", "Marca", "Atleta", "País"}));
         cardLayoutNormalPages.show(PainelPrincipal, "cardRecordesProva");
