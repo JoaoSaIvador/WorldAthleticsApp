@@ -413,21 +413,25 @@ public class AppWorldAthletics extends JFrame{
 
     private void botaoVerProgramaActionPerformed(ActionEvent actionEvent) {
 
-        DefaultTableModel tableModel = new DefaultTableModel();
-        tableModel.addColumn("Hora");
-        tableModel.addColumn("Género");
-        tableModel.addColumn("Prova");
-        tableModel.addColumn("Ronda");
+        if(eventoSelecionado == null) {
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar um evento!");
+        } else {
+            DefaultTableModel tableModel = new DefaultTableModel();
+            tableModel.addColumn("Hora");
+            tableModel.addColumn("Género");
+            tableModel.addColumn("Prova");
+            tableModel.addColumn("Ronda");
 
-        //TODO
-        for (Prova prova: eventoSelecionado.getListaProvas()) {
-            String data[] = {"", prova.getSexoParticipantes(), prova.getNome(), ""};
-            tableModel.addRow(data);
+            //TODO
+            for (Prova prova: eventoSelecionado.getListaProvas()) {
+                String data[] = {"", prova.getSexoParticipantes(), prova.getNome(), ""};
+                tableModel.addRow(data);
+            }
+            tabelaProgramaEvento.setModel(tableModel);
+            scrollPrograma.setViewportView(tabelaProgramaEvento);
+
+            cardLayoutNormalPages.show(PainelPrincipal, "cardProgramaEvento");
         }
-        tabelaProgramaEvento.setModel(tableModel);
-        scrollPrograma.setViewportView(tabelaProgramaEvento);
-
-        cardLayoutNormalPages.show(PainelPrincipal, "cardProgramaEvento");
     }
 
     private void botaoImportarEventosActionPerformed(ActionEvent actionEvent) {
@@ -443,7 +447,7 @@ public class AppWorldAthletics extends JFrame{
                         parameters.add(parameter);
                     }
                     try {
-                        Pais.valueOf(parameters.get(4));
+                        verifyEvent(parameters.get(0), parameters.get(1), parameters.get(2), parameters.get(3), Pais.valueOf(parameters.get(4)));
                         listaEventos.add(new Evento(parameters.get(0), Data.parse(parameters.get(1)), Data.parse(parameters.get(2)), parameters.get(3), Pais.valueOf(parameters.get(4))));
                     } catch(IllegalArgumentException e) {
                         JOptionPane.showMessageDialog(null, "Dados inválidos!");

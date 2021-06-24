@@ -2,13 +2,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-public class EventTestCase {
-    @Test
-    public void testCreateEvent() {
-        var evento = new Evento("evento1", Data.parse("20/12/2020"), Data.parse("20/12/2021"), "local1", Pais.PORTUGAL);
-
-    }
-
+public class AtletaTestCase {
     @Test
     public void testCreateAtleta(){
         var atleta = new Atleta("atleta1", SexoParticipantes.MASCULINO, Data.parse("20/06/2020"), Pais.ESTADOS_UNIDOS, 123456789);
