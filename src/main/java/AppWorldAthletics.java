@@ -163,6 +163,8 @@ public class AppWorldAthletics extends JFrame{
     private JButton buttonGuardarResultado;
     private JTextField resultadoValor;
     private JButton voltarButtonRegistarResultado;
+    private JTable atletasProvaTable;
+    private JButton buttonAtletaPorProva;
 
     private CardLayout cardLayoutGerir;
     private CardLayout cardLayoutNormalPages;
@@ -208,6 +210,7 @@ public class AppWorldAthletics extends JFrame{
         voltarButtonRegistarResultado.addActionListener(this::botaoGerirProvasActionPerformed);
 
         //Gerir Eventos
+        buttonAtletaPorProva.addActionListener(this::buttonAtletaPorProvaActionPerformed);
         botaoAdicionarEvento.addActionListener(this::botaoAdicionarEventoActionPerformed);
         botaoEditarEvento.addActionListener(this::botaoEditarEventoActionPerformed);
         botaoRemoverEvento.addActionListener(this::botaoRemoverEventoActionPerformed);
@@ -1140,13 +1143,40 @@ public class AppWorldAthletics extends JFrame{
         JOptionPane.showMessageDialog(new JFrame(), "Atleta Nao Encontrado!");
     }
 
-    private void buttonAtletaPorProva(ActionEvent actionEvent)
+    private void buttonAtletaPorProvaActionPerformed(ActionEvent actionEvent)
     {
-        if(ultimaProvaSelcionada == null) {
+        if(provaSelecionada == null) {
             JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar uma prova!");
         }
         else
         {
+           for(Evento e :  listaEventos)
+           {
+               for(Prova p : e.getListaProvas())
+               {
+                   if(p.getNome().equals(provaSelecionada.getNome()))
+                   {
+                        Object row[][] = new Object[50][3];
+                        int nAtleta=0;
+                       for(Atleta a : e.getAtletasProva(p)) {
+                           row[nAtleta][0] = a.getNome();
+                           row[nAtleta][1] = a.getPais();
+                           for(Inscricao i : a.getListaInscricoes())
+                           {
+                               if(i.getProva().getNome().equals(p.getNome()))
+                               {
+                                   row[nAtleta][2] = i.getResultado();
+                               }
+                           }
+
+                           nAtleta++;
+                       }
+                       atletasProvaTable.setModel(new DefaultTableModel(row, new String[]{"Atleta", "País", "Resultado"}));
+                       cardLayoutNormalPages.show(PainelPrincipal, "cardAtletasPorProva");
+                       return;
+                   }
+               }
+           }
 
         }
     }
