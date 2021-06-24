@@ -324,12 +324,12 @@ public class AppWorldAthletics extends JFrame{
                 }
             }
         } else {
-            eventoSelecionado = (Evento) selecionarTopMedalhados.getSelectedItem();
-            for (Prova prova : eventoSelecionado.getListaProvas()) {
+            Evento evento = (Evento) selecionarTopMedalhados.getSelectedItem();
+            for (Prova prova : evento.getListaProvas()) {
                 for (Atleta atleta : listaAtletas) {
-                    if (!medalhasPorPais.containsKey(atleta.getPais()) && eventoSelecionado.getTopAtletasProva(prova).contains(atleta)) {
+                    if (!medalhasPorPais.containsKey(atleta.getPais()) && evento.getTopAtletasProva(prova).contains(atleta)) {
                         medalhasPorPais.put(atleta.getPais().toString(), 1);
-                    } else if(eventoSelecionado.getTopAtletasProva(prova).contains(atleta)) {
+                    } else if(evento.getTopAtletasProva(prova).contains(atleta)) {
                         int medalhas = medalhasPorPais.get(atleta.getPais());
                         medalhas += 1;
                         medalhasPorPais.put(atleta.getPais().toString(), medalhas);
