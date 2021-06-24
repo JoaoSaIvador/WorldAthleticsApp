@@ -1149,14 +1149,32 @@ public class AppWorldAthletics extends JFrame{
 
 
     private void buttonRecordesMundiaisActionPerformed(ActionEvent actionEvent) {
+        Object row[][] = new Object[50][4];
 
-        for (Atleta a : listaAtletas) {
-            for(Inscricao i : a.getListaInscricoes())
-            {
-
+        int count=0;
+        for (Prova p: listaProvas)
+        {
+            int melhorMarca=0;
+            for (Atleta a : listaAtletas) {
+                for(Inscricao i : a.getListaInscricoes())
+                {
+                    if(i.getProva().toString().equals(p.toString()))
+                    {
+                        if(melhorMarca < i.getResultado())
+                        {
+                            row[count][0]=i.getProva().toString();
+                            row[count][1]=melhorMarca;
+                            row[count][2]=i.getAtleta().toString();
+                            row[count][3]=i.getAtleta().getPais().toString();
+                        }
+                    }
+                }
             }
+            count++;
         }
-        RecordesMundiaisTable.setModel(new DefaultTableModel(null, new String[]{"Prova", "Marca", "Atleta", "País"}));
+
+
+        RecordesMundiaisTable.setModel(new DefaultTableModel(row, new String[]{"Prova", "Marca", "Atleta", "País"}));
         cardLayoutNormalPages.show(PainelPrincipal, "cardRecordesProva");
     }
 

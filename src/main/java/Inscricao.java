@@ -29,6 +29,10 @@ public class Inscricao {
         this.resultado = resultado;
     }
 
+    public float getResultado() {
+        return resultado;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
