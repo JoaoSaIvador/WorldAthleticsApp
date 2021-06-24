@@ -447,8 +447,9 @@ public class AppWorldAthletics extends JFrame{
                         parameters.add(parameter);
                     }
                     try {
-                        verifyEvent(parameters.get(0), parameters.get(1), parameters.get(2), parameters.get(3), Pais.valueOf(parameters.get(4)));
-                        listaEventos.add(new Evento(parameters.get(0), Data.parse(parameters.get(1)), Data.parse(parameters.get(2)), parameters.get(3), Pais.valueOf(parameters.get(4))));
+                        if (verifyEvent(parameters.get(0), parameters.get(1), parameters.get(2), parameters.get(3), Pais.valueOf(parameters.get(4)))) {
+                            listaEventos.add(new Evento(parameters.get(0), Data.parse(parameters.get(1)), Data.parse(parameters.get(2)), parameters.get(3), Pais.valueOf(parameters.get(4))));
+                        }
                     } catch(IllegalArgumentException e) {
                         JOptionPane.showMessageDialog(null, "Dados inválidos!");
                     }
