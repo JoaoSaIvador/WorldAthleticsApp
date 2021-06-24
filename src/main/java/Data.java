@@ -40,22 +40,6 @@ public class Data {
         return dataNascimento.equals(dataNascimento1);
     }
 
-    public static int compararDatas(Data data1, Data data2) {
-        if (data1.getAno() > data2.getAno()) {
-            return -1;
-        }
-
-        if (data1.getAno() == data2.getAno() && data1.getMes() > data2.getMes()) {
-            return -1;
-        }
-
-        if (data1.getAno() == data2.getAno() && data1.getMes() == data2.getMes() && data1.getDia() > data2.getDia()) {
-            return -1;
-        }
-
-        return 1;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

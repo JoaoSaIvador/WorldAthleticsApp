@@ -153,6 +153,8 @@ public class AppWorldAthletics extends JFrame{
     private JScrollPane scrollEventos;
     private JScrollPane scrollHistoricoAtleta;
     private JScrollPane scrollMelhorTempoAtleta;
+    private JTable tabelaProgramaEvento;
+    private JScrollPane scrollPrograma;
 
     private CardLayout cardLayoutGerir;
     private CardLayout cardLayoutNormalPages;
@@ -348,6 +350,14 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private void botaoVerProgramaActionPerformed(ActionEvent actionEvent) {
+
+        String[] colunas = {"Hora", "Género", "Prova", "Ronda"};
+        Object[][] dados = null;
+        //TODO
+
+        tabelaProgramaEvento = new JTable(dados, colunas);
+        scrollPrograma.setViewportView(tabelaProgramaEvento);
+
         cardLayoutNormalPages.show(PainelPrincipal, "cardProgramaEvento");
     }
 
@@ -458,13 +468,15 @@ public class AppWorldAthletics extends JFrame{
             LocalDate dt = LocalDate.now();
             try {
                 data1 = Data.parse(dataInicio);
-                if (data1.ano < dt.getYear() || data1.mes < dt.getMonthValue() || data1.dia < dt.getDayOfMonth()) {
+                if ((data1.ano < dt.getYear() && data1.mes < dt.getMonthValue() && data1.dia < dt.getDayOfMonth()) || data1.ano < dt.getYear() || (data1.ano < dt.getYear() && data1.mes < dt.getMonthValue()) || (data1.ano == dt.getYear() && data1.mes < dt.getMonthValue()) || (data1.ano == dt.getYear() && data1.mes == dt.getMonthValue() && data1.dia < dt.getDayOfMonth())) {
                     JOptionPane.showMessageDialog(new JFrame(), "Data de início inválida");
+                    return false;
                 }
                 try {
-                    Data.parse(dataFim);
-                    if (Data.compararDatas(data1, data2) == -1) {
+                    data2 = Data.parse(dataFim);
+                    if (data1.calendar.compareTo(data2.calendar) > 0) {
                         JOptionPane.showMessageDialog(new JFrame(), "Data de fim inválida!");
+                        return false;
                     }
                     if(eventoSelecionado == null) {
                         if (listaProvasEvento.isEmpty()) {
