@@ -896,8 +896,8 @@
                               <focusPainted value="false"/>
                               <font size="18"/>
                               <foreground color="-1"/>
-                              <label value="Ver lista de atletas"/>
-                              <text value="Ver lista de atletas"/>
+                              <label value="Ver atletas inscritos e resultados"/>
+                              <text value="Ver atletas inscritos e resultados"/>
                             </properties>
                           </component>
                         </children>

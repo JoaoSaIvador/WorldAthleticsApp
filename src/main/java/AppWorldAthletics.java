@@ -1152,14 +1152,22 @@ public class AppWorldAthletics extends JFrame{
                {
                    if(p.getNome().equals(provaSelecionada.getNome()))
                    {
-                        Object row[][] = new Object[50][2];
+                        Object row[][] = new Object[50][3];
                         int nAtleta=0;
                        for(Atleta a : e.getAtletasProva(p)) {
                            row[nAtleta][0] = a.getNome();
                            row[nAtleta][1] = a.getPais();
+                           for(Inscricao i : a.getListaInscricoes())
+                           {
+                               if(i.getProva().getNome().equals(p.getNome()))
+                               {
+                                   row[nAtleta][2] = i.getResultado();
+                               }
+                           }
+
                            nAtleta++;
                        }
-                       atletasProvaTable.setModel(new DefaultTableModel(row, new String[]{"Atleta", "País"}));
+                       atletasProvaTable.setModel(new DefaultTableModel(row, new String[]{"Atleta", "País", "Resultado"}));
                        cardLayoutNormalPages.show(PainelPrincipal, "cardAtletasPorProva");
                        return;
                    }
