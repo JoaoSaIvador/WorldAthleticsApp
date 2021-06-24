@@ -49,7 +49,6 @@ public class AppWorldAthletics extends JFrame{
     private JPanel editarProva;
     private JPanel atletasPorProva;
     private JPanel registarResultadoProva;
-    private JPanel resultadosFinaisProva;
     private JPanel RecordesProva;
     private JList gerirEventosLista;
     private JTextField gerirEventosPais;
@@ -165,6 +164,7 @@ public class AppWorldAthletics extends JFrame{
     private JButton voltarButtonRegistarResultado;
     private JTable atletasProvaTable;
     private JButton buttonAtletaPorProva;
+    private JButton voltarAtletasPorProva;
 
     private CardLayout cardLayoutGerir;
     private CardLayout cardLayoutNormalPages;
@@ -274,7 +274,7 @@ public class AppWorldAthletics extends JFrame{
 
         ///     Provas por Atleta
         botaoVoltarProvasAtleta.addActionListener(this::botaoGerirAtletasActionPerformed);
-
+        voltarAtletasPorProva.addActionListener(this::botaoGerirProvasActionPerformed);
         //Gerir Provas
         botaoCriarProva.addActionListener(this::botaoCriarProvaActionPerformed);
         botaoEditarProva.addActionListener(this::botaoEditarProvaActionPerformed);
@@ -295,7 +295,7 @@ public class AppWorldAthletics extends JFrame{
         });
 
         //Resultados
-            buttonVoltarRecordesProva.addActionListener(this::botaoGerirEventosActionPerformed);
+            buttonVoltarRecordesProva.addActionListener(this::botaoGerirProvasActionPerformed);
         buttonRecordesMundiais.addActionListener(this::buttonRecordesMundiaisActionPerformed);
         buttonRegistarResultado.addActionListener(this::buttonRegistarResultadoActionPerformed);
 
@@ -308,10 +308,6 @@ public class AppWorldAthletics extends JFrame{
         buildGerirEventosList();
     }
 
-    private void voltarButtonRegistarResultadoActionPerformed(ActionEvent e)
-    {
-
-    }
 
     private void botaoGerirAtletasActionPerformed(ActionEvent e) { buildGerirAtletaList(); }
 
@@ -1126,7 +1122,7 @@ public class AppWorldAthletics extends JFrame{
         }
         else
         {
-            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar uma  d!");
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de selecionar uma  prova!");
             return;
         }
     }
