@@ -1021,14 +1021,11 @@ public class AppWorldAthletics extends JFrame{
 
     private JTable criarTabelaHistorico(){
         String[] colunas = {"Evento", "Local do Evento", "Prova", "Resultado"};
-        Object[][] dados;
+        Object[][] dados = null;
         //TODO
 
-        //JTable tabela = new JTable(dados, colunas);
-        //tabela.setFillsViewportHeight(true);
-        //return tabela;
-
-        return null;
+        JTable tabela = new JTable(dados, colunas);
+        return tabela;
     }
 
     private JTable criarTabelRecordePessoal(){
