@@ -13,6 +13,7 @@ public class Evento {
     private Map<Prova, ArrayList<Atleta>> listaAtletasPorProva;
     private Map<Prova, ArrayList<EtapaProva>> listaEtapasPorProva;
     private Map<Prova, ArrayList<Atleta>> topAtletasPorProva;
+    private Map<Prova, ArrayList<Inscricao>> inscricoesPorProva;
 
     public Evento(String nome, Data dataInicio, Data dataFim, String local, Pais pais) {
         this.nome = nome;
@@ -24,6 +25,8 @@ public class Evento {
         this.listaMinimosProvas = new HashMap<String, Float>();
         this.listaAtletasPorProva = new HashMap<Prova, ArrayList<Atleta>>();
         this.listaEtapasPorProva = new HashMap<Prova, ArrayList<EtapaProva>>();
+        this.topAtletasPorProva = new HashMap<Prova, ArrayList<Atleta>>();
+        this.inscricoesPorProva = new HashMap<Prova, ArrayList<Inscricao>>();
     }
 
     public String getNome() {
@@ -78,6 +81,8 @@ public class Evento {
         listaProvas.add(prova);
         listaAtletasPorProva.put(prova, new ArrayList<Atleta>());
         listaEtapasPorProva.put(prova, new ArrayList<EtapaProva>());
+        inscricoesPorProva.put(prova, new ArrayList<Inscricao>());
+        topAtletasPorProva.put(prova, new ArrayList<Atleta>());
     }
 
     public void removerProva(Prova prova) {
@@ -85,6 +90,8 @@ public class Evento {
         listaMinimosProvas.remove(prova.getNome());
         listaAtletasPorProva.remove(prova);
         listaEtapasPorProva.remove(prova);
+        inscricoesPorProva.remove(prova);
+        topAtletasPorProva.remove(prova);
     }
 
     public boolean isProvaAdicionada(Prova prova) {
@@ -116,6 +123,34 @@ public class Evento {
 
     public ArrayList<Atleta> getTopAtletasProva(Prova prova) {
         return topAtletasPorProva.get(prova);
+    }
+
+    public void setTopAtletasProva() {
+        float melhor = 0;
+        float segundo = 0;
+        float terceiro = 0;
+        Atleta[] atletas = null;
+
+        for(Prova prova : inscricoesPorProva.keySet()) {
+            for(Inscricao inscricao : inscricoesPorProva.get(prova)) {
+                if (inscricao.getResultado() > melhor) {
+                    atletas[0] = inscricao.getAtleta();
+                } else if (inscricao.getResultado() > segundo) {
+                    atletas[1] = inscricao.getAtleta();
+                } else if (inscricao.getResultado() > terceiro) {
+                    atletas[2] = inscricao.getAtleta();
+                }
+            }
+            ArrayList<Atleta> melhoresAtletas = new ArrayList<Atleta>();
+            for (int i = 0; i < 3; i++) {
+                melhoresAtletas.add(atletas[i]);
+            }
+            topAtletasPorProva.put(prova, melhoresAtletas);
+        }
+    }
+
+    public void setInscricoesPorProva (Inscricao inscricao) {
+        inscricoesPorProva.get(inscricao.getProva()).add(inscricao);
     }
 
     public String toString(){

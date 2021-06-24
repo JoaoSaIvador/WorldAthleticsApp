@@ -322,6 +322,10 @@ public class AppWorldAthletics extends JFrame{
         selecionarTopMedalhados.setModel(comboBoxModel);
         selecionarTopMedalhados.setSelectedItem("Geral");
 
+        for (Evento evento : listaEventos) {
+            evento.setTopAtletasProva();
+        }
+
         DefaultTableModel tableModel = new DefaultTableModel();
         tableModel.addColumn("País");
         tableModel.addColumn("Número de Medalhas");
@@ -329,7 +333,7 @@ public class AppWorldAthletics extends JFrame{
         if (selecionarTopMedalhados.getSelectedItem().toString().compareTo("Geral") == 0 ) {
             for (Evento evento : listaEventos) {
                 for (Prova prova : evento.getListaProvas()) {
-                    for (Atleta atleta : listaAtletas) {
+                    for (Atleta atleta : evento.getTopAtletasProva(prova)) {
                         if (!medalhasPorPais.containsKey(atleta.getPais()) && evento.getTopAtletasProva(prova).contains(atleta)) {
                             medalhasPorPais.put(atleta.getPais().toString(), 1);
                         } else if(evento.getTopAtletasProva(prova).contains(atleta)) {
@@ -376,8 +380,7 @@ public class AppWorldAthletics extends JFrame{
 
         tabelaTopMedalhados.setModel(tableModel);
         scrollTopMedalhados.setViewportView(tabelaTopMedalhados);
-
-
+        
         cardLayoutNormalPages.show(PainelPrincipal, "cardGerir");
         cardLayoutGerir.show(conteudoGerir, "cardTopMedalhados");
         setElementsBackgroundColor(elementoTopMedalhados);
@@ -1125,6 +1128,7 @@ public class AppWorldAthletics extends JFrame{
                         if(provaSelecionada.getNome().equals(i.getProva().getNome()))
                         {
                             i.setResultado(Float.parseFloat( resultadoValor.getText()));
+                            i.getEvento().setInscricoesPorProva(i);
                             JOptionPane.showMessageDialog(new JFrame(), "Atleta  Encontrado!");
                             cardLayoutGerir.show(conteudoGerir, "cardGerirProvas");
                             return;
