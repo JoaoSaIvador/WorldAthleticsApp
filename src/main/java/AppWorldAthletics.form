@@ -1813,13 +1813,6 @@
                       <grid row="3" column="6" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                   </hspacer>
-                  <vspacer id="4088">
-                    <constraints>
-                      <grid row="6" column="1" row-span="1" col-span="5" vsize-policy="3" hsize-policy="1" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                        <preferred-size width="-1" height="50"/>
-                      </grid>
-                    </constraints>
-                  </vspacer>
                   <grid id="60180" layout-manager="GridLayoutManager" row-count="1" column-count="10" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
@@ -2025,6 +2018,7 @@
                   <vspacer id="f2ce7">
                     <constraints>
                       <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="3" hsize-policy="1" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                        <minimum-size width="-1" height="20"/>
                         <preferred-size width="-1" height="20"/>
                       </grid>
                     </constraints>
@@ -2061,6 +2055,14 @@
                       </component>
                     </children>
                   </scrollpane>
+                  <vspacer id="b4946">
+                    <constraints>
+                      <grid row="6" column="3" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
+                        <minimum-size width="-1" height="20"/>
+                        <preferred-size width="-1" height="20"/>
+                      </grid>
+                    </constraints>
+                  </vspacer>
                 </children>
               </grid>
             </children>

@@ -351,11 +351,18 @@ public class AppWorldAthletics extends JFrame{
 
     private void botaoVerProgramaActionPerformed(ActionEvent actionEvent) {
 
-        String[] colunas = {"Hora", "Género", "Prova", "Ronda"};
-        Object[][] dados = null;
-        //TODO
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel.addColumn("Hora");
+        tableModel.addColumn("Género");
+        tableModel.addColumn("Prova");
+        tableModel.addColumn("Ronda");
 
-        tabelaProgramaEvento = new JTable(dados, colunas);
+        //TODO
+        for (Prova prova: eventoSelecionado.getListaProvas()) {
+            String data[] = {"", prova.getSexoParticipantes(), prova.getNome(), ""};
+            tableModel.addRow(data);
+        }
+        tabelaProgramaEvento.setModel(tableModel);
         scrollPrograma.setViewportView(tabelaProgramaEvento);
 
         cardLayoutNormalPages.show(PainelPrincipal, "cardProgramaEvento");
@@ -799,7 +806,7 @@ public class AppWorldAthletics extends JFrame{
     private void botaoCriarProvaActionPerformed(ActionEvent actionEvent) {
         nomeCriarProva.setText("");
         duracaoCriarProva.setText("");
-        maxParticipantesEditarProva.setText("");
+        maxParticipantesCriarProva.setText("");
         tipoPontuacaoComboBox.setModel(new DefaultComboBoxModel<>(TipoPontuacao.values()));
         sexoParticipantesComboBox.setModel(new DefaultComboBoxModel<>(SexoParticipantes.values()));
         cardLayoutNormalPages.show(PainelPrincipal, "cardCriarProva");
