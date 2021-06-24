@@ -436,28 +436,30 @@ public class AppWorldAthletics extends JFrame{
 
     private void botaoImportarEventosActionPerformed(ActionEvent actionEvent) {
         File file = importarFicheiro();
-        try {
-            Scanner scanner = new Scanner(file);
-            while (scanner.hasNextLine()) {
-                String s = scanner.nextLine();
-                if (!s.equals("")) {
-                    //TODO
-                    ArrayList<String> parameters = new ArrayList<String>();
-                    for (String parameter : s.split(" # ")) {
-                        parameters.add(parameter);
-                    }
-                    try {
-                        if (verifyEvent(parameters.get(0), parameters.get(1), parameters.get(2), parameters.get(3), Pais.valueOf(parameters.get(4)))) {
-                            listaEventos.add(new Evento(parameters.get(0), Data.parse(parameters.get(1)), Data.parse(parameters.get(2)), parameters.get(3), Pais.valueOf(parameters.get(4))));
+        if (file != null){
+            try {
+                Scanner scanner = new Scanner(file);
+                while (scanner.hasNextLine()) {
+                    String s = scanner.nextLine();
+                    if (!s.equals("")) {
+                        //TODO
+                        ArrayList<String> parameters = new ArrayList<String>();
+                        for (String parameter : s.split(" # ")) {
+                            parameters.add(parameter);
                         }
-                    } catch(IllegalArgumentException e) {
-                        JOptionPane.showMessageDialog(null, "Dados inválidos!");
+                        try {
+                            if (verifyEvent(parameters.get(0), parameters.get(1), parameters.get(2), parameters.get(3), Pais.valueOf(parameters.get(4)))) {
+                                listaEventos.add(new Evento(parameters.get(0), Data.parse(parameters.get(1)), Data.parse(parameters.get(2)), parameters.get(3), Pais.valueOf(parameters.get(4))));
+                            }
+                        } catch(IllegalArgumentException e) {
+                            JOptionPane.showMessageDialog(null, "Dados inválidos!");
+                        }
+                        buildGerirEventosList();
                     }
-                    buildGerirEventosList();
                 }
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(null, "Ficheiro não encontrado");
             }
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Ficheiro não encontrado");
         }
     }
 
@@ -687,13 +689,63 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private void botaoImportarDadosActionPerformed(ActionEvent actionEvent){
-        importarFicheiro();
-        //TODO
+        File file = importarFicheiro();
+        if (file != null){
+            try {
+                Scanner scanner = new Scanner(file);
+                while (scanner.hasNextLine()){
+                    String s = scanner.nextLine();
+                    if (!s.equals("")){
+                        ArrayList<String> parameters = new ArrayList<String>();
+                        for (String parameter: s.split("#")){
+                            parameters.add(parameter);
+                        }
+                        if (parameters.size() != 5){
+                            JOptionPane.showMessageDialog(new JFrame(), "Linha não possui todos os dados necessários para importar", "Erro", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        if (verifyAtleta(parameters.get(0), parameters.get(1), parameters.get(2), parameters.get(3), parameters.get(4))){
+                            Atleta atleta = new Atleta(parameters.get(0), SexoParticipantes.valueOf(parameters.get(1)), Data.parse(parameters.get(2)),Pais.valueOf(parameters.get(3)) ,Long.parseLong(parameters.get(4));
+                            listaAtletas.add(atleta);
+                        }
+                        JOptionPane.showMessageDialog(new JFrame(), "Importação concluida");
+                        buildGerirAtletaList();
+                    }
+                }
+            }catch (FileNotFoundException e){
+                JOptionPane.showMessageDialog(new JFrame(), "Ficheiro não encontrado", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     private void botaoImportarInscricoesActionPerformed(ActionEvent actionEvent){
-        importarFicheiro();
-        //TODO
+        File file = importarFicheiro();
+        if (file != null){
+            try {
+                Scanner scanner = new Scanner(file);
+                while (scanner.hasNextLine()){
+                    String s = scanner.nextLine();
+                    if (!s.equals("")){
+                        ArrayList<String> parameters = new ArrayList<String>();
+                        for (String parameter: s.split("#")){
+                            parameters.add(parameter);
+                        }
+//                        if (parameters.size() != 5){
+//                            JOptionPane.showMessageDialog(new JFrame(), "Linha não possui todos os dados necessários para importar", "Erro", JOptionPane.ERROR_MESSAGE);
+//                            return;
+//                        }
+//                        if (verifyAtleta(parameters.get(0), parameters.get(1), parameters.get(2), parameters.get(3), parameters.get(4))){
+//                            Atleta atleta = new Atleta(parameters.get(0), SexoParticipantes.valueOf(parameters.get(1)), Data.parse(parameters.get(2)),Pais.valueOf(parameters.get(3)) ,Long.parseLong(parameters.get(4));
+//                            listaAtletas.add(atleta);
+//                        }
+                        JOptionPane.showMessageDialog(new JFrame(), "Importação concluida");
+                        buildGerirAtletaList();
+                    }
+                }
+            }catch (FileNotFoundException e){
+                JOptionPane.showMessageDialog(new JFrame(), "Ficheiro não encontrado", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     private void botaoProvasPorAtletaActionPerformed(ActionEvent actionEvent){
