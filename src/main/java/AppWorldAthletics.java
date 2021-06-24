@@ -747,12 +747,8 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private boolean verifyIncricao(Atleta atleta, Evento evento, Prova prova, String marcaAlcancada){
-        if (evento == null){
-            JOptionPane.showMessageDialog(new JFrame(), "Não selecionou um evento", "Erro", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        if (prova == null){
-            JOptionPane.showMessageDialog(new JFrame(), "Não selecionou uma prova", "Erro", JOptionPane.ERROR_MESSAGE);
+        if (evento == null || prova == null){
+            JOptionPane.showMessageDialog(new JFrame(), "Não selecionou um evento ou uma prova", "Erro", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         if (!evento.isProvaAdicionada(prova)){
