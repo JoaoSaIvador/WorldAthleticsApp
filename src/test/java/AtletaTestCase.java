@@ -32,7 +32,7 @@ public class AtletaTestCase {
     @Test
     public void testInscreverAtleta(){
         var atleta1 = new Atleta("atleta1", SexoParticipantes.MASCULINO, Data.parse("20/06/2020"), Pais.ESTADOS_UNIDOS, 123456789);
-        var prova = new Prova("ProvaTeste",SexoParticipantes.MASCULINO.toString(), TipoPontuacao.METROS.toString());
+        var prova = new Prova("ProvaTeste",SexoParticipantes.MASCULINO.toString(), TipoPontuacao.METROS.toString(), 50, 8);
         var evento = new Evento("EventoTeste", Data.parse("20/12/2020"), Data.parse("20/12/2021"), "local1", Pais.PORTUGAL);
         evento.adicionarProva(prova);
         atleta1.inscrever(new Inscricao(prova,evento,atleta1));
@@ -43,7 +43,7 @@ public class AtletaTestCase {
     @Test
     public void testInscreverAtletaEmVariasProvas(){
         var atleta1 = new Atleta("atleta1", SexoParticipantes.MASCULINO, Data.parse("20/06/2020"), Pais.ESTADOS_UNIDOS, 123456789);
-        var prova = new Prova("ProvaTeste",SexoParticipantes.MASCULINO.toString(), TipoPontuacao.METROS.toString());
+        var prova = new Prova("ProvaTeste",SexoParticipantes.MASCULINO.toString(), TipoPontuacao.METROS.toString(), 50, 8);
         var evento1 = new Evento("EventoTeste", Data.parse("20/12/2020"), Data.parse("20/12/2021"), "local1", Pais.PORTUGAL);
         var evento2 = new Evento("EventoTeste", Data.parse("20/12/2020"), Data.parse("20/12/2021"), "local1", Pais.PORTUGAL);
 
@@ -58,7 +58,7 @@ public class AtletaTestCase {
     @Test
     public void testCancelarInscricao(){
         var atleta1 = new Atleta("atleta1", SexoParticipantes.MASCULINO, Data.parse("20/06/2020"), Pais.ESTADOS_UNIDOS, 123456789);
-        var prova = new Prova("ProvaTeste",SexoParticipantes.MASCULINO.toString(), TipoPontuacao.METROS.toString());
+        var prova = new Prova("ProvaTeste",SexoParticipantes.MASCULINO.toString(), TipoPontuacao.METROS.toString(), 50, 8);
         var evento1 = new Evento("EventoTeste", Data.parse("20/12/2020"), Data.parse("20/12/2021"), "local1", Pais.PORTUGAL);
 
         var inscricao1 = new Inscricao(prova,evento1,atleta1);

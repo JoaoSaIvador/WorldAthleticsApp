@@ -5,11 +5,6 @@ public class Prova {
     private int duracao;
     private int maxParticipantes;
 
-    public Prova(String nome, String sexoParticipantes, String pontuacao) {
-        this.nome = nome;
-        this.sexoParticipantes = sexoParticipantes;
-        this.Tipopontuacao = pontuacao;
-    }
     public Prova(String nome, String sexoParticipantes, String pontuacao, int duracao,int maxParticipantes) {
         this.nome = nome;
         this.sexoParticipantes = sexoParticipantes;
@@ -48,10 +43,6 @@ public class Prova {
 
     public int getMaxParticipantes() {
         return maxParticipantes;
-    }
-
-    public String getTipopontuacao() {
-        return Tipopontuacao;
     }
 
     public void setDuracao(int duracao) {

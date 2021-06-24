@@ -454,10 +454,7 @@ public class AppWorldAthletics extends JFrame{
                                 }
                                 return;
                             }
-
-                            if (verifyEvent(parameters.get(0), parameters.get(1), parameters.get(2), parameters.get(3), Pais.valueOf(parameters.get(4)))) {
-                                listaEventos.add(new Evento(parameters.get(0), Data.parse(parameters.get(1)), Data.parse(parameters.get(2)), parameters.get(3), Pais.valueOf(parameters.get(4))));
-                            }
+                            listaEventos.add(new Evento(parameters.get(0), Data.parse(parameters.get(1)), Data.parse(parameters.get(2)), parameters.get(3), Pais.valueOf(parameters.get(4))));
                         } catch(IllegalArgumentException e) {
                             JOptionPane.showMessageDialog(null, "Dados inválidos!");
                         }
@@ -542,7 +539,7 @@ public class AppWorldAthletics extends JFrame{
         }
     }
 
-    private boolean verifyEvent(String nome, String dataInicio, String dataFim, String local, Object pais) {
+    public boolean verifyEvent(String nome, String dataInicio, String dataFim, String local, Object pais) {
         if (nome.isBlank() || dataInicio.isBlank() || dataFim.isBlank() || local.isBlank() || pais == null) {
             JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher todos os campos!");
         } else {
@@ -1024,7 +1021,7 @@ public class AppWorldAthletics extends JFrame{
         }
     }
 
-    public void botaoOkEditarProvaActionPerformed(ActionEvent actionEvent) {
+    private void botaoOkEditarProvaActionPerformed(ActionEvent actionEvent) {
         if (editarProvaNome.getText().isBlank() || maxParticipantesEditarProva.getText().isBlank() || duracaoEditarProva.getText().isBlank()) {
             JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher todos os campos!");
         }
