@@ -282,10 +282,6 @@ public class AppWorldAthletics extends JFrame{
         buttonRegistarResultado.addActionListener(this::buttonRegistarResultadoActionPerformed);
 
         cardLayoutNormalPages.show(PainelPrincipal, "cardMenuPrincipal");
-
-
-
-
     }
 
     //------------------------------ MENU LATERAL/INICIAL ------------------------------
@@ -359,7 +355,6 @@ public class AppWorldAthletics extends JFrame{
         File file = importarFicheiro();
         try {
             Scanner scanner = new Scanner(file);
-
             while (scanner.hasNextLine()) {
                 String s = scanner.nextLine();
                 if (!s.equals("")) {
@@ -427,7 +422,6 @@ public class AppWorldAthletics extends JFrame{
                 eventoSelecionado.removerProva(provaARemover);
             }
         }
-
     }
 
     private void botaoOkAdicionarEventoActionPerformed(ActionEvent actionEvent) {
@@ -445,7 +439,6 @@ public class AppWorldAthletics extends JFrame{
 
     private void botaoOkEditarEventoActionPerformed(ActionEvent actionEvent) {
         if (verifyEvent(editarEventoNome.getText(), editarEventoDataInicio.getText(), editarEventoDataFim.getText(), editarEventoLocal.getText(), editarEventoPais.getSelectedItem())) {
-
             eventoSelecionado.setNome(editarEventoNome.getText());
             eventoSelecionado.setDataInicio(Data.parse(editarEventoDataInicio.getText()));
             eventoSelecionado.setDataFim(Data.parse(editarEventoDataFim.getText()));
@@ -503,7 +496,6 @@ public class AppWorldAthletics extends JFrame{
         }
         gerirEventosLista.setModel(gerirEventosListModel);
         gerirEventosLista.setBorder(BorderFactory.createLineBorder(Color.black));
-
         scrollEventos.setViewportView(gerirEventosLista);
         setCurrentGerirEventos();
     }
@@ -871,8 +863,8 @@ public class AppWorldAthletics extends JFrame{
     }
 
     public void botaoOkEditarProvaActionPerformed(ActionEvent actionEvent) {
-        if (editarProvaNome.getText().isBlank()) {
-            JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher o nome!");
+        if (editarProvaNome.getText().isBlank() || maxParticipantesEditarProva.getText().isBlank() || duracaoEditarProva.getText().isBlank()) {
+            JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher todos os campos!");
         }
         else {
             provaSelecionada.setNome(editarProvaNome.getText());
