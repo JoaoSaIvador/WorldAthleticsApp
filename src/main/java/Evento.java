@@ -12,6 +12,7 @@ public class Evento {
     private Map<String, Float> listaMinimosProvas;
     private Map<Prova, ArrayList<Atleta>> listaAtletasPorProva;
     private Map<Prova, ArrayList<EtapaProva>> listaEtapasPorProva;
+    private Map<Prova, ArrayList<Atleta>> topAtletasPorProva;
 
     public Evento(String nome, Data dataInicio, Data dataFim, String local, Pais pais) {
         this.nome = nome;
@@ -111,6 +112,10 @@ public class Evento {
 
     public ArrayList<EtapaProva> getEtapasProvas(Prova prova) {
         return listaEtapasPorProva.get(prova);
+    }
+
+    public ArrayList<Atleta> getTopAtletasProva(Prova prova) {
+        return topAtletasPorProva.get(prova);
     }
 
     public String toString(){

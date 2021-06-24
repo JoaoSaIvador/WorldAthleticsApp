@@ -83,8 +83,8 @@ public class AppWorldAthletics extends JFrame{
     private JButton botaoCriarProva;
     private JButton botaoEliminarProva;
     private JButton botaoEditarProva;
-    private JTable table1;
-    private JComboBox comboBox1;
+    private JTable tabelaTopMedalhados;
+    private JComboBox selecionarTopMedalhados;
     private JButton botaoVoltarProgramaEvento;
     private JButton botaoCancelarCriarProva;
     private JButton botaoCancelarEditarProva;
@@ -155,6 +155,7 @@ public class AppWorldAthletics extends JFrame{
     private JScrollPane scrollMelhorTempoAtleta;
     private JTable tabelaProgramaEvento;
     private JScrollPane scrollPrograma;
+    private JScrollPane scrollTopMedalhados;
 
     private CardLayout cardLayoutGerir;
     private CardLayout cardLayoutNormalPages;
@@ -299,6 +300,67 @@ public class AppWorldAthletics extends JFrame{
     }
 
     private void botaoTopMedalhadosActionPerformed(ActionEvent e) {
+        DefaultComboBoxModel comboBoxModel = (new DefaultComboBoxModel<>(listaEventos.toArray()));
+        comboBoxModel.addElement("Geral");
+        selecionarTopMedalhados.setModel(comboBoxModel);
+        selecionarTopMedalhados.setSelectedItem("Geral");
+
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel.addColumn("País");
+        tableModel.addColumn("Número de Medalhas");
+        Map<String, Integer> medalhasPorPais = new HashMap<String, Integer>();
+        if (selecionarTopMedalhados.getSelectedItem().toString().compareTo("Geral") == 0 ) {
+            for (Evento evento : listaEventos) {
+                for (Prova prova : evento.getListaProvas()) {
+                    for (Atleta atleta : listaAtletas) {
+                        if (!medalhasPorPais.containsKey(atleta.getPais()) && evento.getTopAtletasProva(prova).contains(atleta)) {
+                            medalhasPorPais.put(atleta.getPais().toString(), 1);
+                        } else if(evento.getTopAtletasProva(prova).contains(atleta)) {
+                            int medalhas = medalhasPorPais.get(atleta.getPais());
+                            medalhas += 1;
+                            medalhasPorPais.put(atleta.getPais().toString(), medalhas);
+                        }
+                    }
+                }
+            }
+        } else {
+            eventoSelecionado = (Evento) selecionarTopMedalhados.getSelectedItem();
+            for (Prova prova : eventoSelecionado.getListaProvas()) {
+                for (Atleta atleta : listaAtletas) {
+                    if (!medalhasPorPais.containsKey(atleta.getPais()) && eventoSelecionado.getTopAtletasProva(prova).contains(atleta)) {
+                        medalhasPorPais.put(atleta.getPais().toString(), 1);
+                    } else if(eventoSelecionado.getTopAtletasProva(prova).contains(atleta)) {
+                        int medalhas = medalhasPorPais.get(atleta.getPais());
+                        medalhas += 1;
+                        medalhasPorPais.put(atleta.getPais().toString(), medalhas);
+                    }
+                }
+            }
+        }
+
+        Map<String, Integer> sortedMap = new HashMap<String, Integer>();
+        ArrayList<Integer> list = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : medalhasPorPais.entrySet()) {
+            list.add(entry.getValue());
+        }
+        Collections.sort(list);
+        for (int num : list) {
+            for (Map.Entry<String, Integer> entry : medalhasPorPais.entrySet()) {
+                if (entry.getValue().equals(num)) {
+                    sortedMap.put(entry.getKey(), num);
+                }
+            }
+        }
+
+        for (String pais : sortedMap.keySet()) {
+            String dados[] = {pais.toString(), sortedMap.get(pais).toString()};
+            tableModel.addRow(dados);
+        }
+
+        tabelaTopMedalhados.setModel(tableModel);
+        scrollTopMedalhados.setViewportView(tabelaTopMedalhados);
+
+
         cardLayoutNormalPages.show(PainelPrincipal, "cardGerir");
         cardLayoutGerir.show(conteudoGerir, "cardTopMedalhados");
         setElementsBackgroundColor(elementoTopMedalhados);
