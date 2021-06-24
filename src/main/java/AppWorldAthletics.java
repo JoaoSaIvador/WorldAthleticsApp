@@ -444,10 +444,17 @@ public class AppWorldAthletics extends JFrame{
                     if (!s.equals("")) {
                         //TODO
                         ArrayList<String> parameters = new ArrayList<String>();
-                        for (String parameter : s.split(" # ")) {
-                            parameters.add(parameter);
-                        }
                         try {
+                            for (String parameter : s.split(" # ")) {
+                                parameters.add(parameter);
+                            }
+                            for (Evento evento : listaEventos) {
+                                if (evento.getNome().compareTo(parameters.get(0)) == 0) {
+                                    JOptionPane.showMessageDialog(null, "Dados inválidos!");
+                                }
+                                return;
+                            }
+
                             if (verifyEvent(parameters.get(0), parameters.get(1), parameters.get(2), parameters.get(3), Pais.valueOf(parameters.get(4)))) {
                                 listaEventos.add(new Evento(parameters.get(0), Data.parse(parameters.get(1)), Data.parse(parameters.get(2)), parameters.get(3), Pais.valueOf(parameters.get(4))));
                             }
@@ -539,6 +546,12 @@ public class AppWorldAthletics extends JFrame{
         if (nome.isBlank() || dataInicio.isBlank() || dataFim.isBlank() || local.isBlank() || pais == null) {
             JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher todos os campos!");
         } else {
+            for (Evento evento : listaEventos) {
+                if (evento.getNome().compareTo(nome) == 0) {
+                    JOptionPane.showMessageDialog(null, "Evento já existe!");
+                }
+                return false;
+            }
             Data data1 = null;
             Data data2 = null;
             LocalDate dt = LocalDate.now();
@@ -916,10 +929,17 @@ public class AppWorldAthletics extends JFrame{
                     if (!s.equals("")) {
                         //TODO
                         ArrayList<String> parameters = new ArrayList<String>();
-                        for (String parameter : s.split(" # ")) {
-                            parameters.add(parameter);
-                        }
                         try {
+                            for (String parameter : s.split(" # ")) {
+                                parameters.add(parameter);
+                            }
+                            for (Prova prova : listaProvas) {
+                                if (prova.getNome().compareTo(parameters.get(0)) == 0 && prova.getSexoParticipantes().compareTo(parameters.get(1)) == 0) {
+                                    JOptionPane.showMessageDialog(null, "Argumento(s) inválido(s)");
+                                    return;
+                                }
+                            }
+
                             SexoParticipantes.valueOf(parameters.get(1));
                             TipoPontuacao.valueOf(parameters.get((2)));
 
@@ -941,6 +961,12 @@ public class AppWorldAthletics extends JFrame{
             JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher todos os campos!");
         }
         else {
+            for (Prova prova : listaProvas) {
+                if (prova.getNome().compareTo(nomeCriarProva.getText()) == 0 && prova.getSexoParticipantes().compareTo(sexoParticipantesComboBox.getSelectedItem().toString()) == 0) {
+                    JOptionPane.showMessageDialog(null, "Prova já existe!");
+                    return;
+                }
+            }
             Prova prova = new Prova(nomeCriarProva.getText(), sexoParticipantesComboBox.getSelectedItem().toString(), tipoPontuacaoComboBox.getSelectedItem().toString(), Integer.parseInt(duracaoCriarProva.getText()), Integer.parseInt(maxParticipantesCriarProva.getText()));
             listaProvas.add(prova);
 
@@ -953,6 +979,12 @@ public class AppWorldAthletics extends JFrame{
             JOptionPane.showMessageDialog(new JFrame(), "Tem de preencher todos os campos!");
         }
         else {
+            for (Prova prova : listaProvas) {
+                if (prova.getNome().compareTo(editarProvaNome.getText()) == 0 && prova.getSexoParticipantes().compareTo(editarProvaSexoParticipantes.getSelectedItem().toString()) == 0) {
+                    JOptionPane.showMessageDialog(null, "Prova já existe!");
+                    return;
+                }
+            }
             provaSelecionada.setNome(editarProvaNome.getText());
             provaSelecionada.setSexoParticipantes(editarProvaSexoParticipantes.getSelectedItem().toString());
             provaSelecionada.setTipoPontuacao(editarProvaTipoPontuacao.getSelectedItem().toString());
