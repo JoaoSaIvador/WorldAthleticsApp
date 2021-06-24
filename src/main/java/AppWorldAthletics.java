@@ -718,7 +718,7 @@ public class AppWorldAthletics extends JFrame{
                             return;
                         }
                         if (verifyAtleta(parameters.get(0), parameters.get(1), parameters.get(2), parameters.get(3), parameters.get(4))){
-                            Atleta atleta = new Atleta(parameters.get(0), SexoParticipantes.valueOf(parameters.get(1)), Data.parse(parameters.get(2)),Pais.valueOf(parameters.get(3)) ,Long.parseLong(parameters.get(4));
+                            Atleta atleta = new Atleta(parameters.get(0), SexoParticipantes.valueOf(parameters.get(1)), Data.parse(parameters.get(2)),Pais.valueOf(parameters.get(3)) ,Long.parseLong(parameters.get(4)));
                             listaAtletas.add(atleta);
                         }
                         JOptionPane.showMessageDialog(new JFrame(), "Importação concluida");
